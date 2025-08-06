@@ -1,5 +1,6 @@
 // import { useState } from 'react'
 import './App.css'
+import { Calendar } from './Calendar'
 import { Card } from './Card'
 import { NavBar } from './NavBar'
 
@@ -15,7 +16,7 @@ function App() {
         </Card>
 
         <Card>
-          <p>Test</p>
+          <Calendar />
         </Card>
       </div>
     </>
