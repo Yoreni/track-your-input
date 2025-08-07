@@ -4,6 +4,7 @@ import { Calendar } from './Calendar'
 import { Card } from './Card'
 import { NavBar } from './NavBar'
 import { ProgressBar } from './ProgressBar';
+import { Statistics } from './Statistics';
 
 const HOURS_FOR_LEVEL = [0, 50, 150, 300, 600, 1000, 1500]
 
@@ -69,6 +70,9 @@ function App() {
         </Card>
         <Card>
           <Calendar />
+        </Card>
+        <Card>
+          <Statistics />
         </Card>
       </div>
     </>
