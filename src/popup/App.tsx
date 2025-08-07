@@ -1,4 +1,5 @@
 // import { useState } from 'react'
+import { useEffect, useState } from 'react';
 import './App.css'
 import { Calendar } from './Calendar'
 import { Card } from './Card'
@@ -17,16 +18,21 @@ function formatHours(hours: number, rounding = Math.floor)
   return `${hours} hour${hours !== 1 ? "s" : ""}`
 }
 
-function getLevel(hours: number)
+function getLevel(hours: number): number
 {
   let level = 0;
   while (HOURS_FOR_LEVEL[level] <= hours)
-    ++level
-
-  if (level == HOURS_FOR_LEVEL.length) //handle max level
-    return {level, remainingHours: 0, progress: 1, hours}
+    ++level 
   if (hours < 0)
     level = 1
+  return level
+}
+
+function calcProgress(hours: number)
+{
+  const level = getLevel(hours)
+  if (level == HOURS_FOR_LEVEL.length) //handle max level
+    return {level, remainingHours: 0, progress: 1, hours}
 
   const remainingHours = HOURS_FOR_LEVEL[level] - hours;
   const hoursInLevel = (HOURS_FOR_LEVEL[level] - HOURS_FOR_LEVEL[level - 1])
@@ -34,11 +40,19 @@ function getLevel(hours: number)
   return {level, remainingHours, progress, hours}
 }
 
-function App() {
+function App() 
+{
+  const [input, setInput] = useState();
+  useEffect(() => {
+    browser.storage.local.get('youtubeWatchTimes').then((data: any) => {
+      setInput(data.youtubeWatchTimes || {})
+      console.log(input)
+    })
+  })
+
   const inputToday = 23;
   const goal = 60
-  const progress = getLevel(374.849)
-  console.log(progress)
+  const progress = calcProgress(600 - 5/60)
 
   return (
     <>
@@ -56,7 +70,7 @@ function App() {
             <p className='font-bold'>Total Input</p>
             <p>{formatHours(progress.hours)}</p>
           </div>
-          { progress.level < 7 &&
+          { progress.level < HOURS_FOR_LEVEL.length &&
           <>
             <ProgressBar progress={progress.progress} />
             <div className='flex justify-between'>
