@@ -7,18 +7,20 @@ import { NavBar } from './NavBar'
 import { ProgressBar } from './ProgressBar';
 import { Statistics } from './Statistics';
 import { InputCounter } from './InputCounter';
+import { isOnSameDay, calculateTotalHours } from '../utils';
+import type { WatchData } from '../WatchData';
 
 function App() 
 {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState<WatchData[]>([]);
   useEffect(() => {
     browser.storage.local.get('youtubeWatchTimes').then((data: any) => {
-      setInput(data.youtubeWatchTimes || {})
+      setInput(Object.values(data.youtubeWatchTimes) || [])
       console.log(input)
     })
   })
 
-  const inputToday = 23;
+  const inputToday = calculateTotalHours(input.filter((entry: WatchData) => isOnSameDay(new Date(), entry.date)), "en") * 60
   const goal = 60
 
   return ( input &&
@@ -28,7 +30,7 @@ function App()
         <Card className="">
           <div className='flex justify-between'>
             <p className='font-bold'>Daily Goal</p>
-            <p>{inputToday}/{goal} min</p>
+            <p>{Math.floor(inputToday)} / {goal} min</p>
           </div>
           <ProgressBar progress={inputToday / goal} />
         </Card>

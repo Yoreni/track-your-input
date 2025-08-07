@@ -1,8 +1,7 @@
 // import { useState } from "react";
 
 import { useState } from "react"
-
-const HOUR_CUTOFF = 4
+import { isOnSameDay } from "../utils"
 
 function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): String
 {
@@ -20,20 +19,6 @@ function formatInputMins(mins: number)
         return "<1m"
     return ""
 }
-
-function isOnSameDay(date1: Date, date2: Date): boolean 
-{
-    const d1 = new Date(date1);
-    const d2 = new Date(date2);
-
-    d1.setHours(d1.getHours() - HOUR_CUTOFF);
-    d2.setHours(d2.getHours() - HOUR_CUTOFF);
-
-    return d1.getFullYear() === d2.getFullYear() &&
-           d1.getMonth() === d2.getMonth() &&
-           d1.getDate() === d2.getDate();
-}
-
 
 function getData(monthDisplay: Date): { [key: number]: number }
 {

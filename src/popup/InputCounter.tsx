@@ -1,3 +1,4 @@
+import { calculateTotalHours } from '../utils';
 import { ProgressBar } from './ProgressBar';
 
 interface Props {
@@ -35,17 +36,6 @@ function calcProgress(input: any, language: string)
     const hoursInLevel = (HOURS_FOR_LEVEL[level] - HOURS_FOR_LEVEL[level - 1])
     const progress = (hours - HOURS_FOR_LEVEL[level - 1]) / hoursInLevel
     return {level, remainingHours, progress, hours}
-}
-
-function calculateTotalHours(input: any, language: string)
-{
-    let seconds = 0;
-    console.log(Object.values(input))
-    Object.values(input).forEach((entry: any) => {
-        if (language === entry.language)
-            seconds += entry.time
-    })
-    return seconds / 3600;
 }
 
 export function InputCounter( {input, language}: Props )
