@@ -1,6 +1,6 @@
 import type { WatchData } from "./WatchData";
 
-const HOUR_CUTOFF = 4
+export const HOUR_CUTOFF = 4
 
 export function calculateTotalHours(input: WatchData[], language: string)
 {
@@ -12,13 +12,13 @@ export function calculateTotalHours(input: WatchData[], language: string)
     return seconds / 3600;
 }
 
-export function getDayInput(date: Date, input: WatchData[], language: string)
+export function getMinutesOfInputOnDay(date: Date, input: WatchData[], language: string)
 {
     if (!input)
         return 0
-    const seconds = calculateTotalHours(input.filter(
-        (entry: WatchData) => isOnSameDay(date, entry.date)), language) * 60
-    return seconds / 60
+    const hours = calculateTotalHours(input.filter(
+        (entry: WatchData) => isOnSameDay(date, entry.date)), language)
+    return hours * 60
 }
 
 export function isOnSameDay(date1: Date, date2: Date): boolean 

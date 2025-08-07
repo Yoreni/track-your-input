@@ -1,7 +1,7 @@
 // import { useState } from "react";
 
 import { useState } from "react"
-import { isOnSameDay } from "../utils"
+import { getMinutesOfInputOnDay, HOUR_CUTOFF, isOnSameDay } from "../utils"
 import type { WatchData } from "../WatchData"
 
 function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): String
@@ -21,15 +21,16 @@ function formatInputMins(mins: number)
     return ""
 }
 
-function getData(monthDisplay: Date): { [key: number]: number }
+function getData(monthDisplay: Date, input: WatchData[], language: string): { [key: number]: number }
 {
-    monthDisplay;
-    return {
-        1: 73, 2: 69, 3: 69, 4: 102, 5: 89,
-        6: 83, 7: 12, 8: 49, 9: 77, 10: 170,
-        11: 74, 12: 61, 13: 92, 14: 65, 15: 61,
-        16: 88, 17: 45, 18: 91, 19: 30, 20: 36
+    const daysInMonth = getDaysInMonth(monthDisplay)
+    let perDayInput: { [key: number]: number } = {}
+    for (let day = 1; day <= daysInMonth; ++day)
+    {
+        const date = new Date(monthDisplay.getFullYear(), monthDisplay.getMonth(), day, HOUR_CUTOFF)
+        perDayInput[day] = getMinutesOfInputOnDay(date, input, language)
     }
+    return perDayInput;
 }
 
 function getDailyGoal(): number
@@ -37,17 +38,17 @@ function getDailyGoal(): number
     return 60;
 }
 
-function drawDayCells(monthDisplay: Date)
+function drawDayCells(monthDisplay: Date, input: WatchData[], language: string)
 {
     const firstDayOfMonth = new Date(monthDisplay.getFullYear(), monthDisplay.getMonth(), 1);
     const daysInMonth = getDaysInMonth(monthDisplay);
     let cells  = []
-    const now = new Date(2025,7,20,4)//new Date()
+    const now = new Date()
 
     for (let i = 0; i < firstDayOfMonth.getDay(); i++) 
         cells.push(<DayCell cellType={"FILLER"}/>)
 
-    const perDayInput = getData(monthDisplay)
+    const perDayInput = getData(monthDisplay, input, language)
     for (let day = 1; day <= daysInMonth; day++) 
     {
         const minsOfInput = perDayInput[day];
@@ -105,7 +106,7 @@ export function Calendar({input}: CalendarProps )
             <div>S</div>
         </div>
         <div className="grid grid-cols-7 grid-rows-6 gap-1" id="calendarGrid">
-            {drawDayCells(monthDisplay)}
+            {drawDayCells(monthDisplay, input, "en")}
         </div>
     </div>
 }

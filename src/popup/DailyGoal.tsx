@@ -1,4 +1,4 @@
-import { getDayInput } from "../utils";
+import { getMinutesOfInputOnDay } from "../utils";
 import type { WatchData } from "../WatchData";
 import { ProgressBar } from "./ProgressBar";
 
@@ -9,7 +9,7 @@ interface Props {
 export function DailyGoal({input}: Props)
 {
     const goal = 60;
-    const inputToday = Math.floor(getDayInput(new Date(), input, "en"))
+    const inputToday = Math.floor(getMinutesOfInputOnDay(new Date(), input, "en"))
 
     return ( <>
         <div className='flex justify-between'>
