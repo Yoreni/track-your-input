@@ -1,16 +1,54 @@
-export function Statistics()
+import { getMinutesOfInputOnDay, normaliseDay } from "../utils";
+import type { WatchData } from "../WatchData"
+
+const STREAK_CAP = 7;
+
+interface StatisticsProp {
+    input: WatchData[]
+}
+
+function getStreak(input: WatchData[], language: string) 
 {
+    let streak = 0;
+    let checkingDate = new Date();
+
+    if (getMinutesOfInputOnDay(checkingDate, input, language) > 0)     //check for today
+        ++streak;
+    checkingDate.setDate(checkingDate.getDate() - 1); 
+
+    while (getMinutesOfInputOnDay(checkingDate, input, language) > 0)
+    {
+        ++streak;
+        checkingDate.setDate(checkingDate.getDate() - 1); 
+    }
+    
+    return streak;
+}
+
+function getDaysPracticed(input: WatchData[], language: string)
+{
+    const daysPracticed = input
+        .filter(item => item.language === language)
+        .map(item => normaliseDay(item.date).getTime()) 
+    return new Set(daysPracticed).size
+}
+
+export function Statistics({input}: StatisticsProp)
+{
+    const streak = Math.min(getStreak(input, "en"), STREAK_CAP);
+    const daysPracticed = getDaysPracticed(input, "en")
+
     return <div>
         <p className="font-bold">Statistics</p>
         <div className="flex flex-col gap-2">
-            <Cell dataPoint="7" description="/7 day streak"/>
-            <Cell dataPoint="123" description=" days practiced"/>
+            <Cell dataPoint={streak} description={`/${STREAK_CAP} day streak`}/>
+            <Cell dataPoint={daysPracticed.toLocaleString()} description=" days practiced"/>
         </div>
     </div>
 }
 
 interface CellProp {
-    dataPoint: string
+    dataPoint: string | number
     description: string
     backgroundClass?: string
     textClass?: string

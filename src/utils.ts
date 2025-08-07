@@ -33,3 +33,18 @@ export function isOnSameDay(date1: Date, date2: Date): boolean
            d1.getMonth() === d2.getMonth() &&
            d1.getDate() === d2.getDate();
 }
+
+export function normaliseDay(date: Date): Date
+{
+    const cutoffToday = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        HOUR_CUTOFF,
+    );
+    if (date >= cutoffToday) 
+        return cutoffToday;
+    const cutoffYesterday = new Date(cutoffToday);
+    cutoffYesterday.setDate(cutoffYesterday.getDate() - 1);
+    return cutoffYesterday;
+}

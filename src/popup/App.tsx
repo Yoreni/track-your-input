@@ -33,7 +33,7 @@ function App()
           <Calendar input={input}/>
         </Card>
         <Card>
-          <Statistics />
+          <Statistics input={input}/>
         </Card>
       </div>
     </>
