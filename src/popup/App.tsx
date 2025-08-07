@@ -43,7 +43,7 @@ function App() {
   return (
     <>
       <NavBar/>
-      <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 gap-2 pt-12">
+      <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 gap-2 pt-12 pb-1">
         <Card className="">
           <div className='flex justify-between'>
             <p className='font-bold'>Daily Goal</p>
