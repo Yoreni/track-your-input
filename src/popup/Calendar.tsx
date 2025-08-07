@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { isOnSameDay } from "../utils"
+import type { WatchData } from "../WatchData"
 
 function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): String
 {
@@ -72,9 +73,13 @@ function getDaysInMonth(date: Date): number
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 }
 
+interface CalendarProps {
+    input: WatchData[]
+}
 
-export function Calendar()
+export function Calendar({input}: CalendarProps )
 {
+    input;
     const [monthDisplay, setMonthDisplay] = useState(new Date())
 
     function changeMonth(amount: number)
