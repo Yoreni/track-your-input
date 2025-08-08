@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { getMinutesOfInputOnDay, HOUR_CUTOFF, isOnSameDay } from "../utils"
 import type { WatchData } from "../WatchData"
+import { Cell } from "./StatisticsBar"
 
 function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): String
 {
@@ -31,6 +32,12 @@ function getData(monthDisplay: Date, input: WatchData[], language: string): { [k
         perDayInput[day] = getMinutesOfInputOnDay(date, input, language)
     }
     return perDayInput;
+}
+
+function getHoursThisMonth(monthDisplay: Date, input: WatchData[], language: string)
+{
+    const perDayInput = Object.values(getData(monthDisplay, input, language))
+    return perDayInput.reduce((partialSum, a) => partialSum + a, 0) / 60;
 }
 
 function getDailyGoal(): number
@@ -91,6 +98,8 @@ export function Calendar({input, language}: CalendarProps )
         setMonthDisplay(new Date(new Date(monthDisplay).setMonth(monthDisplay.getMonth() + amount)))
     }
 
+    const hoursThisMonth = Math.floor(getHoursThisMonth(monthDisplay, input, language) * 10) / 10
+
     return <div>
         <div className="flex justify-between items-center mb-5 select-none">
             <span className="text-2xl cursor-pointer text-gray-400 p-1" onClick={() => changeMonth(-1)}>&lt;</span>
@@ -109,6 +118,7 @@ export function Calendar({input, language}: CalendarProps )
         <div className="grid grid-cols-7 grid-rows-6 gap-1" id="calendarGrid">
             {drawDayCells(monthDisplay, input, language)}
         </div>
+        <Cell dataPoint={hoursThisMonth} description="hours this month"/>
     </div>
 }
 
