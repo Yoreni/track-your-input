@@ -5,6 +5,7 @@ const STREAK_CAP = 7;
 
 interface StatisticsProp {
     input: WatchData[]
+    language: string
 }
 
 function getStreak(input: WatchData[], language: string) 
@@ -33,10 +34,10 @@ function getDaysPracticed(input: WatchData[], language: string)
     return new Set(daysPracticed).size
 }
 
-export function Statistics({input}: StatisticsProp)
+export function Statistics({input, language}: StatisticsProp)
 {
-    const streak = Math.min(getStreak(input, "en"), STREAK_CAP);
-    const daysPracticed = getDaysPracticed(input, "en")
+    const streak = Math.min(getStreak(input, language), STREAK_CAP);
+    const daysPracticed = getDaysPracticed(input, language)
 
     return <div>
         <p className="font-bold">Statistics</p>

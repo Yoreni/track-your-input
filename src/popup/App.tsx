@@ -27,16 +27,16 @@ function App()
       <NavBar language={language} setLanguage={setLanguage}/>
       <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 gap-2 pt-12 pb-1">
         <Card>
-          <DailyGoal input={input}/>
+          <DailyGoal input={input} language={language}/>
         </Card>
         <Card>
-          <InputCounter input={input} language='en'/>
+          <InputCounter input={input} language={language}/>
         </Card>
         <Card>
-          <Calendar input={input}/>
+          <Calendar input={input} language={language}/>
         </Card>
         <Card>
-          <Statistics input={input}/>
+          <Statistics input={input} language={language}/>
         </Card>
         <Card>
           <p>Selected language: {language}</p>

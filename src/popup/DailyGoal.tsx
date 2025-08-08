@@ -4,12 +4,13 @@ import { ProgressBar } from "./ProgressBar";
 
 interface Props {
     input: WatchData[]
+    language: string
 }
 
-export function DailyGoal({input}: Props)
+export function DailyGoal({input, language}: Props)
 {
     const goal = 60;
-    const inputToday = Math.floor(getMinutesOfInputOnDay(new Date(), input, "en"))
+    const inputToday = Math.floor(getMinutesOfInputOnDay(new Date(), input, language))
 
     return ( <>
         <div className='flex justify-between'>

@@ -76,9 +76,10 @@ function getDaysInMonth(date: Date): number
 
 interface CalendarProps {
     input: WatchData[]
+    language: string
 }
 
-export function Calendar({input}: CalendarProps )
+export function Calendar({input, language}: CalendarProps )
 {
     input;
     const [monthDisplay, setMonthDisplay] = useState(new Date())
@@ -106,7 +107,7 @@ export function Calendar({input}: CalendarProps )
             <div>S</div>
         </div>
         <div className="grid grid-cols-7 grid-rows-6 gap-1" id="calendarGrid">
-            {drawDayCells(monthDisplay, input, "en")}
+            {drawDayCells(monthDisplay, input, language)}
         </div>
     </div>
 }
