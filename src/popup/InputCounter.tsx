@@ -6,7 +6,7 @@ interface Props {
     language: string
 }
 
-const HOURS_FOR_LEVEL = [0, 50, 150, 300, 600, 1000, 1500]
+const HOURS_FOR_LEVEL = Object.freeze([0, 50, 150, 300, 600, 1000, 1500])
 
 function formatHours(hours: number, rounding = Math.floor)
 {
