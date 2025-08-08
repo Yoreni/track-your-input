@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { getMinutesOfInputOnDay, HOUR_CUTOFF, isOnSameDay } from "../utils"
 import type { WatchData } from "../WatchData"
-import { Cell } from "./StatisticsBar"
+import { StatisticsCell } from "./StatisticsCell"
 
 function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): String
 {
@@ -118,7 +118,7 @@ export function Calendar({input, language}: CalendarProps )
         <div className="grid grid-cols-7 grid-rows-6 gap-1" id="calendarGrid">
             {drawDayCells(monthDisplay, input, language)}
         </div>
-        <Cell dataPoint={hoursThisMonth} description="hours this month"/>
+        <StatisticsCell dataPoint={hoursThisMonth} description="hours this month"/>
     </div>
 }
 

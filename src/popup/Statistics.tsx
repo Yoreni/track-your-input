@@ -1,6 +1,6 @@
 import { getMinutesOfInputOnDay, normaliseDay } from "../utils";
 import type { WatchData } from "../WatchData"
-import { Cell } from "./StatisticsBar";
+import { StatisticsCell } from "./StatisticsCell";
 
 const STREAK_CAP = 7;
 
@@ -43,8 +43,8 @@ export function Statistics({input, language}: StatisticsProp)
     return <div>
         <p className="font-bold">Statistics</p>
         <div className="flex flex-col gap-2">
-            <Cell dataPoint={streak} description={`/${STREAK_CAP} day streak`}/>
-            <Cell dataPoint={daysPracticed.toLocaleString()} description=" days practiced"/>
+            <StatisticsCell dataPoint={streak} description={`/${STREAK_CAP} day streak`}/>
+            <StatisticsCell dataPoint={daysPracticed.toLocaleString()} description=" days practiced"/>
         </div>
     </div>
 }

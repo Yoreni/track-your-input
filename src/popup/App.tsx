@@ -8,21 +8,29 @@ import { Statistics } from './Statistics';
 import { InputCounter } from './InputCounter';
 import type { WatchData } from '../WatchData';
 import { DailyGoal } from './DailyGoal';
+import { loadSettings, type Settings } from '../Settings';
 
 function App() 
 {
   const selectedDefault = "de"
   const [language, setLanguage] = useState(selectedDefault);
   const [input, setInput] = useState<WatchData[]>([]);
+  const [settings, setSettings] = useState<Settings>();
 
   useEffect(() => {
     browser.storage.local.get('youtubeWatchTimes').then((data: any) => {
       setInput(Object.values(data.youtubeWatchTimes) || [])
-      console.log(input)
     })
-  })
+  }, [])
 
-  return ( input &&
+  useEffect(() => {
+    loadSettings().then((data: any) => {
+      setSettings(data)
+    })
+  }, [])
+
+
+  return ( input && settings &&
     <>
       <NavBar language={language} setLanguage={setLanguage}/>
       <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 gap-2 pt-12 pb-1">
