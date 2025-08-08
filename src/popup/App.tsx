@@ -11,7 +11,10 @@ import { DailyGoal } from './DailyGoal';
 
 function App() 
 {
+  const selectedDefault = "de"
+  const [language, setLanguage] = useState(selectedDefault);
   const [input, setInput] = useState<WatchData[]>([]);
+
   useEffect(() => {
     browser.storage.local.get('youtubeWatchTimes').then((data: any) => {
       setInput(Object.values(data.youtubeWatchTimes) || [])
@@ -21,7 +24,7 @@ function App()
 
   return ( input &&
     <>
-      <NavBar/>
+      <NavBar language={language} setLanguage={setLanguage}/>
       <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 gap-2 pt-12 pb-1">
         <Card>
           <DailyGoal input={input}/>
@@ -34,6 +37,9 @@ function App()
         </Card>
         <Card>
           <Statistics input={input}/>
+        </Card>
+        <Card>
+          <p>Selected language: {language}</p>
         </Card>
       </div>
     </>
