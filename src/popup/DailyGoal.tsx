@@ -15,6 +15,7 @@ interface Props {
 export function DailyGoal({input, language, goal, setSettings}: Props)
 {
     const [goalDialogOpen, setGoalDialogOpen] = useState(false)
+    const [goalField, setGoalField] = useState(goal);
     const inputToday = Math.floor(getMinutesOfInputOnDay(new Date(), input, language))
 
     function changeDailyGoal(newGoal: number)
@@ -36,11 +37,21 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
         })
     }
 
+    function onGoalFieldChange(event: React.ChangeEvent<HTMLInputElement>)
+    {
+        let value = event.target.value;
+        value = value.replace(/\D/g, '');
+        if (value.length > 3)
+            value = "999"
+        else if (value === "0")
+            value = ""
+        setGoalField(Number(value))
+    }
+
     function handleDialogClose()
     {
         setGoalDialogOpen(false)
-        changeDailyGoal(40)
-        // changeDailyGoal(Math.floor(Math.random() * 998) + 1)
+        changeDailyGoal(goalField)
     }
 
     return ( <>
@@ -54,7 +65,12 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
             </div>
             <ProgressBar progress={inputToday / goal} />
         </div>
-        <Dialog isOpen={goalDialogOpen} className="flex justify-center">
+        <Dialog isOpen={goalDialogOpen} className="flex justify-center flex-col items-center gap-2">
+            <p className="text-xl font-bold">Edit Daily Goal</p>
+            <div className="flex gap-1">
+                <input type="text" onChange={onGoalFieldChange} value={goalField} className="w-8 text-center"/>
+                <p>min</p>
+            </div>
             <button onClick={handleDialogClose}>OK</button>
         </Dialog>
     </>)
