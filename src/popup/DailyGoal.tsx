@@ -7,13 +7,13 @@ import { ProgressBar } from "./ProgressBar";
 interface Props {
     input: WatchData[]
     language: string
+    goal: number
 }
 
-export function DailyGoal({input, language}: Props)
+export function DailyGoal({input, language, goal}: Props)
 {
     const [goalDialogOpen, setGoalDialogOpen] = useState(false)
 
-    const goal = 60;
     const inputToday = Math.floor(getMinutesOfInputOnDay(new Date(), input, language))
 
     return ( <>
