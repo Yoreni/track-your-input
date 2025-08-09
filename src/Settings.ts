@@ -26,16 +26,25 @@ const languagesLearnig = ["en", "de", "ja", "es"]
 
 export async function loadSettings(): Promise<Settings>
 {
-    const settings = await browser.storage.local.get('settings')
-    if (Object.keys(settings).length === 0)
-        return makeDefaultSettings();
-    return settings as Settings
+    const loadedSettings = await browser.storage.local.get('settings')
+    let settings: Settings = makeDefaultSettings()
+
+    if (loadedSettings?.showExcatTime)
+      settings.showExcatTime = loadedSettings.showExcatTime
+    if (loadedSettings?.languagesAreNotCountries)
+      settings.languagesAreNotCountries = loadedSettings.languagesAreNotCountries
+    if (loadedSettings?.darkMode)
+      settings.darkMode = loadedSettings.darkMode
+    if (loadedSettings?.learning)
+      settings.learning = loadedSettings.learning
+    
+    return settings
 }
 
 function makeDefaultSettings(): Settings
 {
-    let settings = structuredClone(defaultSettings)
+    let settings = {...defaultSettings}
     for (const language of languagesLearnig)
-        settings.learning[language] = structuredClone(languageDefaultSettings)
+        settings.learning[language] = {...languageDefaultSettings}
     return settings;
 }
