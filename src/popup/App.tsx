@@ -9,6 +9,7 @@ import { InputCounter } from './InputCounter';
 import type { WatchData } from '../WatchData';
 import { DailyGoal } from './DailyGoal';
 import { loadSettings, saveSettings, type Settings } from '../Settings';
+import { AddInputDialog } from '../AddInputDialog';
 
 function App() 
 {
@@ -49,6 +50,7 @@ useEffect(() => {
   })();
 }, [settings]);
 
+const [open, setOpen] = useState(false)
 
   return ( input && settings && 
     <>
@@ -70,6 +72,7 @@ useEffect(() => {
           <p>Selected language: {language}</p>
         </Card>
       </div>
+      <AddInputDialog isOpen={open} language={language} setInput={setInput} setOpen={setOpen}/>
     </>
   )
 }
