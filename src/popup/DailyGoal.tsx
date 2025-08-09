@@ -3,7 +3,7 @@ import { getMinutesOfInputOnDay } from "../utils";
 import type { WatchData } from "../WatchData";
 import { Dialog } from "./Dialog";
 import { ProgressBar } from "./ProgressBar";
-import type { Settings } from "../Settings";
+import { type Settings } from "../Settings";
 
 interface Props {
     input: WatchData[]
@@ -19,6 +19,11 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
 
     function changeDailyGoal(newGoal: number)
     {
+        if (newGoal < 1 || newGoal > 999)
+            throw new RangeError("The new goal must be between 1 and 999")
+        if (newGoal % 1 !== 0)
+            throw new RangeError("The new goal must be an integer")
+
         setSettings(oldSettings => {
             if (oldSettings === undefined)
                 return undefined
@@ -34,7 +39,8 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
     function handleDialogClose()
     {
         setGoalDialogOpen(false)
-        changeDailyGoal(Math.floor(Math.random() * 998) + 1)
+        changeDailyGoal(40)
+        // changeDailyGoal(Math.floor(Math.random() * 998) + 1)
     }
 
     return ( <>

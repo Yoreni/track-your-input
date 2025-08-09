@@ -23,22 +23,19 @@ const languageDefaultSettings = {
 }
 
 const languagesLearnig = ["en", "de", "ja", "es"]
+const KEY = 'settings'
+
+export async function saveSettings(settings: Settings)
+{
+  await browser.storage.local.set({[KEY]: settings});
+}
 
 export async function loadSettings(): Promise<Settings>
 {
-    const loadedSettings = await browser.storage.local.get('settings')
-    let settings: Settings = makeDefaultSettings()
-
-    if (loadedSettings?.showExcatTime)
-      settings.showExcatTime = loadedSettings.showExcatTime
-    if (loadedSettings?.languagesAreNotCountries)
-      settings.languagesAreNotCountries = loadedSettings.languagesAreNotCountries
-    if (loadedSettings?.darkMode)
-      settings.darkMode = loadedSettings.darkMode
-    if (loadedSettings?.learning)
-      settings.learning = loadedSettings.learning
-
-    return settings
+    const loadedSettings = (await browser.storage.local.get(KEY)).settings
+    if (Object.keys(loadedSettings).length === 0)
+      return makeDefaultSettings()
+    return loadedSettings as Settings
 }
 
 function makeDefaultSettings(): Settings

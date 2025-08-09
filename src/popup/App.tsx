@@ -8,7 +8,7 @@ import { Statistics } from './Statistics';
 import { InputCounter } from './InputCounter';
 import type { WatchData } from '../WatchData';
 import { DailyGoal } from './DailyGoal';
-import { loadSettings, type Settings } from '../Settings';
+import { loadSettings, saveSettings, type Settings } from '../Settings';
 
 function App() 
 {
@@ -36,6 +36,18 @@ function App()
     })
   }, [])
 
+useEffect(() => {
+  if (!settings) 
+    return;
+
+  (async () => {
+    try {
+      await saveSettings(settings);
+    } catch (err) {
+      console.error("Error with saving settings:", err);
+    }
+  })();
+}, [settings]);
 
 
   return ( input && settings && 
