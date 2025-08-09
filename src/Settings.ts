@@ -11,7 +11,7 @@ export interface LanguageSettings
   dailyGoal: number
 }
 
-const defaultSettings: Settings = {
+export const defaultSettings: Settings = {
   learning: {},
   showExcatTime: false,
   languagesAreNotCountries: false,
@@ -37,7 +37,7 @@ export async function loadSettings(): Promise<Settings>
       settings.darkMode = loadedSettings.darkMode
     if (loadedSettings?.learning)
       settings.learning = loadedSettings.learning
-    
+
     return settings
 }
 
