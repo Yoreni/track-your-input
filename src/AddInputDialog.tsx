@@ -15,16 +15,37 @@ interface Props {
 
 export function AddInputDialog( {setInput, language, isOpen, setOpen}: Props )
 {
-    const [date, setDate] = useState(normaliseDay(new Date()).toISOString().split("T")[0])
+    const defaultDate = normaliseDay(new Date()).toISOString().split("T")[0]
+
+    const [date, setDate] = useState(defaultDate)
     const [hours, setHours] = useState(0)
     const [mins, setMins] = useState(0)
     const [description, setDescription] = useState("")
     const [inputType, setInputType] = useState<InputType>("WATCHING")
 
+    const [durationError, setDurationError] = useState(false)
+
     const inputDuration = (hours * 3600) + (mins * 60)
+    
+    function resetState()
+    {
+        setDate(defaultDate)
+        setHours(0)
+        setMins(0)
+        setDescription("")
+        setInputType("WATCHING")
+
+        setDurationError(false)
+    }
 
     function addEntry()
     {
+        if (inputDuration === 0)
+        {
+            setDurationError(true)
+            return;
+        }
+
         const entry: WatchData = {
             time: inputDuration,
             language,
@@ -40,6 +61,7 @@ export function AddInputDialog( {setInput, language, isOpen, setOpen}: Props )
             ]
         })
         setOpen(false)
+        resetState()
     }
 
     function onDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>)
@@ -79,6 +101,7 @@ export function AddInputDialog( {setInput, language, isOpen, setOpen}: Props )
                     <p className="text-center">Description</p>
                     <textarea className="w-full max-h-18" rows={2} value={description} onChange={onDescriptionChange}></textarea>
                 </div>
+                {durationError && <p className="text-red-500 text-xs text-center">Duration cannot be 0.</p>}
                 <div className="flex justify-around">
                     <DurationInput duration={hours} setDuration={setHours} unit="h" />
                     <DurationInput duration={mins} setDuration={setMins} unit="m" />

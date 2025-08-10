@@ -4,6 +4,7 @@ import type { WatchData } from "../WatchData";
 import { Dialog } from "./Dialog";
 import { ProgressBar } from "./ProgressBar";
 import { type Settings } from "../Settings";
+import { DurationInput } from "./DurationInput";
 
 interface Props {
     input: WatchData[]
@@ -37,17 +38,6 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
         })
     }
 
-    function onGoalFieldChange(event: React.ChangeEvent<HTMLInputElement>)
-    {
-        let value = event.target.value;
-        value = value.replace(/\D/g, '');
-        if (value.length > 3)
-            value = "999"
-        else if (value === "0")
-            value = ""
-        setGoalField(Number(value))
-    }
-
     function handleDialogClose()
     {
         setGoalDialogOpen(false)
@@ -67,10 +57,7 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
         </div>
         <Dialog isOpen={goalDialogOpen} className="flex justify-center flex-col items-center gap-2">
             <p className="text-xl font-bold">Edit Daily Goal</p>
-            <div className="flex gap-1">
-                <input type="text" onChange={onGoalFieldChange} value={goalField} className="w-8 text-center"/>
-                <p>min</p>
-            </div>
+            <DurationInput duration={goalField} setDuration={setGoalField} unit={"min"} />
             <button onClick={handleDialogClose}>OK</button>
         </Dialog>
     </>)
