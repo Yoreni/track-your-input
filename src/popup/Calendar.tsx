@@ -40,12 +40,7 @@ function getHoursThisMonth(monthDisplay: Date, input: WatchData[], language: str
     return perDayInput.reduce((partialSum, a) => partialSum + a, 0) / 60;
 }
 
-function getDailyGoal(): number
-{
-    return 60;
-}
-
-function drawDayCells(monthDisplay: Date, input: WatchData[], language: string)
+function drawDayCells(monthDisplay: Date, input: WatchData[], language: string, goal: number)
 {
     const firstDayOfMonth = new Date(monthDisplay.getFullYear(), monthDisplay.getMonth(), 1);
     const daysInMonth = getDaysInMonth(monthDisplay);
@@ -66,7 +61,7 @@ function drawDayCells(monthDisplay: Date, input: WatchData[], language: string)
             type = "FUTURE"
         else if (!minsOfInput)
             type = "NO_INPUT"
-        else if (minsOfInput >= getDailyGoal())
+        else if (minsOfInput >= goal)
             type = "GOAL_REACHED"
         else
             type = "LOW_INPUT"
@@ -84,9 +79,10 @@ function getDaysInMonth(date: Date): number
 interface CalendarProps {
     input: WatchData[]
     language: string
+    goal: number
 }
 
-export function Calendar({input, language}: CalendarProps )
+export function Calendar({input, language, goal}: CalendarProps )
 {
     input;
     const [monthDisplay, setMonthDisplay] = useState(new Date())
@@ -116,7 +112,7 @@ export function Calendar({input, language}: CalendarProps )
             <div>S</div>
         </div>
         <div className="grid grid-cols-7 grid-rows-6 gap-1" id="calendarGrid">
-            {drawDayCells(monthDisplay, input, language)}
+            {drawDayCells(monthDisplay, input, language, goal)}
         </div>
         <StatisticsCell dataPoint={hoursThisMonth} description="hours this month"/>
     </div>

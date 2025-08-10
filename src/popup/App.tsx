@@ -9,7 +9,6 @@ import { InputCounter } from './InputCounter';
 import type { WatchData } from '../WatchData';
 import { DailyGoal } from './DailyGoal';
 import { loadSettings, saveSettings, type Settings } from '../Settings';
-import { AddInputDialog } from '../AddInputDialog';
 
 function App() 
 {
@@ -41,29 +40,29 @@ useEffect(() => {
   if (!settings) 
     return;
 
-  (async () => {
-    try {
-      await saveSettings(settings);
-    } catch (err) {
-      console.error("Error with saving settings:", err);
-    }
-  })();
-}, [settings]);
+    (async () => {
+      try {
+        await saveSettings(settings);
+      } catch (err) {
+        console.error("Error with saving settings:", err);
+      }
+    })();
+  }, [settings]);
 
-const [open, setOpen] = useState(false)
+  const goal = settings?.learning[language].dailyGoal
 
-  return ( input && settings && 
+  return ( input && settings && goal &&
     <>
       <NavBar language={language} setLanguage={setLanguage}/>
       <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 gap-2 pt-12 pb-1">
         <Card>
-          <DailyGoal input={input} language={language} goal={settings.learning[language].dailyGoal} setSettings={setSettings}/>
+          <DailyGoal input={input} language={language} goal={goal} setSettings={setSettings}/>
         </Card>
         <Card>
-          <InputCounter input={input} language={language}/>
+          <InputCounter input={input} language={language} setInput={setInput}/>
         </Card>
         <Card>
-          <Calendar input={input} language={language}/>
+          <Calendar input={input} language={language} goal={goal}/>
         </Card>
         <Card>
           <Statistics input={input} language={language}/>
@@ -72,7 +71,6 @@ const [open, setOpen] = useState(false)
           <p>Selected language: {language}</p>
         </Card>
       </div>
-      <AddInputDialog isOpen={open} language={language} setInput={setInput} setOpen={setOpen}/>
     </>
   )
 }

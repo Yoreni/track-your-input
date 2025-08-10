@@ -1,9 +1,13 @@
+import { useState } from 'react';
+import { AddInputDialog } from '../AddInputDialog';
 import { calculateTotalHours } from '../utils';
 import { ProgressBar } from './ProgressBar';
+import type { WatchData } from '../WatchData';
 
 interface Props {
-    input: any
+    input: WatchData[]
     language: string
+    setInput: React.Dispatch<React.SetStateAction<WatchData[]>>
 }
 
 const HOURS_FOR_LEVEL = Object.freeze([0, 50, 150, 300, 600, 1000, 1500])
@@ -38,8 +42,10 @@ function calcProgress(input: any, language: string)
     return {level, remainingHours, progress, hours}
 }
 
-export function InputCounter( {input, language}: Props )
+export function InputCounter( {input, language, setInput}: Props )
 {
+    const [addInputDialogOpen, setAddInputDialogOpen] = useState(false)
+
     const progress = calcProgress(input, language)
     return <>
         <div className='flex justify-between'>
@@ -57,5 +63,7 @@ export function InputCounter( {input, language}: Props )
         </>
         }
         <p className='text-center font-semibold text-gray-800'>Level {progress.level}</p>
+        <button onClick={() => setAddInputDialogOpen(true)}>+</button>
+        <AddInputDialog isOpen={addInputDialogOpen} language={language} setInput={setInput} setOpen={setAddInputDialogOpen}/>
     </>
 }
