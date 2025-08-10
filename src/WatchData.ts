@@ -2,7 +2,8 @@ export interface WatchData {
     time: number
     language: string
     date: Date
-    id?: string
+    id: string
+    description?: string
 }
 
 const KEY = "youtubeWatchTimes"
