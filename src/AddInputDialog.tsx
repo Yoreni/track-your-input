@@ -29,7 +29,7 @@ export function AddInputDialog( {setInput, language, isOpen, setOpen}: Props )
             time: inputDuration,
             language,
             date: new Date(new Date(date).setHours(HOUR_CUTOFF)),
-            id: `m${new Date().toISOString()}${new Date().getMilliseconds()}${Math.floor(Math.random() * 100)}`,
+            id: `m${new Date().toISOString()}${Math.floor(Math.random() * 100)}`,
             description: description
         }
         console.log(entry)

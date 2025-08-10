@@ -6,9 +6,10 @@ import { Card } from './Card'
 import { NavBar } from './NavBar'
 import { Statistics } from './Statistics';
 import { InputCounter } from './InputCounter';
-import { loadWatchData, type WatchData } from '../WatchData';
+import { loadWatchData, saveWatchData, type WatchData } from '../WatchData';
 import { DailyGoal } from './DailyGoal';
 import { loadSettings, saveSettings, type Settings } from '../Settings';
+import { useSave } from '../useSave';
 
 function App() 
 {
@@ -35,22 +36,12 @@ function App()
       setSettings(data)
     })
     loadWatchData().then((data: any) => {
-      console.log(JSON.stringify(data))
+      setInput(data)
     })
   }, [])
 
-useEffect(() => {
-  if (!settings) 
-    return;
-
-    (async () => {
-      try {
-        await saveSettings(settings);
-      } catch (err) {
-        console.error("Error with saving settings:", err);
-      }
-    })();
-  }, [settings]);
+  useSave(settings, saveSettings)
+  useSave(input, saveWatchData)
 
   const goal = settings?.learning[language].dailyGoal
 

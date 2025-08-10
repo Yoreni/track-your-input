@@ -18,3 +18,13 @@ export async function loadWatchData()
     return loadedData
 }
 
+export async function saveWatchData(watchData: WatchData[])
+{
+    let object: any = {}
+    watchData.forEach(item => {
+        const {id, ...newItem} = item
+        object[id] = newItem;
+    })
+    await browser.storage.local.set({[KEY]: object});
+}
+
