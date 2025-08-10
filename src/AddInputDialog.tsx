@@ -28,7 +28,8 @@ export function AddInputDialog( {setInput, language, isOpen, setOpen}: Props )
         const entry: WatchData = {
             time: inputDuration,
             language,
-            date: new Date(new Date(date).setHours(HOUR_CUTOFF))
+            date: new Date(new Date(date).setHours(HOUR_CUTOFF)),
+            id: crypto.randomUUID()
         }
         console.log(entry)
         setInput(lastState => {

@@ -32,7 +32,7 @@ export async function saveSettings(settings: Settings)
 
 export async function loadSettings(): Promise<Settings>
 {
-    const loadedSettings = (await browser.storage.local.get(KEY)).settings
+    const loadedSettings = (await browser.storage.local.get(KEY))[KEY]
     if (Object.keys(loadedSettings).length === 0)
       return makeDefaultSettings()
     return loadedSettings as Settings

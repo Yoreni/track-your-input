@@ -6,7 +6,7 @@ import { Card } from './Card'
 import { NavBar } from './NavBar'
 import { Statistics } from './Statistics';
 import { InputCounter } from './InputCounter';
-import type { WatchData } from '../WatchData';
+import { loadWatchData, type WatchData } from '../WatchData';
 import { DailyGoal } from './DailyGoal';
 import { loadSettings, saveSettings, type Settings } from '../Settings';
 
@@ -33,6 +33,9 @@ function App()
   useEffect(() => {
     loadSettings().then((data: any) => {
       setSettings(data)
+    })
+    loadWatchData().then((data: any) => {
+      console.log(JSON.stringify(data))
     })
   }, [])
 
