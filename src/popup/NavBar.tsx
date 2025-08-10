@@ -1,11 +1,14 @@
 import { getLanguage } from "../language"
+import type { Screen } from "../utils"
 
 interface Props {
     language: string
     setLanguage: React.Dispatch<React.SetStateAction<string>>
+    screen: Screen
+    setScreen: React.Dispatch<React.SetStateAction<Screen>>
 }
 
-export function NavBar({ language, setLanguage }: Props) 
+export function NavBar({ language, setLanguage, screen, setScreen }: Props) 
 {
     function changeLanguage(event: React.ChangeEvent<HTMLSelectElement>)
     {
@@ -22,6 +25,8 @@ export function NavBar({ language, setLanguage }: Props)
                 {options}
             </select>
         </div>
-        <button className="settings-btn" id="settingsBtn">Settings</button>
+        {screen === "PROGRESS" && <button onClick={() => setScreen("SETTINGS")}>Settings</button>}
+        {screen !== "PROGRESS" && <button onClick={() => setScreen("PROGRESS")}>Back</button>}
+
     </nav>
 }

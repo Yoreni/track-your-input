@@ -1,6 +1,9 @@
 import type { WatchData } from "./WatchData";
 
+export type Screen = "PROGRESS" | "SETTINGS"
 export const HOUR_CUTOFF = 4
+
+const SI_SUFFIXES = ["", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"]
 
 export function calculateTotalHours(input: WatchData[], language: string)
 {
@@ -47,4 +50,25 @@ export function normaliseDay(date: Date): Date
     const cutoffYesterday = new Date(cutoffToday);
     cutoffYesterday.setDate(cutoffYesterday.getDate() - 1);
     return cutoffYesterday;
+}
+
+export function formatBytes(bytes: number)
+{
+    if (bytes === 0)
+        return "0B"
+    const sign = bytes < 0 ? "-" : ""
+    bytes = Math.round(Math.abs(bytes))
+    const powerOf1000 = Math.floor(Math.log10(bytes) / 3)
+    if (powerOf1000 >= SI_SUFFIXES.length)
+        return `${sign}${bytes.toExponential(2)}B`
+
+    const mantissa = bytes / (1000 ** powerOf1000)
+    let dp = 0
+    if (mantissa < 10)
+        dp = 2
+    else if (mantissa < 100)
+        dp = 1
+
+    const roundedMantissa = Math.floor(mantissa * (10 ** dp)) / 10 ** dp
+    return `${sign}${roundedMantissa}${SI_SUFFIXES[powerOf1000]}B`
 }
