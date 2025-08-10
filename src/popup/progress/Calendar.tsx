@@ -1,8 +1,8 @@
 // import { useState } from "react";
 
 import { useState } from "react"
-import { getMinutesOfInputOnDay, HOUR_CUTOFF, isOnSameDay } from "../utils"
-import type { WatchData } from "../WatchData"
+import { getMinutesOfInputOnDay, HOUR_CUTOFF, isOnSameDay } from "../../utils"
+import type { WatchData } from "../../WatchData"
 import { StatisticsCell } from "./StatisticsCell"
 
 function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): String

@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { AddInputDialog } from '../AddInputDialog';
-import { calculateTotalHours } from '../utils';
-import { ProgressBar } from './ProgressBar';
-import type { WatchData } from '../WatchData';
-
+import { calculateTotalHours } from '../../utils';
+import type { WatchData } from '../../WatchData';
+import { ProgressBar } from '../ProgressBar';
+import { AddInputDialog } from './AddInputDialog';
 interface Props {
     input: WatchData[]
     language: string

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { getMinutesOfInputOnDay } from "../utils";
-import type { WatchData } from "../WatchData";
-import { Dialog } from "./Dialog";
-import { ProgressBar } from "./ProgressBar";
-import { type Settings } from "../Settings";
+import { getMinutesOfInputOnDay } from "../../utils";
+import type { WatchData } from "../../WatchData";
+import { Dialog } from "../Dialog";
+import { ProgressBar } from "../ProgressBar";
+import { type Settings } from "../../Settings";
 import { DurationInput } from "./DurationInput";
 
 interface Props {

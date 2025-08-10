@@ -1,35 +1,22 @@
 // import { useState } from 'react'
 import { useEffect, useState } from 'react';
 import './App.css'
-import { Calendar } from './Calendar'
-import { Card } from './Card'
 import { NavBar } from './NavBar'
-import { Statistics } from './Statistics';
-import { InputCounter } from './InputCounter';
 import { loadWatchData, saveWatchData, type WatchData } from '../WatchData';
-import { DailyGoal } from './DailyGoal';
 import { loadSettings, saveSettings, type Settings } from '../Settings';
 import { useSave } from '../useSave';
+import { ProgressDashboard } from './ProgressDashboard';
+
+type Screen = "PROGRESS" | "SETTINGS"
 
 function App() 
 {
-  const selectedDefault = "de"
+  const selectedDefault = "en"
   const [language, setLanguage] = useState(selectedDefault);
   const [input, setInput] = useState<WatchData[]>([]);
   const [settings, setSettings] = useState<Settings>();
-
-  useEffect(() => {
-    browser.storage.local.get('youtubeWatchTimes').then((data: any) => {
-      if (!data.youtubeWatchTimes)
-        data = {}
-      else
-        data = data.youtubeWatchTimes
-      setInput(Object.values(data) || [])
-    }).catch(error => {
-      console.log("Could not load input data")
-      console.error(error)
-    })
-  }, [])
+  const [screen, setScreen] = useState<Screen>("PROGRESS")
+  setScreen
 
   useEffect(() => {
     loadSettings().then((data: any) => {
@@ -43,28 +30,14 @@ function App()
   useSave(settings, saveSettings)
   useSave(input, saveWatchData)
 
-  const goal = settings?.learning[language].dailyGoal
-
-  return ( input && settings && goal &&
+  return ( input && settings &&
     <>
       <NavBar language={language} setLanguage={setLanguage}/>
-      <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 gap-2 pt-12 pb-1">
-        <Card>
-          <DailyGoal input={input} language={language} goal={goal} setSettings={setSettings}/>
-        </Card>
-        <Card>
-          <InputCounter input={input} language={language} setInput={setInput}/>
-        </Card>
-        <Card>
-          <Calendar input={input} language={language} goal={goal}/>
-        </Card>
-        <Card>
-          <Statistics input={input} language={language}/>
-        </Card>
-        <Card>
-          <p>Selected language: {language}</p>
-        </Card>
-      </div>
+      {
+        screen === "PROGRESS" ?
+          <ProgressDashboard input={input} setInput={setInput} settings={settings} setSettings={setSettings} language={language} />
+        : <></>
+      }
     </>
   )
 }

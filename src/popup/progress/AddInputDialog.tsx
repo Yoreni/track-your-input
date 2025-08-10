@@ -1,8 +1,8 @@
 import { useState } from "react";
-import type { WatchData } from "./WatchData";
-import { Dialog } from "./popup/Dialog";
-import { DurationInput } from "./popup/DurationInput";
-import { HOUR_CUTOFF, normaliseDay } from "./utils";
+import type { WatchData } from "../../WatchData";
+import { Dialog } from "../Dialog";
+import { DurationInput } from "./DurationInput";
+import { HOUR_CUTOFF, normaliseDay } from "../../utils";
 
 type InputType = "WATCHING" | "LISTENING" | "CONVERSATION"
 
