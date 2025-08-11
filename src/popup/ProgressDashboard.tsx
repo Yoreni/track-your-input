@@ -20,7 +20,7 @@ export function ProgressDashboard({input, setInput, settings, setSettings, langu
     const goal = settings?.learning[language].dailyGoal
 
     return <>
-        <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 gap-2 pt-12 pb-1">
+        <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 dark:bg-gray-800 gap-2 pt-12 pb-1">
             <Card>
                 <DailyGoal input={input} language={language} goal={goal} setSettings={setSettings}/>
             </Card>
