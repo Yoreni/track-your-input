@@ -18,6 +18,15 @@ function toggleDarkMode(value: boolean, setSettings: Dispatch<SetStateAction<Set
     document.documentElement.classList.toggle("dark", value)
 }
 
+function toggleExcatTime(value: boolean, setSettings: Dispatch<SetStateAction<Settings | undefined>>): void
+{
+    setSettings(oldState => {
+        if (!oldState)
+            return
+        return {...oldState, showExcatTime: value}
+    })
+}
+
 export function SettingsPage( {settings, setSettings}: Props)
 {
     const [bytesInUse, setBytesInUse] = useState(-2)
@@ -40,7 +49,7 @@ export function SettingsPage( {settings, setSettings}: Props)
         <Card>
             <div className='flex justify-between'>
                 <p className='text-lg'>Display Excat Time</p>
-                <input type="checkbox" />
+                <input type="checkbox"  checked={settings.showExcatTime} onChange={(event) => toggleExcatTime(event.target.checked, setSettings)} />
             </div>
             <div className='flex justify-between'>
                 <p className='text-lg'>Dark Mode</p>

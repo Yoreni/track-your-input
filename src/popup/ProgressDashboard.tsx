@@ -25,7 +25,7 @@ export function ProgressDashboard({input, setInput, settings, setSettings, langu
                 <DailyGoal input={input} language={language} goal={goal} setSettings={setSettings}/>
             </Card>
             <Card>
-                <InputCounter input={input} language={language} setInput={setInput}/>
+                <InputCounter input={input} language={language} setInput={setInput} settings={settings}/>
             </Card>
             <Card>
                 <Calendar input={input} language={language} goal={goal}/>
