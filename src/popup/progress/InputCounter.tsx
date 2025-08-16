@@ -38,6 +38,14 @@ function getLevel(hours: number): number
   return Math.max(level, 1)
 }
 
+function roundToNearestMin(hours: number, round: (a: number) => number = Math.round)
+{
+  if (hours === 0)
+    return 0
+  const FACTOR = 60
+  return round((hours * FACTOR) + Number.EPSILON * 2) / FACTOR
+}
+
 function calcProgress(input: any, language: string)
 {
     const hours = calculateTotalHours(input, language)
@@ -48,8 +56,9 @@ function calcProgress(input: any, language: string)
     const remainingHours = HOURS_FOR_LEVEL[level] - hours;
     const hoursInLevel = (HOURS_FOR_LEVEL[level] - HOURS_FOR_LEVEL[level - 1])
     const progress = (hours - HOURS_FOR_LEVEL[level - 1]) / hoursInLevel
-    return {level, progress, hours,
-      remainingHours: Math.floor(remainingHours * 60) / 60
+    return {level, progress, 
+      hours: roundToNearestMin(hours),
+      remainingHours: roundToNearestMin(remainingHours, Math.ceil)
     }
 }
 
@@ -79,7 +88,7 @@ export function InputCounter( {input, language, setInput, settings}: Props )
         </div>
         </>
         }
-        <p className='text-center font-semibold text-gray-800'>Level {progress.level}</p>
+        <p className='text-center font-semibold text-gray-800 dark:text-gray-200'>Level {progress.level}</p>
         <button onClick={() => setAddInputDialogOpen(true)}>+</button>
         <AddInputDialog isOpen={addInputDialogOpen} language={language} setInput={setInput} setOpen={setAddInputDialogOpen}/>
     </>

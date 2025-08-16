@@ -35,7 +35,7 @@ function App()
       {
         screen === "PROGRESS" ?
           <ProgressDashboard input={input} setInput={setInput} settings={settings} setSettings={setSettings} language={language} />
-        : <SettingsPage settings={settings} setSettings={setSettings}/>
+        : <SettingsPage settings={settings} setSettings={setSettings} input={input}/>
       }
     </>
   )

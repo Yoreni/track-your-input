@@ -2,10 +2,14 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { formatBytes } from "../utils";
 import { Card } from "./Card";
 import type { Settings } from "../Settings";
+import { downloadAsCSV, isDirectDownloadSuported, toCsvString } from "../csvFile";
+import type { WatchData } from "../WatchData";
+import { Dialog } from "./Dialog";
 
 interface Props {
     settings: Settings
     setSettings: Dispatch<SetStateAction<Settings | undefined>>
+    input: WatchData[]
 }
 
 function toggleDarkMode(value: boolean, setSettings: Dispatch<SetStateAction<Settings | undefined>>): void
@@ -27,10 +31,11 @@ function toggleExcatTime(value: boolean, setSettings: Dispatch<SetStateAction<Se
     })
 }
 
-export function SettingsPage( {settings, setSettings}: Props)
+export function SettingsPage( {settings, setSettings, input}: Props)
 {
-    const [bytesInUse, setBytesInUse] = useState(-2)
+    const [bytesInUse, setBytesInUse] = useState(10 ** (Math.random() * 8))
     const [browserInfo, setBrowserInfo] = useState<browser.runtime.BrowserInfo>()
+    const [exportDialogOpen, setExportDialogOpen] = useState(false)
 
     useEffect(() => {
         if (browser.storage.local.getBytesInUse)
@@ -38,14 +43,26 @@ export function SettingsPage( {settings, setSettings}: Props)
             browser.storage.local.getBytesInUse().then((bytes) =>
             {
                 if (!bytes)
-                bytes = -1
+                    bytes = -1
                 setBytesInUse(bytes)
             })
         }
         browser.runtime.getBrowserInfo().then(data => setBrowserInfo(data))
     })
 
-    return <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 dark:bg-gray-800 gap-2 pt-12 pb-1">
+    function handleExport()
+    {
+        if (isDirectDownloadSuported())
+            downloadAsCSV(input)
+        else
+        {
+            setExportDialogOpen(true)
+        }
+    }
+
+    const csvString = toCsvString(input)
+
+    return browserInfo && (<div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 dark:bg-gray-800 gap-2 pt-12 pb-1">
         <Card>
             <div className='flex justify-between'>
                 <p className='text-lg'>Display Excat Time</p>
@@ -55,10 +72,19 @@ export function SettingsPage( {settings, setSettings}: Props)
                 <p className='text-lg'>Dark Mode</p>
                 <input type="checkbox" checked={settings.darkMode} onChange={(event) => toggleDarkMode(event.target.checked, setSettings)}/>
             </div>
-            {bytesInUse > 0 && <p>{formatBytes(bytesInUse)} used</p>}
             {browserInfo && <>
                 <p className='text-gray-400 text-sm'>{browserInfo.vendor} {browserInfo.name} {browserInfo.version}-{browserInfo.buildID}</p>
             </>}
         </Card>
-    </div>
+        <Card>
+            <button onClick={() => handleExport()}>Export Data</button>
+            {bytesInUse > 0 && <p className="text-sm text-center text-gray-500">{formatBytes(bytesInUse)} in use</p>}
+        </Card>
+        <Dialog isOpen={exportDialogOpen} className="flex flex-col gap-4">
+            <p>Here is your data. Keep it in a safe place.</p>
+            <textarea rows={10} className="font-mono text-xs">{csvString}</textarea>
+            <button onClick={() => setExportDialogOpen(false)}>OK</button>
+            <button onClick={async () =>  await navigator.clipboard.writeText(csvString)}>Copy to Clipboard</button>
+        </Dialog>
+    </div>)
 }

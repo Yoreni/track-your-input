@@ -25,7 +25,7 @@ export function AddInputDialog( {setInput, language, isOpen, setOpen}: Props )
 
     const [durationError, setDurationError] = useState(false)
 
-    const inputDuration = (hours * 3600) + (mins * 60)
+    const inputDuration = Math.round((hours * 3600) + (mins * 60))
     
     function resetState()
     {

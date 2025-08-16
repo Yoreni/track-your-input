@@ -4,10 +4,11 @@ browser.runtime.onMessage.addListener((message) => {
         browser.storage.local.get('youtubeWatchTimes').then((data) => {
             let times = data.youtubeWatchTimes || {};
             const time = times[message.id]
+            const timestamp = time?.date ?? new Date()
             const newWatchData = {
-                time: (time?.time || 0) + message.time,
+                time: Math.round((time?.time || 0) + message.time),
                 language: message.language,
-                date: time?.date ?? new Date() 
+                date: timestamp.toISOString()
             }
             times[message.id] = newWatchData;
             browser.storage.local.set({youtubeWatchTimes: times});
