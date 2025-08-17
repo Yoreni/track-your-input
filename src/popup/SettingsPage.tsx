@@ -10,6 +10,7 @@ interface Props {
     settings: Settings
     setSettings: Dispatch<SetStateAction<Settings | undefined>>
     input: WatchData[]
+    setInput: Dispatch<SetStateAction<WatchData[]>>
 }
 
 function toggleDarkMode(value: boolean, setSettings: Dispatch<SetStateAction<Settings | undefined>>): void
@@ -31,11 +32,13 @@ function toggleExcatTime(value: boolean, setSettings: Dispatch<SetStateAction<Se
     })
 }
 
-export function SettingsPage( {settings, setSettings, input}: Props)
+export function SettingsPage( {settings, setSettings, input, setInput}: Props)
 {
     const [bytesInUse, setBytesInUse] = useState(10 ** (Math.random() * 8))
     const [browserInfo, setBrowserInfo] = useState<browser.runtime.BrowserInfo>()
+
     const [exportDialogOpen, setExportDialogOpen] = useState(false)
+    const [deleteDataDialog, setDeleteDataDialog] = useState(false)
 
     useEffect(() => {
         if (browser.storage.local.getBytesInUse)
@@ -60,6 +63,13 @@ export function SettingsPage( {settings, setSettings, input}: Props)
         }
     }
 
+    function handleDataDeletion(deleteData: boolean)
+    {
+        if (deleteData)
+            setInput([])
+        setDeleteDataDialog(false)
+    }
+
     const csvString = toCsvString(input)
 
     return browserInfo && (<div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 dark:bg-gray-800 gap-2 pt-12 pb-1">
@@ -78,6 +88,7 @@ export function SettingsPage( {settings, setSettings, input}: Props)
         </Card>
         <Card>
             <button onClick={() => handleExport()}>Export Data</button>
+            <button onClick={() => setDeleteDataDialog(true)}>Delete Data</button>
             {bytesInUse > 0 && <p className="text-sm text-center text-gray-500">{formatBytes(bytesInUse)} in use</p>}
         </Card>
         <Dialog isOpen={exportDialogOpen} className="flex flex-col gap-4">
@@ -85,6 +96,14 @@ export function SettingsPage( {settings, setSettings, input}: Props)
             <textarea rows={10} className="font-mono text-xs">{csvString}</textarea>
             <button onClick={() => setExportDialogOpen(false)}>OK</button>
             <button onClick={async () =>  await navigator.clipboard.writeText(csvString)}>Copy to Clipboard</button>
+        </Dialog>
+        <Dialog isOpen={deleteDataDialog} className="text-center">
+            <p>Are you sure you want to delete your watch data?</p>
+            <p>This can not be undone.</p>
+            <div className="flex gap-2 justify-center">
+                <button onClick={() => handleDataDeletion(true)}>Yes</button>
+                <button onClick={() => handleDataDeletion(false)}>No</button>
+            </div>
         </Dialog>
     </div>)
 }
