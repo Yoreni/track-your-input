@@ -41,7 +41,7 @@ export function Dialog({ children, isOpen, onClose = () => {}, className}: Dialo
     return (
         <dialog
             ref={dialogRef}
-            className="w-11/12 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 rounded-lg shadow-xl bg-white max-w-md border-gray-500 border-4"
+            className="w-11/12 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 rounded-lg shadow-xl border-1 border-gray-400 bg-white max-w-md dark:bg-gray-800 dark:text-white"
             onCancel={handleCancel}
         >
             <div className={className}>
