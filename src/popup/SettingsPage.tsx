@@ -5,6 +5,7 @@ import type { Settings } from "../Settings";
 import { downloadAsCSV, isDirectDownloadSuported, parseCsvString, toCsvString } from "../csvFile";
 import type { WatchData } from "../WatchData";
 import { Dialog } from "./Dialog";
+import { getLanguage } from "../language";
 
 interface Props {
     settings: Settings
@@ -82,6 +83,7 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
     }
 
     const csvString = toCsvString(input)
+    const learning = Object.keys(settings.learning)
 
     return browserInfo && (<div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 dark:bg-gray-800 gap-2 pt-12 pb-1">
         <Card>
@@ -96,6 +98,16 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
             {browserInfo && <>
                 <p className='text-gray-400 text-sm'>{browserInfo.vendor} {browserInfo.name} {browserInfo.version}-{browserInfo.buildID}</p>
             </>}
+        </Card>
+        <Card>
+            <p className="font-bold p-1 text-center">Learning</p>
+            <div className="grid grid-cols-3 gap-2">
+                {learning.map((lang) => (
+                    <div className="bg-blue-200 rounded-md flex items-center justify-center text-black h-12">
+                        <p>{getLanguage(lang)?.name}</p>
+                    </div>))}
+                <div className="text-center text-3xl text-white border-dashed border-3 rounded-lg border-blue-200">+</div>
+            </div>
         </Card>
         <Card>
             <button onClick={() => handleExport()}>Export Data</button>
