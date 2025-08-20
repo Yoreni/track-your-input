@@ -2,7 +2,7 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { formatBytes } from "../utils";
 import { Card } from "./Card";
 import type { Settings } from "../Settings";
-import { downloadAsCSV, isDirectDownloadSuported, toCsvString } from "../csvFile";
+import { downloadAsCSV, isDirectDownloadSuported, parseCsvString, toCsvString } from "../csvFile";
 import type { WatchData } from "../WatchData";
 import { Dialog } from "./Dialog";
 
@@ -39,6 +39,9 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
 
     const [exportDialogOpen, setExportDialogOpen] = useState(false)
     const [deleteDataDialog, setDeleteDataDialog] = useState(false)
+    const [importDataDialog, setImportDataDialog] = useState(false)
+
+    const [importDataInput, setImportDataInput] = useState("")
 
     useEffect(() => {
         if (browser.storage.local.getBytesInUse)
@@ -61,6 +64,14 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
         {
             setExportDialogOpen(true)
         }
+    }
+
+    function handleImport()
+    {
+        let data: WatchData[] = parseCsvString(importDataInput) as WatchData[]
+        data = data.map((entry) => { return {...entry, date: new Date(entry.date)}})
+        setInput(data)
+        setImportDataDialog(false)
     }
 
     function handleDataDeletion(deleteData: boolean)
@@ -89,6 +100,7 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
         <Card>
             <button onClick={() => handleExport()}>Export Data</button>
             <button onClick={() => setDeleteDataDialog(true)}>Delete Data</button>
+            <button onClick={() => setImportDataDialog(true)}>Import Data</button>
             {bytesInUse > 0 && <p className="text-sm text-center text-gray-500">{formatBytes(bytesInUse)} in use</p>}
         </Card>
         <Dialog isOpen={exportDialogOpen} className="flex flex-col gap-4">
@@ -104,6 +116,12 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
                 <button onClick={() => handleDataDeletion(true)}>Yes</button>
                 <button onClick={() => handleDataDeletion(false)}>No</button>
             </div>
+        </Dialog>
+        <Dialog isOpen={importDataDialog} className="flex flex-col gap-4">
+            <p>Enter your import data here</p>
+            <textarea rows={10} className="font-mono text-xs" value={importDataInput} onChange={(e) => setImportDataInput(e.target.value)}/>
+            <button onClick={() => setImportDataDialog(false)}>Cancel</button>
+            <button onClick={() => handleImport()}>OK</button>
         </Dialog>
     </div>)
 }
