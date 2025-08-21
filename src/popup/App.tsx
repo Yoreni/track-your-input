@@ -18,8 +18,9 @@ function App()
   const [screen, setScreen] = useState<Screen>("PROGRESS")
 
   useEffect(() => {
-    loadSettings().then((data: any) => {
+    loadSettings().then((data: Settings) => {
       setSettings(data)
+      document.documentElement.classList.toggle("dark", data?.darkMode)
     })
     loadWatchData().then((data: any) => {
       setInput(data)

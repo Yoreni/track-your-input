@@ -12,7 +12,7 @@ interface Props
 
 export function WatchDataControl( { input, setInput}: Props)
 {
-    const [bytesInUse, setBytesInUse] = useState(10 ** (Math.random() * 8))
+    const [bytesInUse, setBytesInUse] = useState(0)
 
     const [exportDialogOpen, setExportDialogOpen] = useState(false)
     const [deleteDataDialog, setDeleteDataDialog] = useState(false)

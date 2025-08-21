@@ -1,10 +1,7 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-// import { formatBytes } from "../utils";
 import { Card } from "./Card";
 import type { Settings } from "../Settings";
-// import { downloadAsCSV, isDirectDownloadSuported, parseCsvString, toCsvString } from "../csvFile";
 import type { WatchData } from "../WatchData";
-// import { Dialog } from "./Dialog";
 import { getLanguage } from "../language";
 import { WatchDataControl } from "./WatchDataControl";
 
