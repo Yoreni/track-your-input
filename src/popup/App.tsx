@@ -32,7 +32,7 @@ function App()
 
   return ( input && settings &&
     <>
-      <NavBar language={language} setLanguage={setLanguage} setScreen={setScreen} screen={screen}/>
+      <NavBar language={language} learning={Object.keys(settings.learning)} setLanguage={setLanguage} setScreen={setScreen} screen={screen}/>
       {
         screen === "PROGRESS" ?
           <ProgressDashboard input={input} setInput={setInput} settings={settings} setSettings={setSettings} language={language} />
