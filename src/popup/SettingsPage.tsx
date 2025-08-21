@@ -58,10 +58,7 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
         <Card>
             <p className="font-bold p-1 text-center">Learning</p>
             <div className="grid grid-cols-3 gap-2">
-                {learning.map((lang) => (
-                    <div className="bg-blue-200 rounded-md flex items-center justify-center text-black h-12">
-                        <p>{getLanguage(lang)?.name}</p>
-                    </div>))}
+                {learning.map((lang) => <LanguageTile language={lang}/>)}
                 <div className="text-center text-3xl text-white border-dashed border-3 rounded-lg border-blue-200">+</div>
             </div>
         </Card>
@@ -69,4 +66,15 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
             <WatchDataControl input={input} setInput={setInput} />
         </Card>
     </div>)
+}
+
+interface LanguageTileProps {
+    language: string
+}
+
+function LanguageTile({language}: LanguageTileProps)
+{
+    return <div className="bg-blue-200 rounded-md flex items-center justify-center text-black h-12">
+        <p>{getLanguage(language)?.name}</p>
+    </div>
 }

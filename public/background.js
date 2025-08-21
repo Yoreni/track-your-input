@@ -1,4 +1,3 @@
-// background.js
 browser.runtime.onMessage.addListener((message) => {
     if (message.type === "addWatchTime") {
         browser.storage.local.get('youtubeWatchTimes').then((data) => {
