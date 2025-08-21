@@ -1,15 +1,21 @@
-function lang(englishName: String, iso: String)
+interface Language 
+{
+    name: string
+    iso: string
+}
+
+function lang(englishName: string, iso: string): Language
 {
     return {name: englishName, iso}
 }
 
-export function getLanguage(query: String)
+export function getLanguage(query: string)
 {
     const filtered = LANGUAGES.filter((element) => element.name === query || element.iso === query) 
     return filtered.length > 0 ? filtered[0] : null
 } 
 
-const LANGUAGES = [
+export const LANGUAGES = [
     lang("English", "en"),
     lang("German", "de"),
     lang("Spanish", "es"),
