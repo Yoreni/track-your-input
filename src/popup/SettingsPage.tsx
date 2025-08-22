@@ -44,6 +44,17 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
     const learning = Object.keys(settings.learning)
     const notLearning = LANGUAGES.filter(lang => !learning.includes(lang.iso))
 
+    function removeLanguageLearning(language: string)
+    {
+        setSettings(oldSettings => {
+            if (oldSettings === undefined)
+                return undefined
+            const { [language]: _, ...learning } = settings.learning;
+            const newSettings = {...oldSettings, learning: learning}
+            return newSettings
+        })
+    }
+
     return browserInfo && (<div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 dark:bg-gray-800 gap-2 pt-12 pb-1">
         <Card>
             <div className='flex justify-between'>
@@ -61,7 +72,7 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
         <Card>
             <p className="font-bold p-1 text-center">Learning</p>
             <div className="grid grid-cols-3 gap-2">
-                {learning.map((lang) => <LanguageTileX language={lang}/>)}
+                {learning.map((lang) => <LanguageTileX language={lang} onClick={() => removeLanguageLearning(lang)}/>)}
                 <div className="text-center text-3xl text-white border-dashed border-3 rounded-lg border-blue-200" onClick={() => setAddLangauagesDialog(true)}>+</div>
             </div>
         </Card>
@@ -93,10 +104,10 @@ function LanguageTileBase({language, children, className="", onClick}: LanguageT
     </div>
 }
 
-function LanguageTileX({language}: LanguageTileProps)
+function LanguageTileX({language, onClick}: LanguageTileProps)
 {
     return <LanguageTileBase language={language} className="relative">
-        <div className=" bg-red-400 hover:bg-red-500 cursor-pointer transition-colors shadow-md absolute top-0 z-10 font-bold text-white right-0 w-6 h-6 rounded-xl grid place-items-center translate-x-1/2 -translate-y-1/2 ">X</div>
+        <div className=" bg-red-400 hover:bg-red-500 cursor-pointer transition-colors shadow-md absolute top-0 z-10 font-bold text-white right-0 w-6 h-6 rounded-xl grid place-items-center translate-x-1/2 -translate-y-1/2 " onClick={onClick}>X</div>
     </LanguageTileBase>
 }
 
