@@ -17,10 +17,13 @@ interface Props
 
 export function ProgressDashboard({input, setInput, settings, setSettings, language}: Props)
 {
-    const goal = settings?.learning[language].dailyGoal
+    const isLearningLanguages = Object.keys(settings.learning).length > 0
+    const goal = isLearningLanguages ? settings?.learning[language].dailyGoal : 0
 
     return <>
         <div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 dark:bg-gray-800 gap-2 pt-12 pb-1">
+            {isLearningLanguages ? 
+            <>
             <Card>
                 <DailyGoal input={input} language={language} goal={goal} setSettings={setSettings}/>
             </Card>
@@ -33,6 +36,10 @@ export function ProgressDashboard({input, setInput, settings, setSettings, langu
             <Card>
                 <Statistics input={input} language={language}/>
             </Card>
+            </> : 
+            <Card>
+                <p>No learning languages selected</p>
+            </Card>}
         </div>
     </>
 }

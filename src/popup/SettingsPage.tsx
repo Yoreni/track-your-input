@@ -2,9 +2,10 @@ import { useEffect, useState, type Dispatch, type MouseEventHandler, type ReactN
 import { Card } from "./Card";
 import type { Settings } from "../Settings";
 import type { WatchData } from "../WatchData";
-import { getLanguage, LANGUAGES } from "../language";
+import { getLanguage } from "../language";
 import { WatchDataControl } from "./WatchDataControl";
 import { Dialog } from "./Dialog";
+import { LanguageSelector } from "./LanguageSelector";
 
 interface Props {
     settings: Settings
@@ -42,7 +43,6 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
     })
 
     const learning = Object.keys(settings.learning)
-    const notLearning = LANGUAGES.filter(lang => !learning.includes(lang.iso))
 
     function removeLanguageLearning(language: string)
     {
@@ -80,23 +80,19 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
             <WatchDataControl input={input} setInput={setInput} />
         </Card>
         <Dialog isOpen={addLangaugesDialog} className="flex flex-col gap-4 items-center">
-            <p className="font-bold text-center text-xl">Add Langauges Learning</p>
-            <div className="flex gap-2 flex-col items-center overflow-scroll h-60 w-full">
-                {notLearning.map(lang => <LangaugesTileSelect language={lang.iso} startActive={false}/>)}
-            </div>
-            <button onClick={() => setAddLangauagesDialog(false)}>OK</button>
+            <LanguageSelector learning={learning} setSettings={setSettings} onFinish={() => setAddLangauagesDialog(false)} />
         </Dialog>
     </div>)
 }
 
-interface LanguageTileProps {
+export interface LanguageTileProps {
     language: string
     children?: ReactNode
     className?: string
     onClick?: MouseEventHandler<HTMLDivElement>
 }
 
-function LanguageTileBase({language, children, className="", onClick}: LanguageTileProps)
+export function LanguageTileBase({language, children, className="", onClick}: LanguageTileProps)
 {
     return <div onClick={onClick} className={`bg-blue-200 rounded-md flex items-center justify-center text-black min-h-12 ${className}`}>
         <p>{getLanguage(language)?.name}</p>
@@ -109,25 +105,4 @@ function LanguageTileX({language, onClick}: LanguageTileProps)
     return <LanguageTileBase language={language} className="relative">
         <div className=" bg-red-400 hover:bg-red-500 cursor-pointer transition-colors shadow-md absolute top-0 z-10 font-bold text-white right-0 w-6 h-6 rounded-xl grid place-items-center translate-x-1/2 -translate-y-1/2 " onClick={onClick}>X</div>
     </LanguageTileBase>
-}
-
-interface LanguageTileSelectProps extends LanguageTileProps
-{
-    startActive: boolean
-    clickCallback?: (event: any) => void
-}
-
-function LangaugesTileSelect({language, startActive}: LanguageTileSelectProps)
-{
-    const [active, setActive] = useState(startActive)
-
-    function handleClick()
-    {
-        setActive(last => !last)
-    }
-
-    const activeClass = "bg-green-500 shadow-md shadow-green-800"
-    const inactiveClass = "bg-gray-500"
-
-    return <LanguageTileBase className={`select-none text-lg w-11/12 ${active ? activeClass : inactiveClass}`} language={language} onClick={handleClick}/>
 }
