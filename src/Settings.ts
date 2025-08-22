@@ -18,7 +18,7 @@ export const defaultSettings: Settings = {
   darkMode: false
 }
 
-const languageDefaultSettings = {
+export const languageDefaultSettings = {
   dailyGoal: 15,
 }
 
