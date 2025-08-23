@@ -54,13 +54,13 @@ function Dashboard({input, addInputEntry, settings, setSettings, language}: Prop
                 <DailyGoal input={input} language={language} goal={goal} setSettings={setSettings}/>
             </Card>
             <Card>
-                <InputCounter input={input} language={language} addInputEntry={addInputEntry} settings={settings}/>
+                <InputCounter input={input} addInputEntry={addInputEntry} settings={settings}/>
             </Card>
             <Card>
-                <Calendar input={input} language={language} goal={goal}/>
+                <Calendar input={input} goal={goal}/>
             </Card>
             <Card>
-                <Statistics input={input} language={language}/>
+                <Statistics input={input}/>
             </Card>
     </>
 }

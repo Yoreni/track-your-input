@@ -6,7 +6,6 @@ import { AddInputDialog } from './AddInputDialog';
 import type { Settings } from '../../Settings';
 interface Props {
     input: WatchDataEntry[]
-    language: string
     addInputEntry: (entry: WatchDataEntry) => void
     settings: Settings
 }
@@ -62,7 +61,7 @@ function calcProgress(input: any)
     }
 }
 
-export function InputCounter( {input, language, addInputEntry, settings}: Props )
+export function InputCounter( {input, addInputEntry, settings}: Props )
 {
     const [addInputDialogOpen, setAddInputDialogOpen] = useState(false)
 
@@ -90,6 +89,6 @@ export function InputCounter( {input, language, addInputEntry, settings}: Props 
         }
         <p className='text-center font-semibold text-gray-800 dark:text-gray-200'>Level {progress.level}</p>
         <button onClick={() => setAddInputDialogOpen(true)}>+</button>
-        <AddInputDialog isOpen={addInputDialogOpen} language={language} addInputEntry={addInputEntry} setOpen={setAddInputDialogOpen}/>
+        <AddInputDialog isOpen={addInputDialogOpen} addInputEntry={addInputEntry} setOpen={setAddInputDialogOpen}/>
     </>
 }

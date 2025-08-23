@@ -8,7 +8,6 @@ type InputType = "WATCHING" | "LISTENING" | "CONVERSATION"
 
 interface Props {
     addInputEntry: (entry: WatchDataEntry) => void
-    language: string
     isOpen: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }

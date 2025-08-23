@@ -4,9 +4,9 @@ import { StatisticsCell } from "./StatisticsCell";
 
 const STREAK_CAP = 7;
 
-interface StatisticsProp {
+interface StatisticsProp 
+{
     input: WatchDataEntry[]
-    language: string
 }
 
 function getStreak(input: WatchDataEntry[]) 
