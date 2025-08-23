@@ -1,4 +1,3 @@
-// import { useState } from 'react'
 import { useEffect, useState } from 'react';
 import './App.css'
 import { NavBar } from './NavBar'
@@ -26,6 +25,20 @@ function App()
       setInput(data)
     })
   }, [])
+
+  useEffect(() => { // if user deletes the langauge that the user selected
+    if (!settings)
+      return
+
+    const learning = Object.keys(settings?.learning) 
+    if (!learning.includes(language))
+    {
+      if (learning.length > 0)
+        setLanguage(learning[0])
+      else
+        setLanguage("unknown")
+    }
+  }, [settings])
 
   useSave(settings, saveSettings)
   useSave(input, saveWatchData)

@@ -7,10 +7,10 @@ interface Props
 {
     learning: string[]
     setSettings: Dispatch<SetStateAction<Settings | undefined>>
-    onFinish: () => void
+    onFinish?: () => void
 }
 
-export function LanguageSelector({learning, setSettings, onFinish}: Props)
+export function LanguageSelector({learning, setSettings, onFinish = () => {}}: Props)
 {
     const notLearning = LANGUAGES.filter(lang => !learning.includes(lang.iso))
     const [selected, setSelected] = useState<string[]>([])
@@ -35,13 +35,13 @@ export function LanguageSelector({learning, setSettings, onFinish}: Props)
             setSelected(last => [...last, langauge])
     }
 
-    return <>
+    return <div className="h-full flex flex-col gap-4 items-center">
         <p className="font-bold text-center text-lg">What are you learning?</p>
-        <div className="flex gap-2 flex-col items-center overflow-scroll h-60 w-full">
+        <div className="flex gap-2 flex-col items-center overflow-scroll w-full">
             {notLearning.map(lang => <LangaugesTileSelect language={lang.iso} active={selected.includes(lang.iso)} onClick={() => handleSelect(lang.iso)}/>)}
         </div>
         <button onClick={handleOk}>OK</button>
-    </>
+    </div>
 }
 
 interface LanguageTileSelectProps extends LanguageTileProps

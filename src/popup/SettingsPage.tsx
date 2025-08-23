@@ -73,13 +73,13 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
             <p className="font-bold p-1 text-center">Learning</p>
             <div className="grid grid-cols-3 gap-2">
                 {learning.map((lang) => <LanguageTileX language={lang} onClick={() => removeLanguageLearning(lang)}/>)}
-                <div className="text-center text-3xl text-white border-dashed border-3 rounded-lg border-blue-200" onClick={() => setAddLangauagesDialog(true)}>+</div>
+                <div className="text-center text-3xl text-black dark:text-white border-dashed border-3 rounded-lg border-blue-200" onClick={() => setAddLangauagesDialog(true)}>+</div>
             </div>
         </Card>
         <Card>
             <WatchDataControl input={input} setInput={setInput} />
         </Card>
-        <Dialog isOpen={addLangaugesDialog} className="flex flex-col gap-4 items-center">
+        <Dialog isOpen={addLangaugesDialog} className="h-80">
             <LanguageSelector learning={learning} setSettings={setSettings} onFinish={() => setAddLangauagesDialog(false)} />
         </Dialog>
     </div>)
