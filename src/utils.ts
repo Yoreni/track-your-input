@@ -1,26 +1,11 @@
-import type { WatchDataEntry } from "./WatchData";
-
 export type Screen = "PROGRESS" | "SETTINGS"
 export const HOUR_CUTOFF = 4
 
 const SI_SUFFIXES = Object.freeze(["", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"])
 
-export function calculateTotalHours(input: WatchDataEntry[])
+export function getDaysInMonth(date: Date): number
 {
-    let seconds = 0;
-    input.forEach((entry: WatchDataEntry) => {
-        seconds += entry.time
-    })
-    return seconds / 3600;
-}
-
-export function getMinutesOfInputOnDay(date: Date, input: WatchDataEntry[])
-{
-    if (!input)
-        return 0
-    const hours = calculateTotalHours(input.filter(
-        (entry: WatchDataEntry) => isOnSameDay(date, entry.date)))
-    return hours * 60
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 }
 
 export function isOnSameDay(date1: Date, date2: Date): boolean 

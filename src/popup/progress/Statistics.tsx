@@ -1,5 +1,5 @@
-import { getMinutesOfInputOnDay, normaliseDay } from "../../utils";
-import type { WatchDataEntry } from "../../WatchData";
+import { normaliseDay } from "../../utils";
+import { getMinutesOfInputOnDay, type WatchDataEntry } from "../../WatchData";
 import { StatisticsCell } from "./StatisticsCell";
 
 const STREAK_CAP = 7;

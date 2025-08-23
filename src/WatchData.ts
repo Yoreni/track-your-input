@@ -1,3 +1,5 @@
+import { getDaysInMonth, HOUR_CUTOFF, isOnSameDay } from "./utils"
+
 export interface WatchDataEntry 
 {
     time: number
@@ -82,4 +84,41 @@ export async function saveWatchData(watchData: WatchData)
         console.error(`Could not save watch data ${error}`)
     }
 }
+
+export function getInputDataForMonth(monthDisplay: Date, input: WatchDataEntry[]): Record<number, number>
+{
+    const daysInMonth = getDaysInMonth(monthDisplay)
+    let perDayInput: { [key: number]: number } = {}
+    for (let day = 1; day <= daysInMonth; ++day)
+    {
+        const date = new Date(monthDisplay.getFullYear(), monthDisplay.getMonth(), day, HOUR_CUTOFF)
+        perDayInput[day] = getMinutesOfInputOnDay(date, input)
+    }
+    return perDayInput;
+}
+
+export function calcTotalHoursThisMonth(monthDisplay: Date, input: WatchDataEntry[])
+{
+    const perDayInput = Object.values(getInputDataForMonth(monthDisplay, input))
+    return perDayInput.reduce((partialSum, a) => partialSum + a, 0) / 60;
+}
+
+export function calculateTotalHours(input: WatchDataEntry[])
+{
+    let seconds = 0;
+    input.forEach((entry: WatchDataEntry) => {
+        seconds += entry.time
+    })
+    return seconds / 3600;
+}
+
+export function getMinutesOfInputOnDay(date: Date, input: WatchDataEntry[])
+{
+    if (!input)
+        return 0
+    const hours = calculateTotalHours(input.filter(
+        (entry: WatchDataEntry) => isOnSameDay(date, entry.date)))
+    return hours * 60
+}
+
 

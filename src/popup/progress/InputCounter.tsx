@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { calculateTotalHours } from '../../utils';
-import type { WatchDataEntry } from '../../WatchData';
+import { calculateTotalHours, type WatchDataEntry } from '../../WatchData';
 import { ProgressBar } from '../ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
 import type { Settings } from '../../Settings';

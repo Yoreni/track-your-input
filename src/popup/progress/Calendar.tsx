@@ -1,8 +1,8 @@
 // import { useState } from "react";
 
 import { useState } from "react"
-import { getMinutesOfInputOnDay, HOUR_CUTOFF, isOnSameDay } from "../../utils"
-import type { WatchDataEntry } from "../../WatchData"
+import { getDaysInMonth, isOnSameDay } from "../../utils"
+import { calcTotalHoursThisMonth, getInputDataForMonth, type WatchDataEntry } from "../../WatchData"
 import { StatisticsCell } from "./StatisticsCell"
 
 function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): String
@@ -22,24 +22,6 @@ function formatInputMins(mins: number)
     return ""
 }
 
-function getData(monthDisplay: Date, input: WatchDataEntry[]): { [key: number]: number }
-{
-    const daysInMonth = getDaysInMonth(monthDisplay)
-    let perDayInput: { [key: number]: number } = {}
-    for (let day = 1; day <= daysInMonth; ++day)
-    {
-        const date = new Date(monthDisplay.getFullYear(), monthDisplay.getMonth(), day, HOUR_CUTOFF)
-        perDayInput[day] = getMinutesOfInputOnDay(date, input)
-    }
-    return perDayInput;
-}
-
-function getHoursThisMonth(monthDisplay: Date, input: WatchDataEntry[])
-{
-    const perDayInput = Object.values(getData(monthDisplay, input))
-    return perDayInput.reduce((partialSum, a) => partialSum + a, 0) / 60;
-}
-
 function drawDayCells(monthDisplay: Date, input: WatchDataEntry[], goal: number)
 {
     const firstDayOfMonth = new Date(monthDisplay.getFullYear(), monthDisplay.getMonth(), 1);
@@ -50,7 +32,7 @@ function drawDayCells(monthDisplay: Date, input: WatchDataEntry[], goal: number)
     for (let i = 0; i < firstDayOfMonth.getDay(); i++) 
         cells.push(<DayCell cellType={"FILLER"}/>)
 
-    const perDayInput = getData(monthDisplay, input)
+    const perDayInput = getInputDataForMonth(monthDisplay, input)
     for (let day = 1; day <= daysInMonth; day++) 
     {
         const minsOfInput = perDayInput[day];
@@ -71,11 +53,6 @@ function drawDayCells(monthDisplay: Date, input: WatchDataEntry[], goal: number)
     return cells;
 }
 
-function getDaysInMonth(date: Date): number
-{
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-}
-
 interface CalendarProps 
 {
     input: WatchDataEntry[]
@@ -94,7 +71,7 @@ export function Calendar({input, goal}: CalendarProps )
         setMonthDisplay(new Date(new Date(monthDisplay).setMonth(monthDisplay.getMonth() + amount)))
     }
 
-    const hoursThisMonth = Math.floor(getHoursThisMonth(monthDisplay, input) * 10) / 10
+    const hoursThisMonth = Math.floor(calcTotalHoursThisMonth(monthDisplay, input) * 10) / 10
 
     return <div>
         <div className="flex justify-between items-center mb-5 select-none">

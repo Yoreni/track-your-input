@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { getMinutesOfInputOnDay } from "../../utils";
-import type { WatchDataEntry } from "../../WatchData";
+import { getMinutesOfInputOnDay, type WatchDataEntry } from "../../WatchData";
 import { Dialog } from "../Dialog";
 import { ProgressBar } from "../ProgressBar";
 import { type Settings } from "../../Settings";
