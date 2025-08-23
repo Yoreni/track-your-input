@@ -16,29 +16,6 @@ type StoredWatchData = Record<string, Record<string, WatchDataEntry>> //The stru
 
 const KEY = "youtubeWatchTimes"
 
-// export async function loadWatchData()
-// {
-//     let loadedData = (await browser.storage.local.get(KEY))
-//     if (!loadedData[KEY])
-//         return {}
-//     loadedData = loadedData[KEY]
-//     loadedData = Object.entries(loadedData).map(([key, value]) => ({...value, id: key, date: new Date(value.date)}))
-//     return loadedData
-// }
-
-
-
-// export async function saveWatchData(watchData: StoredWatchDataEntry[])
-// {
-//     console.log(JSON.stringify({watchData}))
-//     let object: any = {}
-//     watchData.forEach((item: any) => {
-//         const {id, ...newItem} = item
-//         object[id] = newItem;
-//     })
-//     await browser.storage.local.set({[KEY]: object});
-// }
-
 export function convertToFlattenedList(watchData: WatchData): FlattenedWatchDataEntry[]
 {
     let out: FlattenedWatchDataEntry[] = []
@@ -64,7 +41,7 @@ export function convertFromFlattenedList(flattenedList: FlattenedWatchDataEntry[
 }
 
 
-export async function loadWatchData2(): Promise<WatchData>
+export async function loadWatchData(): Promise<WatchData>
 {
     let loadedData = (await browser.storage.local.get(KEY))
     if (!loadedData[KEY])
@@ -82,7 +59,7 @@ export async function loadWatchData2(): Promise<WatchData>
     return loadedData
 }
 
-export async function saveWatchData2(watchData: WatchData)
+export async function saveWatchData(watchData: WatchData)
 {
     console.log(JSON.stringify({watchData}))
     let object: any = {}

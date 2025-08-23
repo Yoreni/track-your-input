@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import { NavBar } from './NavBar'
-import { loadWatchData2, saveWatchData2, type WatchData, type WatchDataEntry } from '../WatchData';
+import { loadWatchData, saveWatchData, type WatchData, type WatchDataEntry } from '../WatchData';
 import { loadSettings, saveSettings, type Settings } from '../Settings';
 import { useSave } from '../useSave';
 import { ProgressDashboard } from './ProgressDashboard';
@@ -21,7 +21,7 @@ function App()
       setSettings(data)
       document.documentElement.classList.toggle("dark", data?.darkMode)
     })
-    loadWatchData2().then((data: any) => {
+    loadWatchData().then((data: any) => {
       console.log(JSON.stringify(data))
       setInput(data)
     })
@@ -42,7 +42,7 @@ function App()
   }, [settings])
 
   useSave(settings, saveSettings)
-  useSave(input, saveWatchData2)
+  useSave(input, saveWatchData)
 
   function getInputForLanguage(isoCode: string) : WatchDataEntry[]
   {
