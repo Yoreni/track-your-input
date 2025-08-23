@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import { NavBar } from './NavBar'
-import { loadWatchData, saveWatchData, type WatchData } from '../WatchData';
+import { loadWatchData2, saveWatchData2, type WatchData, type WatchDataEntry } from '../WatchData';
 import { loadSettings, saveSettings, type Settings } from '../Settings';
 import { useSave } from '../useSave';
 import { ProgressDashboard } from './ProgressDashboard';
@@ -12,7 +12,7 @@ function App()
 {
   const selectedDefault = "en"
   const [language, setLanguage] = useState(selectedDefault);
-  const [input, setInput] = useState<WatchData[]>([]);
+  const [input, setInput] = useState<WatchData>({});
   const [settings, setSettings] = useState<Settings>();
   const [screen, setScreen] = useState<Screen>("PROGRESS")
 
@@ -21,7 +21,8 @@ function App()
       setSettings(data)
       document.documentElement.classList.toggle("dark", data?.darkMode)
     })
-    loadWatchData().then((data: any) => {
+    loadWatchData2().then((data: any) => {
+      console.log(JSON.stringify(data))
       setInput(data)
     })
   }, [])
@@ -41,14 +42,27 @@ function App()
   }, [settings])
 
   useSave(settings, saveSettings)
-  useSave(input, saveWatchData)
+  useSave(input, saveWatchData2)
+
+  function getInputForLanguage(isoCode: string) : WatchDataEntry[]
+  {
+    return input[isoCode] || [];
+  }
+
+  function addInputEntry(lang: string, entry: WatchDataEntry)
+  {
+    setInput(last => {
+      const newInputList = [...input[lang], entry]
+      return {...last, [lang]: newInputList}
+    })
+  }
 
   return ( input && settings &&
     <>
       <NavBar language={language} learning={Object.keys(settings.learning)} setLanguage={setLanguage} setScreen={setScreen} screen={screen}/>
       {
         screen === "PROGRESS" ?
-          <ProgressDashboard input={input} setInput={setInput} settings={settings} setSettings={setSettings} language={language} />
+          <ProgressDashboard input={getInputForLanguage(language)} addInputEntry={(entry: WatchDataEntry) => addInputEntry(language, entry)} settings={settings} setSettings={setSettings} language={language} />
         : <SettingsPage settings={settings} setSettings={setSettings} input={input} setInput={setInput}/>
       }
     </>

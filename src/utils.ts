@@ -1,26 +1,25 @@
-import type { WatchData } from "./WatchData";
+import type { WatchDataEntry } from "./WatchData";
 
 export type Screen = "PROGRESS" | "SETTINGS"
 export const HOUR_CUTOFF = 4
 
-const SI_SUFFIXES = ["", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"]
+const SI_SUFFIXES = Object.freeze(["", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"])
 
-export function calculateTotalHours(input: WatchData[], language: string)
+export function calculateTotalHours(input: WatchDataEntry[])
 {
     let seconds = 0;
-    input.forEach((entry: any) => {
-        if (language === entry.language)
-            seconds += entry.time
+    input.forEach((entry: WatchDataEntry) => {
+        seconds += entry.time
     })
     return seconds / 3600;
 }
 
-export function getMinutesOfInputOnDay(date: Date, input: WatchData[], language: string)
+export function getMinutesOfInputOnDay(date: Date, input: WatchDataEntry[])
 {
     if (!input)
         return 0
     const hours = calculateTotalHours(input.filter(
-        (entry: WatchData) => isOnSameDay(date, entry.date)), language)
+        (entry: WatchDataEntry) => isOnSameDay(date, entry.date)))
     return hours * 60
 }
 

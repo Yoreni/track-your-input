@@ -10,8 +10,8 @@ import { LanguageSelector } from "./LanguageSelector";
 interface Props {
     settings: Settings
     setSettings: Dispatch<SetStateAction<Settings | undefined>>
-    input: WatchData[]
-    setInput: Dispatch<SetStateAction<WatchData[]>>
+    input: WatchData
+    setInput: Dispatch<SetStateAction<WatchData>>
 }
 
 function toggleDarkMode(value: boolean, setSettings: Dispatch<SetStateAction<Settings | undefined>>): void

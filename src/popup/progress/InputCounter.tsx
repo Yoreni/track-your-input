@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { calculateTotalHours } from '../../utils';
-import type { WatchData } from '../../WatchData';
+import type { WatchDataEntry } from '../../WatchData';
 import { ProgressBar } from '../ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
 import type { Settings } from '../../Settings';
 interface Props {
-    input: WatchData[]
+    input: WatchDataEntry[]
     language: string
-    setInput: React.Dispatch<React.SetStateAction<WatchData[]>>
+    addInputEntry: (entry: WatchDataEntry) => void
     settings: Settings
 }
 
@@ -46,9 +46,9 @@ function roundToNearestMin(hours: number, round: (a: number) => number = Math.ro
   return round((hours * FACTOR) + Number.EPSILON * 2) / FACTOR
 }
 
-function calcProgress(input: any, language: string)
+function calcProgress(input: any)
 {
-    const hours = calculateTotalHours(input, language)
+    const hours = calculateTotalHours(input)
     const level = getLevel(hours)
     if (level == HOURS_FOR_LEVEL.length) //handle max level
         return {level, remainingHours: 0, progress: 1, hours}
@@ -62,7 +62,7 @@ function calcProgress(input: any, language: string)
     }
 }
 
-export function InputCounter( {input, language, setInput, settings}: Props )
+export function InputCounter( {input, language, addInputEntry, settings}: Props )
 {
     const [addInputDialogOpen, setAddInputDialogOpen] = useState(false)
 
@@ -72,7 +72,7 @@ export function InputCounter( {input, language, setInput, settings}: Props )
       return func(hours)
     }
 
-    const progress = calcProgress(input, language)
+    const progress = calcProgress(input)
     return <>
         <div className='flex justify-between'>
             <p className='font-bold'>Total Input</p>
@@ -90,6 +90,6 @@ export function InputCounter( {input, language, setInput, settings}: Props )
         }
         <p className='text-center font-semibold text-gray-800 dark:text-gray-200'>Level {progress.level}</p>
         <button onClick={() => setAddInputDialogOpen(true)}>+</button>
-        <AddInputDialog isOpen={addInputDialogOpen} language={language} setInput={setInput} setOpen={setAddInputDialogOpen}/>
+        <AddInputDialog isOpen={addInputDialogOpen} language={language} addInputEntry={addInputEntry} setOpen={setAddInputDialogOpen}/>
     </>
 }

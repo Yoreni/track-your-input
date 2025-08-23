@@ -1,5 +1,5 @@
 import type { Settings } from "../Settings";
-import type { WatchData } from "../WatchData";
+import type { WatchDataEntry } from "../WatchData";
 import { Card } from "./Card";
 import { LanguageSelector } from "./LanguageSelector";
 import { Calendar } from "./progress/Calendar";
@@ -9,14 +9,14 @@ import { Statistics } from "./progress/Statistics";
 
 interface Props 
 {
-    input: WatchData[]
-    setInput: React.Dispatch<React.SetStateAction<WatchData[]>>
+    input: WatchDataEntry[]
+    addInputEntry: (entry: WatchDataEntry) => void
     settings: Settings
     setSettings: React.Dispatch<React.SetStateAction<Settings | undefined>>
     language: string
 }
 
-export function ProgressDashboard({input, setInput, settings, setSettings, language}: Props)
+export function ProgressDashboard({input, addInputEntry, settings, setSettings, language}: Props)
 {
     const learning = Object.keys(settings.learning)
 
@@ -35,7 +35,7 @@ export function ProgressDashboard({input, setInput, settings, setSettings, langu
                 <p>Deleted language selected</p>
             </Card>
         
-        return <Dashboard input={input} setInput={setInput} settings={settings} setSettings={setSettings} language={language} />
+        return <Dashboard input={input} addInputEntry={addInputEntry} settings={settings} setSettings={setSettings} language={language} />
     }
 
     return <>
@@ -45,7 +45,7 @@ export function ProgressDashboard({input, setInput, settings, setSettings, langu
     </>
 }
 
-function Dashboard({input, setInput, settings, setSettings, language}: Props)
+function Dashboard({input, addInputEntry, settings, setSettings, language}: Props)
 {
     const goal = settings?.learning[language].dailyGoal
 
@@ -54,7 +54,7 @@ function Dashboard({input, setInput, settings, setSettings, language}: Props)
                 <DailyGoal input={input} language={language} goal={goal} setSettings={setSettings}/>
             </Card>
             <Card>
-                <InputCounter input={input} language={language} setInput={setInput} settings={settings}/>
+                <InputCounter input={input} language={language} addInputEntry={addInputEntry} settings={settings}/>
             </Card>
             <Card>
                 <Calendar input={input} language={language} goal={goal}/>

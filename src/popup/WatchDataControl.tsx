@@ -1,13 +1,13 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { Dialog } from "./Dialog";
 import { downloadAsCSV, isDirectDownloadSuported, parseCsvString, toCsvString } from "../csvFile";
-import type { WatchData } from "../WatchData";
+import { type WatchData, convertToFlattenedList, type FlattenedWatchDataEntry, convertFromFlattenedList } from "../WatchData";
 import { formatBytes } from "../utils";
 
 interface Props 
 {
-    input: WatchData[]
-    setInput: Dispatch<SetStateAction<WatchData[]>>
+    input: WatchData
+    setInput: Dispatch<SetStateAction<WatchData>>
 }
 
 export function WatchDataControl( { input, setInput}: Props)
@@ -19,6 +19,8 @@ export function WatchDataControl( { input, setInput}: Props)
     const [importDataDialog, setImportDataDialog] = useState(false)
 
     const [importDataInput, setImportDataInput] = useState("")
+
+    const flattenedInout = convertToFlattenedList(input)
 
     useEffect(() => {
         if (browser.storage.local.getBytesInUse)
@@ -35,27 +37,27 @@ export function WatchDataControl( { input, setInput}: Props)
     function handleExport()
     {
         if (isDirectDownloadSuported())
-            downloadAsCSV(input)
+            downloadAsCSV(flattenedInout)
         else
             setExportDialogOpen(true)
     }
 
     function handleImport()
     {
-        let data: WatchData[] = parseCsvString(importDataInput) as WatchData[]
+        let data: FlattenedWatchDataEntry[] = parseCsvString(importDataInput) as FlattenedWatchDataEntry[]
         data = data.map((entry) => { return {...entry, date: new Date(entry.date)}})
-        setInput(data)
+        setInput(convertFromFlattenedList(data))
         setImportDataDialog(false)
     }
 
     function handleDataDeletion(deleteData: boolean)
     {
         if (deleteData)
-            setInput([])
+            setInput({})
         setDeleteDataDialog(false)
     }
 
-    const csvString = toCsvString(input)
+    const csvString = toCsvString(flattenedInout)
 
     return <>
         <div>

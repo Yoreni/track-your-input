@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { WatchData } from "../../WatchData";
+import type { WatchDataEntry } from "../../WatchData";
 import { Dialog } from "../Dialog";
 import { DurationInput } from "./DurationInput";
 import { HOUR_CUTOFF, normaliseDay } from "../../utils";
@@ -7,13 +7,13 @@ import { HOUR_CUTOFF, normaliseDay } from "../../utils";
 type InputType = "WATCHING" | "LISTENING" | "CONVERSATION"
 
 interface Props {
-    setInput: React.Dispatch<React.SetStateAction<WatchData[]>>
+    addInputEntry: (entry: WatchDataEntry) => void
     language: string
     isOpen: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function AddInputDialog( {setInput, language, isOpen, setOpen}: Props )
+export function AddInputDialog( {addInputEntry, isOpen, setOpen}: Props )
 {
     const defaultDate = normaliseDay(new Date()).toISOString().split("T")[0]
 
@@ -46,20 +46,14 @@ export function AddInputDialog( {setInput, language, isOpen, setOpen}: Props )
             return;
         }
 
-        const entry: WatchData = {
+        const entry: WatchDataEntry = {
             time: inputDuration,
-            language,
             date: new Date(new Date(date).setHours(HOUR_CUTOFF)),
             id: `m${new Date().toISOString()}${Math.floor(Math.random() * 100)}`,
             description: description
         }
         console.log(entry)
-        setInput(lastState => {
-            return [
-                ...lastState,
-                entry
-            ]
-        })
+        addInputEntry(entry)
         setOpen(false)
         resetState()
     }

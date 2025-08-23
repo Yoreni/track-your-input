@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { getMinutesOfInputOnDay } from "../../utils";
-import type { WatchData } from "../../WatchData";
+import type { WatchDataEntry } from "../../WatchData";
 import { Dialog } from "../Dialog";
 import { ProgressBar } from "../ProgressBar";
 import { type Settings } from "../../Settings";
 import { DurationInput } from "./DurationInput";
 
 interface Props {
-    input: WatchData[]
+    input: WatchDataEntry[]
     language: string
     goal: number
     setSettings: React.Dispatch<React.SetStateAction<Settings | undefined>>;
@@ -17,7 +17,7 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
 {
     const [goalDialogOpen, setGoalDialogOpen] = useState(false)
     const [goalField, setGoalField] = useState(goal);
-    const inputToday = Math.floor(getMinutesOfInputOnDay(new Date(), input, language))
+    const inputToday = Math.floor(getMinutesOfInputOnDay(new Date(), input))
 
     function changeDailyGoal(newGoal: number)
     {

@@ -1,24 +1,24 @@
 import { getMinutesOfInputOnDay, normaliseDay } from "../../utils";
-import type { WatchData } from "../../WatchData";
+import type { WatchDataEntry } from "../../WatchData";
 import { StatisticsCell } from "./StatisticsCell";
 
 const STREAK_CAP = 7;
 
 interface StatisticsProp {
-    input: WatchData[]
+    input: WatchDataEntry[]
     language: string
 }
 
-function getStreak(input: WatchData[], language: string) 
+function getStreak(input: WatchDataEntry[]) 
 {
     let streak = 0;
     let checkingDate = new Date();
 
-    if (getMinutesOfInputOnDay(checkingDate, input, language) > 0)     //check for today
+    if (getMinutesOfInputOnDay(checkingDate, input) > 0)     //check for today
         ++streak;
     checkingDate.setDate(checkingDate.getDate() - 1); 
 
-    while (getMinutesOfInputOnDay(checkingDate, input, language) > 0)
+    while (getMinutesOfInputOnDay(checkingDate, input) > 0)
     {
         ++streak;
         checkingDate.setDate(checkingDate.getDate() - 1); 
@@ -27,18 +27,17 @@ function getStreak(input: WatchData[], language: string)
     return streak;
 }
 
-function getDaysPracticed(input: WatchData[], language: string)
+function getDaysPracticed(input: WatchDataEntry[])
 {
     const daysPracticed = input
-        .filter(item => item.language === language)
         .map(item => normaliseDay(item.date).getTime()) 
     return new Set(daysPracticed).size
 }
 
-export function Statistics({input, language}: StatisticsProp)
+export function Statistics({input}: StatisticsProp)
 {
-    const streak = Math.min(getStreak(input, language), STREAK_CAP);
-    const daysPracticed = getDaysPracticed(input, language)
+    const streak = Math.min(getStreak(input), STREAK_CAP);
+    const daysPracticed = getDaysPracticed(input)
 
     return <div>
         <p className="font-bold">Statistics</p>
