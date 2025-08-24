@@ -1,5 +1,5 @@
 import { normaliseDay } from "../../utils";
-import { getMinutesOfInputOnDay, type WatchDataEntry } from "../../WatchData";
+import { getInputOnDay, type WatchDataEntry } from "../../WatchData";
 import { StatisticsCell } from "./StatisticsCell";
 
 const STREAK_CAP = 7;
@@ -14,11 +14,11 @@ function getStreak(input: WatchDataEntry[])
     let streak = 0;
     let checkingDate = new Date();
 
-    if (getMinutesOfInputOnDay(checkingDate, input) > 0)     //check for today
+    if (getInputOnDay(checkingDate, input) > 0)     //check for today
         ++streak;
     checkingDate.setDate(checkingDate.getDate() - 1); 
 
-    while (getMinutesOfInputOnDay(checkingDate, input) > 0)
+    while (getInputOnDay(checkingDate, input) > 0)
     {
         ++streak;
         checkingDate.setDate(checkingDate.getDate() - 1); 

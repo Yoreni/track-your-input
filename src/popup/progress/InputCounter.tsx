@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { calculateTotalHours, type WatchDataEntry } from '../../WatchData';
+import { calculateTotalTime, type WatchDataEntry } from '../../WatchData';
 import { ProgressBar } from '../ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
 import type { Settings } from '../../Settings';
@@ -13,19 +13,29 @@ const HOURS_FOR_LEVEL = Object.freeze([0, 50, 150, 300, 600, 1000, 1500])
 
 const formatHoursFunctions: Record<string, (hours: number) => string> =
 {
-  "excat": (hours) => {
-    const mins = Math.floor((hours % 1) * 60)
+  "excat": (seconds) => {
+    const {mins, hours} = calcMinsHours(seconds)
     if (hours < 1)
       return `${mins}m`
     return `${Math.floor(hours)}h ${mins}m`
   },
-  "default": (hours) => {
-    const mins = Math.floor(hours * 60)
-    hours = Math.floor(hours)
+  "default": (seconds) => {
+    const {mins, hours} = calcMinsHours(seconds)
     if (hours === 0)
       return `${mins}min${mins !== 1 ? "s" : ""}`
     return `${hours.toLocaleString("en")} hour${hours !== 1 ? "s" : ""}`
   }
+}
+
+function calcMinsHours(seconds: number)
+{
+  if (seconds < 0)
+    seconds = Math.abs(seconds)
+  
+  const totalMins = Math.floor(seconds / 60)
+  const hours = Math.floor(seconds / 3600)
+  const mins = totalMins % 60
+  return {totalMins, hours, mins}
 }
 
 function getLevel(hours: number): number
@@ -46,7 +56,7 @@ function roundToNearestMin(hours: number, round: (a: number) => number = Math.ro
 
 function calcProgress(input: any)
 {
-    const hours = calculateTotalHours(input)
+    const hours = Math.floor(calculateTotalTime(input) / 3600)
     const level = getLevel(hours)
     if (level == HOURS_FOR_LEVEL.length) //handle max level
         return {level, remainingHours: 0, progress: 1, hours}

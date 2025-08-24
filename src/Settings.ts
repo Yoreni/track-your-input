@@ -27,15 +27,30 @@ const KEY = 'settings'
 
 export async function saveSettings(settings: Settings)
 {
-  await browser.storage.local.set({[KEY]: settings});
+  try
+  {
+    await browser.storage.local.set({[KEY]: settings});
+  }
+  catch (error)
+  {
+    console.error(`Could not save settings ${error}`)
+  }
 }
 
 export async function loadSettings(): Promise<Settings>
 {
+  try
+  {
     const loadedSettings = (await browser.storage.local.get(KEY))
     if (!loadedSettings[KEY])
       return makeDefaultSettings()
     return loadedSettings[KEY] as Settings
+  }
+  catch(error)
+  {
+    console.error(`Could not load settings ${error}`)
+    return makeDefaultSettings()
+  }
 }
 
 function makeDefaultSettings(): Settings

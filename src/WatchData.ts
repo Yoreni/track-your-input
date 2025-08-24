@@ -45,20 +45,28 @@ export function convertFromFlattenedList(flattenedList: FlattenedWatchDataEntry[
 
 export async function loadWatchData(): Promise<WatchData>
 {
-    let loadedData = (await browser.storage.local.get(KEY))
-    if (!loadedData[KEY])
-        return {}
-    loadedData = loadedData[KEY]
-    for (const [language, data] of Object.entries(loadedData as StoredWatchData))
-    {
-        loadedData[language] = Object.entries(data).map((
-            [key, value]) => ({
-                ...value,
-                language: language,
-                id: key, date: new Date(value.date)
-            }))
+    try
+    {    
+        let loadedData = (await browser.storage.local.get(KEY))
+        if (!loadedData[KEY])
+            return {}
+        loadedData = loadedData[KEY]
+        for (const [language, data] of Object.entries(loadedData as StoredWatchData))
+        {
+            loadedData[language] = Object.entries(data).map((
+                [key, value]) => ({
+                    ...value,
+                    language: language,
+                    id: key, date: new Date(value.date)
+                }))
+        }
+        return loadedData
     }
-    return loadedData
+    catch(error)
+    {
+        console.error(`Could not load watch data ${error}`)
+        return {}
+    }
 }
 
 export async function saveWatchData(watchData: WatchData)
@@ -92,33 +100,33 @@ export function getInputDataForMonth(monthDisplay: Date, input: WatchDataEntry[]
     for (let day = 1; day <= daysInMonth; ++day)
     {
         const date = new Date(monthDisplay.getFullYear(), monthDisplay.getMonth(), day, HOUR_CUTOFF)
-        perDayInput[day] = getMinutesOfInputOnDay(date, input)
+        perDayInput[day] = getInputOnDay(date, input)
     }
     return perDayInput;
 }
 
-export function calcTotalHoursThisMonth(monthDisplay: Date, input: WatchDataEntry[])
+export function calcInputThisMonth(monthDisplay: Date, input: WatchDataEntry[])
 {
     const perDayInput = Object.values(getInputDataForMonth(monthDisplay, input))
-    return perDayInput.reduce((partialSum, a) => partialSum + a, 0) / 60;
+    return perDayInput.reduce((partialSum, a) => partialSum + a, 0);
 }
 
-export function calculateTotalHours(input: WatchDataEntry[])
+export function calculateTotalTime(input: WatchDataEntry[])
 {
     let seconds = 0;
     input.forEach((entry: WatchDataEntry) => {
         seconds += entry.time
     })
-    return seconds / 3600;
+    return seconds;
 }
 
-export function getMinutesOfInputOnDay(date: Date, input: WatchDataEntry[])
+export function getInputOnDay(date: Date, input: WatchDataEntry[])
 {
     if (!input)
         return 0
-    const hours = calculateTotalHours(input.filter(
-        (entry: WatchDataEntry) => isOnSameDay(date, entry.date)))
-    return hours * 60
+    const inputOnDay = input.filter((entry: WatchDataEntry) => isOnSameDay(date, entry.date))
+    const inputTime = calculateTotalTime(inputOnDay)
+    return inputTime
 }
 
 

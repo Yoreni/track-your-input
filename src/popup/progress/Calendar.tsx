@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { getDaysInMonth, isOnSameDay } from "../../utils"
-import { calcTotalHoursThisMonth, getInputDataForMonth, type WatchDataEntry } from "../../WatchData"
+import { calcInputThisMonth, getInputDataForMonth, type WatchDataEntry } from "../../WatchData"
 import { StatisticsCell } from "./StatisticsCell"
 
 function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): String
@@ -13,13 +13,12 @@ function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): Stri
     })
 }
 
-function formatInputMins(mins: number)
+function formatInputMins(seconds: number)
 {
-    if (mins >= 1)
-        return `${Math.floor(mins)}m`
-    else if (mins > 0)
+    const mins = Math.floor(seconds / 60);
+    if (mins < 1)
         return "<1m"
-    return ""
+    return `${mins}m`
 }
 
 function drawDayCells(monthDisplay: Date, input: WatchDataEntry[], goal: number)
@@ -35,19 +34,19 @@ function drawDayCells(monthDisplay: Date, input: WatchDataEntry[], goal: number)
     const perDayInput = getInputDataForMonth(monthDisplay, input)
     for (let day = 1; day <= daysInMonth; day++) 
     {
-        const minsOfInput = perDayInput[day];
+        const secsOfInput = perDayInput[day];
         let type: DayCellType = "FILLER"
         const lookingAtDate = new Date(new Date(firstDayOfMonth).setDate(day))
 
         if (now < lookingAtDate || isOnSameDay(now, lookingAtDate)) 
             type = "FUTURE"
-        else if (!minsOfInput)
+        else if (secsOfInput === 0)
             type = "NO_INPUT"
-        else if (minsOfInput >= goal)
+        else if (secsOfInput >= goal)
             type = "GOAL_REACHED"
         else
             type = "LOW_INPUT"
-        cells.push(<DayCell day={day} minsInput={minsOfInput} cellType={type}/>);
+        cells.push(<DayCell day={day} input={secsOfInput} cellType={type}/>);
     }
 
     return cells;
@@ -71,7 +70,7 @@ export function Calendar({input, goal}: CalendarProps )
         setMonthDisplay(new Date(new Date(monthDisplay).setMonth(monthDisplay.getMonth() + amount)))
     }
 
-    const hoursThisMonth = Math.floor(calcTotalHoursThisMonth(monthDisplay, input) * 10) / 10
+    const hoursThisMonth = Math.floor((calcInputThisMonth(monthDisplay, input) / 3600) * 10) / 10
 
     return <div>
         <div className="flex justify-between items-center mb-5 select-none">
@@ -100,7 +99,7 @@ type DayCellType = "NO_INPUT" | "LOW_INPUT" | "GOAL_REACHED" | "FUTURE" | "FILLE
 
 interface DayCellProps {
     day?: number
-    minsInput?: number
+    input?: number
     cellType: DayCellType
 }
 
@@ -112,12 +111,12 @@ const cellTypeClass: Record<DayCellType, string> = {
     "FILLER": ""
 }
 
-function DayCell( {day, minsInput = 0, cellType}: DayCellProps )
+function DayCell( {day, input = 0, cellType}: DayCellProps )
 {
     return <div className={`flex flex-col justify-center m-0 p-0 items-center h-11 max-h-11 max-w-11 rounded-lg text-md ${cellTypeClass[cellType]}`} >
         <p className="font-bold">{day}</p>
-        {minsInput > 0 && <div className="text-xs font-normal text-rgba(180, 180, 180, 0.8) mr-0.5">
-            {formatInputMins(minsInput)}
+        {input > 0 && <div className="text-xs font-normal text-rgba(180, 180, 180, 0.8) mr-0.5">
+            {formatInputMins(input)}
         </div>}
     </div>
 }
