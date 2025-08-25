@@ -39,7 +39,7 @@ export function ProgressDashboard({input, addInputEntry, settings, setSettings, 
     }
 
     return <>
-        <div className={`flex justify-start items-center flex-col min-h-dvh bg-gray-200 dark:bg-gray-800 gap-2 pt-12 pb-1 ${learning.length ? "" : "h-dvh"}`}>
+        <div className={`flex justify-start items-center flex-col gap-2 ${learning.length ? "" : "h-dvh"}`}>
             {show()}
         </div>
     </>

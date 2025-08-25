@@ -49,7 +49,7 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
         })
     }
 
-    return browserInfo && (<div className="flex justify-start items-center flex-col min-h-svh bg-gray-200 dark:bg-gray-800 gap-2 pt-12 pb-1">
+    return browserInfo && (<div className="flex justify-start items-center flex-col gap-2">
         <Card>
             <div className='flex justify-between'>
                 <p className='text-lg'>Display Excat Time</p>

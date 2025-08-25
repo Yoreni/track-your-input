@@ -75,7 +75,9 @@ function App()
   return ( input && settings &&
     <>
       <NavBar language={language} learning={Object.keys(settings.learning)} setLanguage={setLanguage} setScreen={setScreen} screen={screen}/>
-      {screenComponents[screen]}
+      <div className='pt-12 pb-1 bg-gray-200 dark:bg-gray-800 min-h-dvh '>
+        {screenComponents[screen]}
+      </div>
     </>
   )
 }
