@@ -51,10 +51,19 @@ function App()
 
   function addInputEntry(lang: string, entry: WatchDataEntry)
   {
-    setInput(last => {
-      const newInputList = [...input[lang], entry]
-      return {...last, [lang]: newInputList}
-    })
+    try
+    {
+
+      setInput(last => {
+        const currentInput = input[lang] || []
+        const newInputList = [...currentInput, entry]
+        return {...last, [lang]: newInputList}
+      })
+    }
+    catch(error)
+    {
+      console.error("could not add input", error)
+    }
   }
 
   return ( input && settings &&

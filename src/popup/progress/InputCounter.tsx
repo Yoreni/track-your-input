@@ -38,8 +38,9 @@ function calcMinsHours(seconds: number)
   return {totalMins, hours, mins}
 }
 
-function getLevel(hours: number): number
+function getLevel(seconds: number): number
 {
+  const hours = Math.floor(seconds / 3600)
   let level = 0;
   while (HOURS_FOR_LEVEL[level] <= hours)
     ++level 
@@ -56,17 +57,18 @@ function roundToNearestMin(hours: number, round: (a: number) => number = Math.ro
 
 function calcProgress(input: any)
 {
-    const hours = Math.floor(calculateTotalTime(input) / 3600)
-    const level = getLevel(hours)
+    const totalInput = calculateTotalTime(input)
+    const hours = Math.floor(totalInput / 3600)
+    const level = getLevel(totalInput)
     if (level == HOURS_FOR_LEVEL.length) //handle max level
-        return {level, remainingHours: 0, progress: 1, hours}
+        return {level, remainingInput: 0, progress: 1, hours, totalInput}
 
-    const remainingHours = HOURS_FOR_LEVEL[level] - hours;
+    const remainingInput = (HOURS_FOR_LEVEL[level] * 3600) - totalInput;
     const hoursInLevel = (HOURS_FOR_LEVEL[level] - HOURS_FOR_LEVEL[level - 1])
     const progress = (hours - HOURS_FOR_LEVEL[level - 1]) / hoursInLevel
-    return {level, progress, 
+    return {level, progress, totalInput,
       hours: roundToNearestMin(hours),
-      remainingHours: roundToNearestMin(remainingHours, Math.ceil)
+      remainingInput: remainingInput
     }
 }
 
@@ -74,24 +76,24 @@ export function InputCounter( {input, addInputEntry, settings}: Props )
 {
     const [addInputDialogOpen, setAddInputDialogOpen] = useState(false)
 
-    function formatHours(hours: number)
+    function formatHours(seconds: number)
     {
       const func = formatHoursFunctions[settings.showExcatTime ? "excat" : "default"]
-      return func(hours)
+      return func(seconds)
     }
 
     const progress = calcProgress(input)
     return <>
         <div className='flex justify-between'>
             <p className='font-bold'>Total Input</p>
-            <p>{formatHours(progress.hours)}</p>
+            <p>{formatHours(progress.totalInput)}</p>
         </div>
         { progress.level < HOURS_FOR_LEVEL.length &&
         <>
         <ProgressBar progress={progress.progress} />
         <div className='flex justify-between'>
             <p className='text-gray-400 text-sm'>{HOURS_FOR_LEVEL[progress.level - 1]}h</p>
-            <p>{formatHours(progress.remainingHours)} to go</p>
+            <p>{formatHours(progress.remainingInput)} to go</p>
             <p className='text-gray-400 text-sm'>{HOURS_FOR_LEVEL[progress.level]}h</p>
         </div>
         </>
