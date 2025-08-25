@@ -99,7 +99,9 @@ export function InputCounter( {input, addInputEntry, settings}: Props )
         </>
         }
         <p className='text-center font-semibold text-gray-800 dark:text-gray-200'>Level {progress.level}</p>
-        <button onClick={() => setAddInputDialogOpen(true)}>+</button>
+        <div>
+          <button onClick={() => setAddInputDialogOpen(true)}>+</button>
+        </div>
         <AddInputDialog isOpen={addInputDialogOpen} addInputEntry={addInputEntry} setOpen={setAddInputDialogOpen}/>
     </>
 }

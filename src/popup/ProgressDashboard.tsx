@@ -12,7 +12,7 @@ interface Props
     input: WatchDataEntry[]
     addInputEntry: (entry: WatchDataEntry) => void
     settings: Settings
-    setSettings: React.Dispatch<React.SetStateAction<Settings | undefined>>
+    setSettings: React.Dispatch<React.SetStateAction<Settings>>
     language: string
 }
 

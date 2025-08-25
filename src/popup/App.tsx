@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import './App.css'
 import { NavBar } from './NavBar'
 import { loadWatchData, saveWatchData, type WatchData, type WatchDataEntry } from '../WatchData';
-import { loadSettings, saveSettings, type Settings } from '../Settings';
+import { defaultSettings, loadSettings, saveSettings, type Settings } from '../Settings';
 import { useSave } from '../useSave';
 import { ProgressDashboard } from './ProgressDashboard';
 import { type Screen } from '../utils';
@@ -13,8 +13,14 @@ function App()
   const selectedDefault = "en"
   const [language, setLanguage] = useState(selectedDefault);
   const [input, setInput] = useState<WatchData>({});
-  const [settings, setSettings] = useState<Settings>();
+  const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [screen, setScreen] = useState<Screen>("PROGRESS")
+
+  const screenComponents: Record<Screen, ReactNode> = {
+    "PROGRESS": <ProgressDashboard input={getInputForLanguage(language)} addInputEntry={(entry: WatchDataEntry) => addInputEntry(language, entry)} settings={settings} setSettings={setSettings} language={language} />,
+    "HISTORY": <></>,
+    "SETTINGS": <SettingsPage settings={settings} setSettings={setSettings} input={input} setInput={setInput}/>
+  }
 
   useEffect(() => {
     loadSettings().then((data: Settings) => {
@@ -69,11 +75,7 @@ function App()
   return ( input && settings &&
     <>
       <NavBar language={language} learning={Object.keys(settings.learning)} setLanguage={setLanguage} setScreen={setScreen} screen={screen}/>
-      {
-        screen === "PROGRESS" ?
-          <ProgressDashboard input={getInputForLanguage(language)} addInputEntry={(entry: WatchDataEntry) => addInputEntry(language, entry)} settings={settings} setSettings={setSettings} language={language} />
-        : <SettingsPage settings={settings} setSettings={setSettings} input={input} setInput={setInput}/>
-      }
+      {screenComponents[screen]}
     </>
   )
 }

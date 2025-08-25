@@ -9,26 +9,22 @@ import { LanguageSelector } from "./LanguageSelector";
 
 interface Props {
     settings: Settings
-    setSettings: Dispatch<SetStateAction<Settings | undefined>>
+    setSettings: Dispatch<SetStateAction<Settings>>
     input: WatchData
     setInput: Dispatch<SetStateAction<WatchData>>
 }
 
-function toggleDarkMode(value: boolean, setSettings: Dispatch<SetStateAction<Settings | undefined>>): void
+function toggleDarkMode(value: boolean, setSettings: Dispatch<SetStateAction<Settings>>): void
 {
     setSettings(oldState => {
-        if (!oldState)
-            return
         return {...oldState, darkMode: value}
     })
     document.documentElement.classList.toggle("dark", value)
 }
 
-function toggleExcatTime(value: boolean, setSettings: Dispatch<SetStateAction<Settings | undefined>>): void
+function toggleExcatTime(value: boolean, setSettings: Dispatch<SetStateAction<Settings>>): void
 {
     setSettings(oldState => {
-        if (!oldState)
-            return
         return {...oldState, showExcatTime: value}
     })
 }
@@ -47,8 +43,6 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
     function removeLanguageLearning(language: string)
     {
         setSettings(oldSettings => {
-            if (oldSettings === undefined)
-                return undefined
             const { [language]: _, ...learning } = settings.learning;
             const newSettings = {...oldSettings, learning: learning}
             return newSettings

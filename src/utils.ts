@@ -1,4 +1,4 @@
-export type Screen = "PROGRESS" | "SETTINGS"
+export type Screen = "PROGRESS" | "SETTINGS" | "HISTORY"
 export const HOUR_CUTOFF = 4
 
 const SI_SUFFIXES = Object.freeze(["", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"])

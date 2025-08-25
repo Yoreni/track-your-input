@@ -9,7 +9,7 @@ interface Props {
     input: WatchDataEntry[]
     language: string
     goal: number
-    setSettings: React.Dispatch<React.SetStateAction<Settings | undefined>>;
+    setSettings: React.Dispatch<React.SetStateAction<Settings>>;
 }
 
 export function DailyGoal({input, language, goal, setSettings}: Props)
@@ -25,9 +25,8 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
         if (newGoal % 1 !== 0)
             throw new RangeError("The new goal must be an integer")
 
-        setSettings(oldSettings => {
-            if (oldSettings === undefined)
-                return undefined
+        setSettings(oldSettings => 
+        {
             const newLearning = {dailyGoal: newGoal}
             const newSettings = {...oldSettings, learning: {
                 ...oldSettings.learning,

@@ -6,7 +6,7 @@ import { LANGUAGES } from "../language"
 interface Props 
 {
     learning: string[]
-    setSettings: Dispatch<SetStateAction<Settings | undefined>>
+    setSettings: Dispatch<SetStateAction<Settings>>
     onFinish?: () => void
 }
 
