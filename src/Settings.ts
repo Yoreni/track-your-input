@@ -22,7 +22,6 @@ export const languageDefaultSettings = {
   dailyGoal: 15,
 }
 
-const languagesLearnig = ["en", "de", "ja", "es"]
 const KEY = 'settings'
 
 export async function saveSettings(settings: Settings)
@@ -56,7 +55,5 @@ export async function loadSettings(): Promise<Settings>
 function makeDefaultSettings(): Settings
 {
     let settings = {...defaultSettings}
-    for (const language of languagesLearnig)
-        settings.learning[language] = {...languageDefaultSettings}
     return settings;
 }
