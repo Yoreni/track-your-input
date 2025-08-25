@@ -20,11 +20,11 @@ export function NavBar({ language, setLanguage, screen, setScreen, learning }: P
         <option value={isoCode} selected={isoCode === language}>{getLanguage(isoCode)?.name || "???"}</option>)
 
     return <nav className="bg-gray-900 text-white p-2 flex justify-between items-center fixed top-0 left-0 w-full z-50 h-11">
-        <div className="dropdown">
+        {learning.length > 0 ? <div className="dropdown">
             <select id="selectedLanguage" className="dropdown-toggle bg-gray-800 text-white p-1 rounded text-sm" onChange={changeLanguage}>
                 {options}
             </select>
-        </div>
+        </div> : <div></div>}
         
         {/* Navigation Tabs */}
         <div className="flex space-x-1">
