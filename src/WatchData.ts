@@ -1,5 +1,12 @@
 import { getDaysInMonth, HOUR_CUTOFF, isOnSameDay } from "./utils"
 
+export interface EditWatchDataEntry
+{
+    time?: number
+    date?: Date
+    description?: string
+} 
+
 export interface WatchDataEntry 
 {
     time: number
