@@ -102,6 +102,6 @@ export function InputCounter( {input, addInputEntry, settings}: Props )
         <div>
           <button onClick={() => setAddInputDialogOpen(true)}>+</button>
         </div>
-        <AddInputDialog isOpen={addInputDialogOpen} addInputEntry={addInputEntry} setOpen={setAddInputDialogOpen}/>
+        <AddInputDialog isOpen={addInputDialogOpen} onSubmit={addInputEntry} setOpen={setAddInputDialogOpen}/>
     </>
 }

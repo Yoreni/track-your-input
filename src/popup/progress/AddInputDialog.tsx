@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { WatchDataEntry } from "../../WatchData";
 import { Dialog } from "../Dialog";
 import { DurationInput } from "./DurationInput";
@@ -6,13 +6,15 @@ import { HOUR_CUTOFF, normaliseDay } from "../../utils";
 
 type InputType = "WATCHING" | "LISTENING" | "CONVERSATION"
 
-interface Props {
-    addInputEntry: (entry: WatchDataEntry) => void
+interface Props 
+{
+    onSubmit: (entry: WatchDataEntry) => void
     isOpen: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    initalState?: WatchDataEntry
 }
 
-export function AddInputDialog( {addInputEntry, isOpen, setOpen}: Props )
+export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalState}: Props )
 {
     const defaultDate = normaliseDay(new Date()).toISOString().split("T")[0]
 
@@ -21,23 +23,36 @@ export function AddInputDialog( {addInputEntry, isOpen, setOpen}: Props )
     const [mins, setMins] = useState(0)
     const [description, setDescription] = useState("")
     const [inputType, setInputType] = useState<InputType>("WATCHING")
-
+    useEffect(resetState, [])
     const [durationError, setDurationError] = useState(false)
 
     const inputDuration = Math.round((hours * 3600) + (mins * 60))
     
     function resetState()
     {
-        setDate(defaultDate)
-        setHours(0)
-        setMins(0)
-        setDescription("")
-        setInputType("WATCHING")
+        if (!initalState)
+        {
+            setDate(defaultDate)
+            setHours(0)
+            setMins(0)
+            setDescription("")
+        }
+        else
+        {
+            const hours = Math.floor(initalState.time / 3600)
+            const mins = Math.floor(initalState.time / 60) % 60
 
+            setDate(initalState.date.toISOString().split("T")[0])
+            setHours(hours)
+            setMins(mins)
+            setDescription(initalState.description || "")
+        }
+        
+        setInputType("WATCHING")
         setDurationError(false)
     }
 
-    function addEntry()
+    function handleSubmit()
     {
         if (inputDuration === 0)
         {
@@ -52,7 +67,7 @@ export function AddInputDialog( {addInputEntry, isOpen, setOpen}: Props )
             description: description
         }
         console.log(entry)
-        addInputEntry(entry)
+        onSubmit(entry)
         setOpen(false)
         resetState()
     }
@@ -107,7 +122,7 @@ export function AddInputDialog( {addInputEntry, isOpen, setOpen}: Props )
         </div>
         <div className="flex justify-around">
             <button onClick={() => setOpen(false)}>Cancel</button>
-            <button onClick={addEntry}>Add</button>
+            <button onClick={handleSubmit}>OK</button>
         </div>
     </Dialog>
 }

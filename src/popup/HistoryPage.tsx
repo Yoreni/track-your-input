@@ -1,5 +1,6 @@
 import { useState } from "react"
 import type { EditWatchDataEntry, WatchDataEntry } from "../WatchData"
+import { AddInputDialog } from "./progress/AddInputDialog"
 
 interface Props 
 {
@@ -45,9 +46,18 @@ interface RowProps
     editInput: (values: EditWatchDataEntry) => void;
 }
 
-function Row( {entry, isEven, deleteInput}: RowProps)
+function Row( {entry, isEven, deleteInput, editInput}: RowProps)
 {
     const [editDialogOpen, setEditDialogOpen] = useState(false)
+
+    function handleEdit(entry: WatchDataEntry)
+    {
+        editInput({
+            description: entry.description, 
+            date: entry.date, 
+            time: entry.time}
+        )
+    }
 
     const rowClasses = isEven ? "dark:bg-gray-800 bg-gray-200" : "dark:bg-gray-700 bg-gray-300";
     return (
@@ -56,10 +66,11 @@ function Row( {entry, isEven, deleteInput}: RowProps)
                 <td className="px-2 py-1 max-w-50 overflow-ellipsis overflow-hidden text-nowrap">{entry.description || entry.id}</td> {/* Adjusted max-width for description */}
                 <td className="px-2 py-1">{formatTime(entry.time)}</td>
                 <td className="px-2 py-1 text-center whitespace-nowrap">
-                    <button className="bg-green-600 hover:bg-green-700 text-white text-xs py-0.5 px-1 rounded mr-1">✏️</button>
+                    <button className="bg-green-600 hover:bg-green-700 text-white text-xs py-0.5 px-1 rounded mr-1" onClick={() => setEditDialogOpen(true)}>✏️</button>
                     <button className="bg-red-600 hover:bg-red-700 text-white text-xs py-0.5 px-1 rounded" onClick={deleteInput}>🗑️</button>
                 </td>
             </tr>
+            <AddInputDialog onSubmit={handleEdit} isOpen={editDialogOpen} setOpen={setEditDialogOpen} initalState={entry}/>
         </>
     )
 }
