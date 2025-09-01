@@ -9,10 +9,18 @@ import { type Screen } from '../utils';
 import { SettingsPage } from './SettingsPage';
 import { HistoryPage } from './HistoryPage';
 
+async function loadSelectedLanguage()
+{
+  const KEY = "selectedLanguage"
+  const loaded = (await browser.storage.local.get(KEY))
+  if (!loaded[KEY])
+    return "en"
+  return loaded[KEY]
+} 
+
 function App() 
 {
-  const selectedDefault = "en"
-  const [language, setLanguage] = useState(selectedDefault);
+  const [language, setLanguage] = useState("");
   const [input, setInput] = useState<WatchData>({});
   const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [screen, setScreen] = useState<Screen>("PROGRESS")
@@ -29,8 +37,10 @@ function App()
       document.documentElement.classList.toggle("dark", data?.darkMode)
     })
     loadWatchData().then((data: any) => {
-      console.log(JSON.stringify(data))
       setInput(data)
+    })
+    loadSelectedLanguage().then((data: string) => {
+      setLanguage(data)
     })
   }, [])
 
@@ -50,6 +60,7 @@ function App()
 
   useSave(settings, saveSettings)
   useSave(input, saveWatchData)
+  useSave(language, async (language: string) => await browser.storage.local.set({selectedLanguage: language}))
 
   function getInputForLanguage(isoCode: string) : WatchDataEntry[]
   {
