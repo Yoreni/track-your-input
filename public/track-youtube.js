@@ -69,6 +69,12 @@ function updateVideoContext()
             videoElement.addEventListener('pause', stopTracking);
             videoElement.addEventListener('ended', stopTracking);
             console.log(`Detected video ID: ${currentVideoId} (Language: ${currentVideoLanguage})`);
+
+            setTimeout(() =>
+            {
+                if (!videoElement.paused)
+                    startTracking();
+            }, 100)
         });
     } else if (!newVideoId && currentVideoId) {
         console.log("Left video page. Resetting tracking context.");
