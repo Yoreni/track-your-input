@@ -21,6 +21,11 @@ export function isOnSameDay(date1: Date, date2: Date): boolean
            d1.getDate() === d2.getDate();
 }
 
+export function toIsoDate(date: Date)
+{
+    return date.toISOString().split("T")[0]
+}
+
 export function normaliseDay(date: Date): Date
 {
     const cutoffToday = new Date(
