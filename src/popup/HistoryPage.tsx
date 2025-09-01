@@ -104,7 +104,7 @@ function Row( {entry, isEven, deleteInput, editInput}: RowProps)
     return (
         <>
             <tr className={rowClasses}>
-                <td className="px-2 py-1 max-w-50 overflow-ellipsis overflow-hidden text-nowrap">{entry.description || entry.id}</td> {/* Adjusted max-width for description */}
+                <td className="px-2 py-1 max-w-50 overflow-ellipsis overflow-hidden text-nowrap">{entry.description ? entry.description : entry.id}</td> {/* Adjusted max-width for description */}
                 <td className="px-2 py-1">{formatTime(entry.time)}</td>
                 <td className="px-2 py-1 text-center whitespace-nowrap">
                     <button className="bg-green-600 hover:bg-green-700 text-white text-xs py-0.5 px-1 rounded mr-1" onClick={() => setEditDialogOpen(true)}>✏️</button>

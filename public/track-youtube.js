@@ -21,7 +21,8 @@ function stopTracking()
         type: "addWatchTime",
         id: currentVideoId,
         time,
-        language: currentVideoLanguage
+        language: currentVideoLanguage,
+        description: playerResponse.videoDetails.title
     }
     browser.runtime.sendMessage(data).catch(error => 
         console.error("Error sending message to background script:", error)
@@ -82,3 +83,5 @@ window.addEventListener('yt-navigate-start', (e) => {
     updateVideoContext()
 });
 document.addEventListener('DOMContentLoaded', updateVideoContext);
+
+window.addEventListener('beforeunload', stopTracking)

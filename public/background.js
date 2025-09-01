@@ -21,7 +21,7 @@ function normaliseDay(date)
     {
         browser.storage.local.get('youtubeWatchTimes').then(async (data) => 
         {
-            const {language, id, time} = message
+            const {language, id, time, description} = message
             const day = normaliseDay(new Date()).toISOString().split("T")[0]
             const entryId = `${id}${day}`
             let times = data.youtubeWatchTimes || {};
@@ -41,7 +41,7 @@ function normaliseDay(date)
                 {
                     time: Math.round(time),
                     date: new Date().toISOString(),
-                    description: ""
+                    description: description
                 }
                 times[language][entryId] = entry
             }
