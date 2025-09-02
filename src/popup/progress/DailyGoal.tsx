@@ -53,10 +53,10 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
             </div>
             <ProgressBar progress={inputToday / goal} />
         </div>
-        <Dialog isOpen={goalDialogOpen} className="flex justify-center flex-col items-center gap-2">
+        <Dialog isOpen={goalDialogOpen} className="flex justify-center flex-col items-center gap-4 py-2">
             <p className="text-xl font-bold">Edit Daily Goal</p>
             <DurationInput duration={goalField} setDuration={setGoalField} unit={"min"} />
-            <button onClick={handleDialogClose}>OK</button>
+            <button onClick={handleDialogClose} className="border-green-500 border-2 hover:border-green-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold py-1 px-2 rounded-lg">OK</button>
         </Dialog>
     </>)
 }

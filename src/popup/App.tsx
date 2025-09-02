@@ -44,10 +44,8 @@ function App()
     })
   }, [])
 
-  useEffect(() => { // if user deletes the langauge that the user selected
-    if (!settings)
-      return
-
+  useEffect(() => 
+  { // if user deletes the langauge that the user selected
     const learning = Object.keys(settings?.learning) 
     if (!learning.includes(language))
     {
