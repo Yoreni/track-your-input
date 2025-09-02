@@ -18,7 +18,7 @@ export function DurationInput({ duration: value, setDuration: setValue, unit }: 
     }
 
     return <div className="flex gap-1">
-        <input type="text" onChange={handleChange} value={value} className="w-8 text-center"/>
+        <input type="text" onChange={handleChange} value={value} className="w-8 text-center bg-gray-200 dark:bg-gray-900 rounded"/>
         <p>{unit}</p>
     </div>
 }
