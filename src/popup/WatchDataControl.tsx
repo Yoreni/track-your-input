@@ -61,33 +61,38 @@ export function WatchDataControl( { input, setInput}: Props)
 
     return <>
         <div>
+            <p className="font-bold text-lg pb-2 text-center">Data Management</p>
             <div className="flex justify-around">
-                <button onClick={() => handleExport()}>Export Data</button>
-                <button onClick={() => setDeleteDataDialog(true)}>Delete Data</button>
-                <button onClick={() => setImportDataDialog(true)}>Import Data</button>
+                <button onClick={() => handleExport()} className="border-gray-300 border-2 p-2 rounded-lg hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Export</button>
+                <button onClick={() => setImportDataDialog(true)} className="border-gray-300 p-2 rounded-lg border-2 hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Import</button>
+                <button onClick={() => setDeleteDataDialog(true)} className="border-red-300 p-2 rounded-lg border-2 hover:border-red-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Delete Data</button>
             </div>
             {bytesInUse > 0 && <p className="text-sm text-center text-gray-500">{formatBytes(bytesInUse)} in use</p>}
         </div>
         
         <Dialog isOpen={exportDialogOpen} className="flex flex-col gap-4">
             <p>Here is your data. Keep it in a safe place.</p>
-            <textarea rows={10} className="font-mono text-xs">{csvString}</textarea>
-            <button onClick={() => setExportDialogOpen(false)}>OK</button>
-            <button onClick={async () =>  await navigator.clipboard.writeText(csvString)}>Copy to Clipboard</button>
+            <textarea rows={10} className="font-mono text-xs bg-gray-200 dark:bg-gray-900 rounded p-0.5">{csvString}</textarea>
+            <div className="flex gap-2 justify-center">
+                <button onClick={() => setExportDialogOpen(false)} className="border-gray-300 border-2 rounded-lg hover:border-gray-400 p-2 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">OK</button>
+                <button onClick={async () =>  await navigator.clipboard.writeText(csvString)} className="border-gray-300 border-2 p-2 rounded-lg hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Copy to Clipboard</button>
+            </div>
         </Dialog>
-        <Dialog isOpen={deleteDataDialog} className="text-center">
+        <Dialog isOpen={deleteDataDialog} className="text-center flex flex-col gap-2">
             <p>Are you sure you want to delete your watch data?</p>
             <p>This can not be undone.</p>
-            <div className="flex gap-2 justify-center">
-                <button onClick={() => handleDataDeletion(true)}>Yes</button>
-                <button onClick={() => handleDataDeletion(false)}>No</button>
+            <div className="flex gap-2 justify-center pt-4">
+                <button onClick={() => handleDataDeletion(false)} className="border-gray-300 border-2 hover:border-gray-400 p-2 px-3 rounded-lg bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">No</button>
+                <button onClick={() => handleDataDeletion(true)} className="border-red-300 border-2 hover:border-red-400 p-2 rounded-lg bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Yes</button>
             </div>
         </Dialog>
         <Dialog isOpen={importDataDialog} className="flex flex-col gap-4">
             <p>Enter your import data here</p>
-            <textarea rows={10} className="font-mono text-xs" value={importDataInput} onChange={(e) => setImportDataInput(e.target.value)}/>
-            <button onClick={() => setImportDataDialog(false)}>Cancel</button>
-            <button onClick={() => handleImport()} className="disabled:text-gray-500" disabled={importDataInput.length == 0}>OK</button>
+            <textarea rows={10} className="font-mono text-xs bg-gray-200 dark:bg-gray-900 rounded p-0.5" value={importDataInput} onChange={(e) => setImportDataInput(e.target.value)}/>
+            <div className="flex gap-2 justify-center">
+                <button onClick={() => setImportDataDialog(false)} className="border-gray-300 border-2 hover:border-gray-400 p-2 rounded-lg bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Cancel</button>
+                <button onClick={() => handleImport()} className=" disabled:text-gray-500 disabled:border-gray-300 border-gray-300 border-2 hover:border-gray-400 p-2 rounded-lg bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold" disabled={importDataInput.length == 0}>OK</button>
+            </div>
         </Dialog>
     </>
 }

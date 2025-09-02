@@ -106,7 +106,7 @@ export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalStat
             </div>
             <div className="w-1/2 h-full flex flex-col justify-center gap-2">
                 <div>
-                    <p className="text-center">Description</p>
+                    <p className="text-center font-semibold">Description</p>
                     <textarea className="w-full max-h-18 bg-gray-200 dark:bg-gray-900 rounded p-0.5" rows={2} value={description} onChange={onDescriptionChange}></textarea>
                 </div>
                 {durationError && <p className="text-red-500 text-xs text-center">Duration cannot be 0.</p>}
@@ -115,7 +115,7 @@ export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalStat
                     <DurationInput duration={mins} setDuration={setMins} unit="m" />
                 </div>
                 <div className="flex flex-col">
-                    <p className="text-center">Date</p>
+                    <p className="text-center font-semibold">Date</p>
                     <input type="date" className="bg-gray-200 rounded dark:bg-gray-900 roundedp p-0.5" value={date} onChange={onDateChange}/>
                 </div>
             </div>

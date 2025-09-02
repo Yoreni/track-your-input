@@ -64,7 +64,7 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
             </>}
         </Card>
         <Card>
-            <p className="font-bold p-1 text-center">Learning</p>
+            <p className="font-bold pb-2 text-center text-lg">Languages Learning</p>
             <div className="grid grid-cols-3 gap-2">
                 {learning.map((lang) => <LanguageTileX language={lang} onClick={() => removeLanguageLearning(lang)}/>)}
                 <div className="text-center text-3xl text-black dark:text-white border-dashed border-3 rounded-lg border-blue-200" onClick={() => setAddLangauagesDialog(true)}>+</div>
