@@ -3,6 +3,7 @@ import { calculateTotalTime, type WatchDataEntry } from '../../WatchData';
 import { ProgressBar } from '../ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
 import type { Settings } from '../../Settings';
+import { AddSvg } from '../icons/AddSvg';
 interface Props {
     input: WatchDataEntry[]
     addInputEntry: (entry: WatchDataEntry) => void
@@ -83,7 +84,7 @@ export function InputCounter( {input, addInputEntry, settings}: Props )
     }
 
     const progress = calcProgress(input)
-    return <>
+    return <div className="relative">
         <div className='flex justify-between'>
             <p className='font-bold'>Total Input</p>
             <p>{formatHours(progress.totalInput)}</p>
@@ -100,8 +101,10 @@ export function InputCounter( {input, addInputEntry, settings}: Props )
         }
         <p className='text-center font-semibold text-gray-800 dark:text-gray-200'>Level {progress.level}</p>
         <div>
-          <button onClick={() => setAddInputDialogOpen(true)}>+</button>
+          <button onClick={() => setAddInputDialogOpen(true)} className='text-gray-500 hover:text-gray-600 absolute bottom-0 right-0'>
+              <AddSvg />
+          </button>
         </div>
         <AddInputDialog isOpen={addInputDialogOpen} onSubmit={addInputEntry} setOpen={setAddInputDialogOpen}/>
-    </>
+    </div>
 }

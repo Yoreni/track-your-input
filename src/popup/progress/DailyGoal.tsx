@@ -4,6 +4,7 @@ import { Dialog } from "../Dialog";
 import { ProgressBar } from "../ProgressBar";
 import { type Settings } from "../../Settings";
 import { DurationInput } from "./DurationInput";
+import { EditSvg } from "../icons/EditSvg";
 
 interface Props {
     input: WatchDataEntry[]
@@ -46,8 +47,10 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
         <div>
             <div className='flex justify-between'>
                 <p className='font-bold'>Daily Goal</p>
-                <div className="flex gap-1">
-                    <button onClick={() => setGoalDialogOpen(true)}>edit</button>
+                <div className="flex gap-4">
+                    <button onClick={() => setGoalDialogOpen(true)} className="text-gray-500 scale-75 hover:text-gray-600 ">
+                        <EditSvg />
+                    </button>
                     <p>{inputToday} / {goal} min</p>
                 </div>
             </div>

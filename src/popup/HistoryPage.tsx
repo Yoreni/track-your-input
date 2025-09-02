@@ -2,6 +2,8 @@ import { Fragment, useState } from "react"
 import type { EditWatchDataEntry, WatchDataEntry } from "../WatchData"
 import { AddInputDialog } from "./progress/AddInputDialog"
 import { normaliseDay, toIsoDate } from "../utils"
+import { EditSvg } from "./icons/EditSvg"
+import { DeleteSvg } from "./icons/DeleteSvg"
 
 interface Props 
 {
@@ -65,10 +67,10 @@ function Table({input, deleteInput, editInput}: Props)
     return (
         <table className="min-w-full divide-y divide-gray-700 text-sm">
             <thead>
-                <tr className="bg-gray-400 dark:bg-gray-600">
-                    <th className="px-2 py-1 text-left text-xs font-medium tracking-wider">Description</th>
-                    <th className="px-2 py-1 text-left text-xs font-medium tracking-wider">Time</th>
-                    <th className="px-2 py-1 text-center text-xs font-medium tracking-wider">Act.</th>
+                <tr className="bg-gray-400 dark:bg-gray-600 text-md font-medium">
+                    <th className="px-2 py-1 text-left tracking-wider">Description</th>
+                    <th className="px-2 py-1 text-left tracking-wider">Time</th>
+                    <th className="px-2 py-1 text-center tracking-wider">Act.</th>
                 </tr>
             </thead>
             <tbody className="bg-gray-800 divide-y divide-gray-700">
@@ -107,8 +109,12 @@ function Row( {entry, isEven, deleteInput, editInput}: RowProps)
                 <td className="px-2 py-1 max-w-50 overflow-ellipsis overflow-hidden text-nowrap">{entry.description ? entry.description : entry.id}</td> {/* Adjusted max-width for description */}
                 <td className="px-2 py-1">{formatTime(entry.time)}</td>
                 <td className="px-2 py-1 text-center whitespace-nowrap">
-                    <button className="bg-green-600 hover:bg-green-700 text-white text-xs py-0.5 px-1 rounded mr-1" onClick={() => setEditDialogOpen(true)}>✏️</button>
-                    <button className="bg-red-600 hover:bg-red-700 text-white text-xs py-0.5 px-1 rounded" onClick={deleteInput}>🗑️</button>
+                    <button className="bg-green-600 hover:bg-green-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded mr-1" onClick={() => setEditDialogOpen(true)}>
+                        <EditSvg />
+                    </button>
+                    <button className="bg-red-600 hover:bg-red-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded" onClick={deleteInput}>
+                        <DeleteSvg />
+                    </button>
                 </td>
             </tr>
             <AddInputDialog onSubmit={handleEdit} isOpen={editDialogOpen} setOpen={setEditDialogOpen} initalState={entry}/>
