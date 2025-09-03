@@ -1,10 +1,13 @@
 import { getDaysInMonth, HOUR_CUTOFF, isOnSameDay } from "./utils"
 
+export type InputType = "WATCHING" | "LISTENING" | "CONVERSATION" | "YOUTUBE"
+
 export interface EditWatchDataEntry
 {
     time?: number
     date?: Date
     description?: string
+    type: InputType
 } 
 
 export interface WatchDataEntry 
@@ -13,6 +16,7 @@ export interface WatchDataEntry
     date: Date
     id: string
     description?: string
+    type: InputType
 }
 
 export interface FlattenedWatchDataEntry extends WatchDataEntry

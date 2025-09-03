@@ -22,7 +22,8 @@ function stopTracking()
         id: currentVideoId,
         time,
         language: currentVideoLanguage,
-        description: playerResponse.videoDetails.title
+        description: playerResponse.videoDetails.title,
+        inputType: "YOUTUBE"
     }
     browser.runtime.sendMessage(data).catch(error => 
         console.error("Error sending message to background script:", error)

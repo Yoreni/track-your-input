@@ -98,8 +98,9 @@ function Row( {entry, isEven, deleteInput, editInput}: RowProps)
         editInput({
             description: entry.description, 
             date: entry.date, 
-            time: entry.time}
-        )
+            time: entry.time,
+            type: entry.type
+        })
     }
 
     const rowClasses = isEven ? "dark:bg-gray-800 bg-gray-200" : "dark:bg-gray-700 bg-gray-300";

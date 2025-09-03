@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import type { WatchDataEntry } from "../../WatchData";
+import type { InputType, WatchDataEntry } from "../../WatchData";
 import { Dialog } from "../Dialog";
 import { DurationInput } from "./DurationInput";
 import { HOUR_CUTOFF, normaliseDay } from "../../utils";
-
-type InputType = "WATCHING" | "LISTENING" | "CONVERSATION"
 
 interface Props 
 {
@@ -36,6 +34,7 @@ export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalStat
             setHours(0)
             setMins(0)
             setDescription("")
+            setInputType("WATCHING")
         }
         else
         {
@@ -46,9 +45,9 @@ export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalStat
             setHours(hours)
             setMins(mins)
             setDescription(initalState.description || "")
+            setInputType(initalState.type)
         }
         
-        setInputType("WATCHING")
         setDurationError(false)
     }
 
@@ -64,12 +63,14 @@ export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalStat
             time: inputDuration,
             date: new Date(new Date(date).setHours(HOUR_CUTOFF)),
             id: `m${new Date().toISOString()}${Math.floor(Math.random() * 100)}`,
-            description: description
+            description: description,
+            type: inputType
         }
         console.log(entry)
         onSubmit(entry)
         setOpen(false)
-        resetState()
+        if (!initalState)
+            resetState()
     }
 
     function onDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>)
@@ -89,8 +90,9 @@ export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalStat
 
     return <Dialog isOpen={isOpen} className="flex flex-col gap-3">
         <p className="font-bold text-xl text-center">Track Input Manually</p>
-        <div className="flex gap-3 h-60">
-            <div className="w-1/2 h-full flex justify-start flex-col gap-1">
+        <div className="flex gap-3 h-60 justify-center">
+            {["WATCHING", "LISTENING", "CONVERSATION"].includes(inputType) && 
+            <div className="h-full w-full flex justify-start flex-col gap-1">
                 <div className="border-gray-400 border-1 rounded-md w-full h-full flex items-center gap-1">
                     <input type="radio" name="input-type" value={"WATCHING"} className="m-0.5" checked={inputType === "WATCHING"} onChange={onInputTypeChange}/>
                     <p className="text-sm text-center">Watching videos or series</p>
@@ -103,8 +105,8 @@ export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalStat
                     <input type="radio" name="input-type" value={"CONVERSATION"} className="m-0.5" checked={inputType === "CONVERSATION"} onChange={onInputTypeChange}/>
                     <p className="text-sm text-center">Crosstalk or Speaking Practice </p>
                 </div>
-            </div>
-            <div className="w-1/2 h-full flex flex-col justify-center gap-2">
+            </div>}
+            <div className="h-full w-full flex flex-col justify-center gap-2">
                 <div>
                     <p className="text-center font-semibold">Description</p>
                     <textarea className="w-full max-h-18 bg-gray-200 dark:bg-gray-900 rounded p-0.5" rows={2} value={description} onChange={onDescriptionChange}></textarea>
