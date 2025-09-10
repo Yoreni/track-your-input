@@ -5,12 +5,29 @@
   "permissions": ["storage", "*://*.youtube.com/*"],
   "background": {"scripts": ["background.js"]},
   "content_scripts": [{
-        "matches": ["*://*.youtube.com/*"], 
+        "matches": ["*://*.youtube.com/*"],
+        "exclude_matches": [
+          "*://www.youtube.com/embed/*",
+          "*://www.youtube-nocookie.com/embed/*"
+        ],
         "js": ["track-youtube.js"],
         "run_at": "document_start"
-    }],
+    },
+    {
+      "matches": [
+        "*://www.youtube.com/embed/*",
+        "*://www.youtube-nocookie.com/embed/*"
+      ],
+      "js": ["inject-yt-iframe-api.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
   "browser_action": {
     "default_popup": "index.html",
     "default_icon": "icons/icon-48.png"
-  }
+  },
+  "web_accessible_resources": [
+      "track-embeded-youtube.js"
+  ]
 }
