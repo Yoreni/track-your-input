@@ -1,27 +1,15 @@
 let trackingStart = null;
+let isTracking = false
 videoInfo = {}
 
-function loadApi()
-{
-    if (window.YT && window.YT.Player) 
-    {
-        console.log("YT object already found")
-        onYouTubeIframeAPIReady();
-    } 
-    else 
-    {
-        console.log("Loading YT IFrame API")
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    }
-}
+const UNSTARTED_STATE = -1
+const ENDED_STATE = 0
+const PLAYING_STATE = 1
+const PAUSED_STATE = 2
 
 function getVideoLanguage(playerElement)
 {
     const tracks = playerElement.getAudioTrack().captionTracks
-    console.log(playerElement.getAudioTrack())
     let videoLanguage = 'unknown'; 
     const defaultTrack = tracks.find(track => track.kind === "asr");
     if (defaultTrack) 
@@ -34,14 +22,21 @@ function getVideoLanguage(playerElement)
 
 function startTracking()
 {
+    if (isTracking)
+        return
+
     trackingStart = new Date();
+    isTracking = true
     console.log("tracking video")
+    
 }
 
 function stopTracking()
 {
     if (!trackingStart)
-        return;
+        return
+    if (!isTracking)
+        return
 
     const time = (new Date - trackingStart) / 1000;
     trackingStart = null;
@@ -54,10 +49,11 @@ function stopTracking()
     }
 
     window.postMessage({ type: 'addWatchTime', payload: data }, '*');
+    isTracking = false
     console.log(`Video stopped - added ${time.toFixed(3)}s to tracker`)
 }
 
-function getVideoInfo(playerElement)
+function getVideoData(playerElement)
 {
     const data = playerElement.getVideoData()
     const id = data.video_id
@@ -66,36 +62,31 @@ function getVideoInfo(playerElement)
     videoInfo = {id, title, language}
 }
 
-const hookInterval = setInterval(() => {
-    const playerElement = document.getElementById('movie_player');
-    
-    if (playerElement && typeof playerElement.getPlayerState === 'function') 
-    {
-        getVideoInfo(playerElement)
-        console.log(`Found Embeded YT video ${videoInfo.id} in ${videoInfo.language} | ${videoInfo.title}`)
-        playerElement.addEventListener('onStateChange', onPlayerStateChange);
-        clearInterval(hookInterval);
-    }
-}, 500);
-
-function onYouTubeIframeAPIReady() 
+function videoStatePoll(playerElement)
 {
-
-};
-
-function onPlayerStateChange(event) 
-{
-    switch (event) {
-        case YT.PlayerState.PLAYING:
+    switch (playerElement.getPlayerState()) {
+        case PLAYING_STATE:
             startTracking();
             break;
-        case YT.PlayerState.PAUSED:
+        case PAUSED_STATE:
             stopTracking()
             break;
-        case YT.PlayerState.ENDED:
+        case ENDED_STATE:
             stopTracking()
             break;
     }
 }
 
-loadApi()
+const hookInterval = setInterval(() => {
+    const playerElement = document.getElementById('movie_player');
+    
+    if (playerElement && typeof playerElement.getPlayerState === 'function') 
+    {
+        getVideoData(playerElement)
+        console.log(`Found Embeded YT video ${videoInfo.id} in ${videoInfo.language} | ${videoInfo.title}`)
+        // playerElement.addEventListener('onStateChange', onPlayerStateChange);
+        clearInterval(hookInterval);
+        setInterval(() => videoStatePoll(playerElement), 100)
+    }
+}, 500);
+

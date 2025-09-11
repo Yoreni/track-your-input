@@ -1,3 +1,5 @@
+import browser from "webextension-polyfill";
+
 var script = document.createElement('script');
 script.src = chrome.runtime.getURL('track-embeded-youtube.js');
 script.onload = function() { this.remove(); };

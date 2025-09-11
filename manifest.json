@@ -1,16 +1,19 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "CI Tracker",
-  "version": "0.0.3",
-  "permissions": ["storage", "*://*.youtube.com/*"],
-  "background": {"scripts": ["background.js"]},
+  "version": "0.1.0",
+  "permissions": ["storage"],
+  "background": {
+    "scripts": ["src/background.js"],
+    "service_worker": "src/background.js"
+  },
   "content_scripts": [{
         "matches": ["*://*.youtube.com/*"],
         "exclude_matches": [
           "*://www.youtube.com/embed/*",
           "*://www.youtube-nocookie.com/embed/*"
         ],
-        "js": ["track-youtube.js"],
+        "js": ["src/track-youtube.js"],
         "run_at": "document_start"
     },
     {
@@ -18,16 +21,18 @@
         "*://www.youtube.com/embed/*",
         "*://www.youtube-nocookie.com/embed/*"
       ],
-      "js": ["inject-yt-iframe-api.js"],
+      "js": ["src/inject-yt-iframe-api.js"],
       "run_at": "document_idle",
       "all_frames": true
     }
   ],
-  "browser_action": {
-    "default_popup": "index.html",
-    "default_icon": "icons/icon-48.png"
+  "action": {
+    "default_popup": "index.html"
   },
   "web_accessible_resources": [
-      "track-embeded-youtube.js"
+    {
+        "resources": [ "track-embeded-youtube.js"],
+        "matches": [ "<all_urls>" ]
+    }
   ]
 }

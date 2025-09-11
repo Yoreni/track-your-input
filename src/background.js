@@ -1,3 +1,5 @@
+import browser from "webextension-polyfill";
+
 const HOUR_CUTOFF = 4
 
 function normaliseDay(date)
@@ -15,7 +17,7 @@ function normaliseDay(date)
     return cutoffYesterday;
 }
 
- browser.runtime.onMessage.addListener((message) => 
+browser.runtime.onMessage.addListener((message) => 
 {
     if (message.type === "addWatchTime") 
     {
@@ -50,7 +52,7 @@ function normaliseDay(date)
                 times[language][entryId] = entry
             }
         
-            await browser.storage.local.set({youtubeWatchTimes: times});
+            browser.storage.local.set({youtubeWatchTimes: times});
             console.log("saved", times[language][entryId])
         });
     }
