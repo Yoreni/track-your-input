@@ -12,7 +12,7 @@
         "exclude_matches": [
           "*://www.youtube.com/embed/*"
         ],
-        "js": ["src/track-youtube.js"],
+        "js": ["src/trackers/track-youtube.js"],
         "run_at": "document_start"
     },
     {
@@ -20,7 +20,7 @@
         "*://www.youtube.com/embed/*",
         "*://www.youtube-nocookie.com/embed/*"
       ],
-      "js": ["src/inject-yt-iframe-api.js"],
+      "js": ["src/trackers/inject-yt-iframe-api.js"],
       "run_at": "document_idle",
       "all_frames": true
     }
