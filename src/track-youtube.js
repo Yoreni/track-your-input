@@ -1,3 +1,5 @@
+let API;
+
 let currentVideoId = null;
 let currentVideoLanguage = 'unknown';
 let videoElement = null;
@@ -25,7 +27,8 @@ function stopTracking()
         description: playerResponse.videoDetails.title,
         inputType: "YOUTUBE"
     }
-    browser.runtime.sendMessage(data).catch(error => 
+
+    API.runtime.sendMessage(data).catch(error => 
         console.error("Error sending message to background script:", error)
     );
     console.log(`Video stopped - added ${time.toFixed(3)}s to tracker`)
@@ -89,6 +92,11 @@ function updateVideoContext()
 window.addEventListener('yt-navigate-start', (e) => {
     updateVideoContext()
 });
-document.addEventListener('DOMContentLoaded', updateVideoContext);
+document.addEventListener('DOMContentLoaded', () =>
+{
+    updateVideoContext()
+    API = typeof browser !== 'undefined' ? browser : chrome
+
+});
 
 window.addEventListener('beforeunload', stopTracking)

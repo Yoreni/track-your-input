@@ -1,8 +1,8 @@
-import browser from "webextension-polyfill";
+const API = typeof browser !== 'undefined' ? browser : chrome
 
 const HOUR_CUTOFF = 4
 
-function normaliseDay(date)
+export function normaliseDay(date)
 {
     const cutoffToday = new Date(
         date.getFullYear(),
@@ -17,11 +17,12 @@ function normaliseDay(date)
     return cutoffYesterday;
 }
 
-browser.runtime.onMessage.addListener((message) => 
+API.runtime.onMessage.addListener((message) => 
 {
     if (message.type === "addWatchTime") 
     {
-        browser.storage.local.get('youtubeWatchTimes').then(async (data) => 
+        console.log("Adding to background", message)
+        API.storage.local.get('youtubeWatchTimes').then(async (data) => 
         {
             const {language, id, time, description, inputType} = message
             if (language === "unknown")
@@ -39,6 +40,7 @@ browser.runtime.onMessage.addListener((message) =>
                 let entry = times[language][entryId]
                 entry.time += Math.round(time)
                 times[language][entryId] = entry
+                console.log("edit", entry)
             }
             else
             {
@@ -50,10 +52,12 @@ browser.runtime.onMessage.addListener((message) =>
                     type: inputType
                 }
                 times[language][entryId] = entry
+                console.log("new", entry)
             }
         
-            browser.storage.local.set({youtubeWatchTimes: times});
-            console.log("saved", times[language][entryId])
+        
+            API.storage.local.set({youtubeWatchTimes: times});
+            console.log("saved")
         });
     }
 });

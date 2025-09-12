@@ -8,11 +8,12 @@ import { ProgressDashboard } from './ProgressDashboard';
 import { type Screen } from '../utils';
 import { SettingsPage } from './SettingsPage';
 import { HistoryPage } from './HistoryPage';
+import { EXTENSION_API } from '../extension-api';
 
 async function loadSelectedLanguage()
 {
   const KEY = "selectedLanguage"
-  const loaded = (await browser.storage.local.get(KEY))
+  const loaded = (await EXTENSION_API.getLocalStorage(KEY))
   if (!loaded[KEY])
     return "en"
   return loaded[KEY]
@@ -39,7 +40,7 @@ function App()
     loadWatchData().then((data: any) => {
       setInput(data)
     })
-    loadSelectedLanguage().then((data: string) => {
+    loadSelectedLanguage().then((data: any) => {
       setLanguage(data)
     })
   }, [])
@@ -58,7 +59,7 @@ function App()
 
   useSave(settings, saveSettings)
   useSave(input, saveWatchData)
-  useSave(language, async (language: string) => await browser.storage.local.set({selectedLanguage: language}))
+  useSave(language, async (language: string) => await EXTENSION_API.setLocalStorage("selectedLanguage", language))
 
   function getInputForLanguage(isoCode: string) : WatchDataEntry[]
   {

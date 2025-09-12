@@ -86,39 +86,6 @@ export async function downloadAsCSV(data: object[])
     }
 }
 
-// function validateCsvString(csvString: string): boolean
-// {
-//     const trimmedString = csvString.trim();
-//     if (trimmedString === '') {
-//         return false;
-//     }
-
-//     const rows = trimmedString.split(/\r?\n/).filter(row => row.trim() !== '');
-
-//     if (rows.length === 0) 
-//         return false;
-
-//     if (!_strictValidateCsvRow(rows[0])) {
-//         return false;
-//     }
-
-//     const headerValues = _lenientParseCsvRow(rows[0]);
-//     if (headerValues.length === 0) {
-//         return false; 
-//     }
-//     const expectedColumnCount = headerValues.length;
-
-
-//     for (let i = 1; i < rows.length; i++) {
-//         const row = rows[i]
-//         if (!_strictValidateCsvRow(row, expectedColumnCount)) 
-//             return false
-    
-//     }
-
-//     return true;
-// }
-
 function _lenientParseCsvRow(rowStr: string): string[] 
 {
     const values: string[] = [];

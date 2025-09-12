@@ -10,8 +10,7 @@
   "content_scripts": [{
         "matches": ["*://*.youtube.com/*"],
         "exclude_matches": [
-          "*://www.youtube.com/embed/*",
-          "*://www.youtube-nocookie.com/embed/*"
+          "*://www.youtube.com/embed/*"
         ],
         "js": ["src/track-youtube.js"],
         "run_at": "document_start"

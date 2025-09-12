@@ -23,7 +23,10 @@ export function isOnSameDay(date1: Date, date2: Date): boolean
 
 export function toIsoDate(date: Date)
 {
-    return date.toISOString().split("T")[0]
+    const day = date.getDate()
+    const month = date.getMonth() + 1 
+    const year = date.getFullYear()
+    return `${year.toString().padStart(4, '0')}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
 }
 
 export function normaliseDay(date: Date): Date

@@ -1,3 +1,4 @@
+import { EXTENSION_API } from "./extension-api";
 import { getDaysInMonth, HOUR_CUTOFF, isOnSameDay } from "./utils"
 
 export type InputType = "WATCHING" | "LISTENING" | "CONVERSATION" | "YOUTUBE"
@@ -58,7 +59,7 @@ export async function loadWatchData(): Promise<WatchData>
 {
     try
     {    
-        let loadedData = (await browser.storage.local.get(KEY))
+        let loadedData: Record<string, any> = (await EXTENSION_API.getLocalStorage(KEY))
         if (!loadedData[KEY])
             return {}
         loadedData = loadedData[KEY]
@@ -82,7 +83,6 @@ export async function loadWatchData(): Promise<WatchData>
 
 export async function saveWatchData(watchData: WatchData)
 {
-    console.log(JSON.stringify({watchData}))
     let object: any = {}
     for (const [language, data] of Object.entries(watchData))
     {
@@ -96,7 +96,7 @@ export async function saveWatchData(watchData: WatchData)
     
     try
     {
-        await browser.storage.local.set({[KEY]: object})
+        await EXTENSION_API.setLocalStorage(KEY, object)
     }
     catch (error)
     {

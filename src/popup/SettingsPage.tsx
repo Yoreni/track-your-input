@@ -6,6 +6,8 @@ import { getLanguage } from "../language";
 import { WatchDataControl } from "./WatchDataControl";
 import { Dialog } from "./Dialog";
 import { LanguageSelector } from "./LanguageSelector";
+import { EXTENSION_API, type BrowserInfo } from "../extension-api";
+
 
 interface Props {
     settings: Settings
@@ -31,12 +33,15 @@ function toggleExcatTime(value: boolean, setSettings: Dispatch<SetStateAction<Se
 
 export function SettingsPage( {settings, setSettings, input, setInput}: Props)
 {
-    const [browserInfo, setBrowserInfo] = useState<browser.runtime.BrowserInfo>()
+    const [browserInfo, setBrowserInfo] = useState<BrowserInfo>()
     const [addLangaugesDialog, setAddLangauagesDialog] = useState(false)
 
     useEffect(() => {
-        browser.runtime.getBrowserInfo().then(data => setBrowserInfo(data))
-    })
+        EXTENSION_API.getBrowserInfo().then((data: BrowserInfo) => 
+            {
+                setBrowserInfo(data)
+            })
+    }, [])
 
     const learning = Object.keys(settings.learning)
 

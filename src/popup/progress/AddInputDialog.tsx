@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { InputType, WatchDataEntry } from "../../WatchData";
 import { Dialog } from "../Dialog";
 import { DurationInput } from "./DurationInput";
-import { HOUR_CUTOFF, normaliseDay } from "../../utils";
+import { HOUR_CUTOFF, normaliseDay, toIsoDate } from "../../utils";
 
 interface Props 
 {
@@ -41,7 +41,7 @@ export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalStat
             const hours = Math.floor(initalState.time / 3600)
             const mins = Math.floor(initalState.time / 60) % 60
 
-            setDate(initalState.date.toISOString().split("T")[0])
+            setDate(toIsoDate(initalState.date))
             setHours(hours)
             setMins(mins)
             setDescription(initalState.description || "")

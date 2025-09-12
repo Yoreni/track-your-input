@@ -3,6 +3,8 @@ import { Dialog } from "./Dialog";
 import { downloadAsCSV, isDirectDownloadSuported, parseCsvString, toCsvString } from "../csvFile";
 import { type WatchData, convertToFlattenedList, type FlattenedWatchDataEntry, convertFromFlattenedList } from "../WatchData";
 import { formatBytes } from "../utils";
+import { EXTENSION_API } from "../extension-api";
+// import browser from "webextension-polyfill"
 
 interface Props 
 {
@@ -23,15 +25,12 @@ export function WatchDataControl( { input, setInput}: Props)
     const flattenedInout = convertToFlattenedList(input)
 
     useEffect(() => {
-        if (browser.storage.local.getBytesInUse)
+        EXTENSION_API.getLocalBytesInUse().then((bytes: any) =>
         {
-            browser.storage.local.getBytesInUse().then((bytes) =>
-            {
-                if (!bytes)
-                    bytes = -1
-                setBytesInUse(bytes)
-            })
-        }
+            if (!bytes)
+                bytes = -1
+            setBytesInUse(bytes)
+        })
     })
 
     function handleExport()

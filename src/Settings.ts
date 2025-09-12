@@ -1,3 +1,5 @@
+import { EXTENSION_API } from "./extension-api";
+
 export interface Settings 
 {
   learning: Record<string, LanguageSettings>
@@ -28,7 +30,7 @@ export async function saveSettings(settings: Settings)
 {
   try
   {
-    await browser.storage.local.set({[KEY]: settings});
+    await EXTENSION_API.setLocalStorage(KEY, settings);
   }
   catch (error)
   {
@@ -40,7 +42,7 @@ export async function loadSettings(): Promise<Settings>
 {
   try
   {
-    const loadedSettings = (await browser.storage.local.get(KEY))
+    const loadedSettings = (await EXTENSION_API.getLocalStorage(KEY))
     if (!loadedSettings[KEY])
       return makeDefaultSettings()
     return loadedSettings[KEY] as Settings
