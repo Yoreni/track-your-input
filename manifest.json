@@ -30,7 +30,7 @@
   },
   "web_accessible_resources": [
     {
-        "resources": [ "track-embeded-youtube.js"],
+        "resources": [ "track-embeded-youtube.js", "track-shaka.js"],
         "matches": [ "<all_urls>" ]
     }
   ]

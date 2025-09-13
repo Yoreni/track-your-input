@@ -1,5 +1,5 @@
 import { EXTENSION_API } from "./extension-api";
-import { getDaysInMonth, HOUR_CUTOFF, isOnSameDay } from "./utils"
+import { getDaysInMonth, HOUR_CUTOFF, isOnSameDay, toIsoDate } from "./utils"
 
 export type InputType = "WATCHING" | "LISTENING" | "CONVERSATION" | "YOUTUBE"
 
@@ -69,7 +69,7 @@ export async function loadWatchData(): Promise<WatchData>
                 [key, value]) => ({
                     ...value,
                     language: language,
-                    id: key, date: new Date(value.date)
+                    id: key, date: new Date(new Date(value.date).setHours(HOUR_CUTOFF))
                 }))
         }
         return loadedData
@@ -90,7 +90,9 @@ export async function saveWatchData(watchData: WatchData)
         for (const entry of data)
         {
             const {id, ...newEntry} = entry
-            object[language][id] = newEntry
+            object[language][id] = {...newEntry,
+                 date: toIsoDate(newEntry.date)
+            }
         }
     }
     

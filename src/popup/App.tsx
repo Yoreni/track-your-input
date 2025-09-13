@@ -33,14 +33,17 @@ function App()
   }
 
   useEffect(() => {
-    loadSettings().then((data: Settings) => {
+    loadSettings().then((data: Settings) => 
+    {
       setSettings(data)
       document.documentElement.classList.toggle("dark", data?.darkMode)
     })
-    loadWatchData().then((data: any) => {
+    loadWatchData().then((data: any) => 
+    {
       setInput(data)
     })
-    loadSelectedLanguage().then((data: any) => {
+    loadSelectedLanguage().then((data: any) => 
+    {
       setLanguage(data)
     })
   }, [])

@@ -1,7 +1,8 @@
 const API = typeof browser !== 'undefined' ? browser : chrome
+const INJECT_SCRIPT = "track-embeded-youtube.js"
 
 var script = document.createElement('script');
-script.src = chrome.runtime.getURL('track-embeded-youtube.js');
+script.src = API.runtime.getURL("track-embeded-youtube.js");
 script.onload = function() { this.remove(); };
 (document.head || document.documentElement).appendChild(script);
 
