@@ -23,7 +23,7 @@ export function ProgressDashboard({input, addInputEntry, settings, setSettings, 
     function show()
     {
         if (learning.length === 0)
-            return <Card className="h-full">
+            return <Card className="h-136">
                     <LanguageSelector learning={learning} setSettings={setSettings} />
                 </Card>
         if (!language)
@@ -39,7 +39,7 @@ export function ProgressDashboard({input, addInputEntry, settings, setSettings, 
     }
 
     return <>
-        <div className={`flex justify-start items-center flex-col gap-2 ${learning.length ? "" : "h-svh"}`}>
+        <div className={`flex justify-start items-center flex-col gap-2`}>
             {show()}
         </div>
     </>
