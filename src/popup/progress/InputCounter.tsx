@@ -86,20 +86,20 @@ export function InputCounter( {input, addInputEntry, settings}: Props )
     const progress = calcProgress(input)
     return <div className="relative">
         <div className='flex justify-between'>
-            <p className='font-bold'>Total Input</p>
-            <p>{formatHours(progress.totalInput)}</p>
+            <p className='font-bold text-base'>Total Input</p>
+            <p className='text-base'>{formatHours(progress.totalInput)}</p>
         </div>
         { progress.level < HOURS_FOR_LEVEL.length &&
         <>
         <ProgressBar progress={progress.progress} />
         <div className='flex justify-between'>
             <p className='text-gray-400 text-sm'>{HOURS_FOR_LEVEL[progress.level - 1]}h</p>
-            <p>{formatHours(progress.remainingInput)} to go</p>
+            <p className='text-base'>{formatHours(progress.remainingInput)} to go</p>
             <p className='text-gray-400 text-sm'>{HOURS_FOR_LEVEL[progress.level]}h</p>
         </div>
         </>
         }
-        <p className='text-center font-semibold text-gray-800 dark:text-gray-200'>Level {progress.level}</p>
+        <p className='text-center text-base font-semibold text-gray-800 dark:text-gray-200'>Level {progress.level}</p>
         <div>
           <button onClick={() => setAddInputDialogOpen(true)} className='text-gray-500 hover:text-gray-600 absolute bottom-0 right-0'>
               <AddSvg />

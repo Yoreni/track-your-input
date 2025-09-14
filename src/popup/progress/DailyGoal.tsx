@@ -46,12 +46,12 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
     return ( <>
         <div>
             <div className='flex justify-between'>
-                <p className='font-bold'>Daily Goal</p>
+                <p className='font-bold text-base'>Daily Goal</p>
                 <div className="flex gap-4">
                     <button onClick={() => setGoalDialogOpen(true)} className="text-gray-500 scale-75 hover:text-gray-600 ">
                         <EditSvg />
                     </button>
-                    <p>{inputToday} / {goal} min</p>
+                    <p className="text-base">{inputToday} / {goal} min</p>
                 </div>
             </div>
             <ProgressBar progress={inputToday / goal} />
@@ -59,7 +59,7 @@ export function DailyGoal({input, language, goal, setSettings}: Props)
         <Dialog isOpen={goalDialogOpen} className="flex justify-center flex-col items-center gap-4 py-2">
             <p className="text-xl font-bold">Edit Daily Goal</p>
             <DurationInput duration={goalField} setDuration={setGoalField} unit={"min"} />
-            <button onClick={handleDialogClose} className="border-green-500 border-2 hover:border-green-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold py-1 px-2 rounded-lg">OK</button>
+            <button onClick={handleDialogClose} className="border-green-500 border-2 hover:border-green-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 text-base font-bold py-1 px-2 rounded-lg">OK</button>
         </Dialog>
     </>)
 }

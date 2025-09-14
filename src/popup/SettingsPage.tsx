@@ -93,7 +93,7 @@ export interface LanguageTileProps {
 
 export function LanguageTileBase({language, children, className="", onClick}: LanguageTileProps)
 {
-    return <div onClick={onClick} className={`bg-blue-200 rounded-md flex items-center justify-center text-black min-h-12 ${className}`}>
+    return <div onClick={onClick} className={`bg-blue-200 text-base rounded-md flex items-center justify-center text-black min-h-12 ${className}`}>
         <p>{getLanguage(language)?.name}</p>
         {children}
     </div>

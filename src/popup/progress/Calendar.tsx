@@ -116,7 +116,7 @@ const cellTypeClass: Record<DayCellType, string> = {
 function DayCell( {day, input = 0, cellType}: DayCellProps )
 {
     return <div className={`flex flex-col justify-center m-0 p-0 items-center h-11 max-h-11 max-w-11 rounded-lg text-md ${cellTypeClass[cellType]}`} >
-        <p className="font-bold">{day}</p>
+        <p className="font-bold text-base">{day}</p>
         {input > 0 && <div className="text-xs font-normal text-rgba(180, 180, 180, 0.8) mr-0.5">
             {formatInputMins(input)}
         </div>}

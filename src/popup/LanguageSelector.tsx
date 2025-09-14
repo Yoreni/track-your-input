@@ -40,7 +40,7 @@ export function LanguageSelector({learning, setSettings, onFinish = () => {}}: P
         <div className="flex gap-2 flex-col items-center overflow-scroll w-full">
             {notLearning.map(lang => <LangaugesTileSelect language={lang.iso} active={selected.includes(lang.iso)} onClick={() => handleSelect(lang.iso)}/>)}
         </div>
-        <button onClick={handleOk}>OK</button>
+        <button className="border-green-500 border-2 hover:border-green-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 text-base font-bold py-1 px-2 rounded-lg" onClick={handleOk}>OK</button>
     </div>
 }
 

@@ -62,9 +62,9 @@ export function WatchDataControl( { input, setInput}: Props)
         <div>
             <p className="font-bold text-lg pb-2 text-center">Data Management</p>
             <div className="flex justify-around">
-                <button onClick={() => handleExport()} className="border-gray-300 border-2 p-2 rounded-lg hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Export</button>
-                <button onClick={() => setImportDataDialog(true)} className="border-gray-300 p-2 rounded-lg border-2 hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Import</button>
-                <button onClick={() => setDeleteDataDialog(true)} className="border-red-300 p-2 rounded-lg border-2 hover:border-red-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Delete Data</button>
+                <button onClick={() => handleExport()} className="border-gray-300 border-2 p-2 rounded-lg hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold text-base">Export</button>
+                <button onClick={() => setImportDataDialog(true)} className="border-gray-300 p-2 rounded-lg border-2 hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold text-base">Import</button>
+                <button onClick={() => setDeleteDataDialog(true)} className="border-red-300 p-2 rounded-lg border-2 hover:border-red-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold text-base">Delete Data</button>
             </div>
             {bytesInUse > 0 && <p className="text-sm text-center text-gray-500">{formatBytes(bytesInUse)} in use</p>}
         </div>

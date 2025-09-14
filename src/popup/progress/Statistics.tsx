@@ -40,7 +40,7 @@ export function Statistics({input}: StatisticsProp)
     const daysPracticed = getDaysPracticed(input)
 
     return <div>
-        <p className="font-bold">Statistics</p>
+        <p className="font-bold text-base">Statistics</p>
         <div className="flex flex-col gap-2">
             <StatisticsCell dataPoint={streak} description={`/${STREAK_CAP} day streak`}/>
             <StatisticsCell dataPoint={daysPracticed.toLocaleString()} description=" days practiced"/>

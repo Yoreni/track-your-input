@@ -54,7 +54,7 @@ export function HistoryPage( {input, deleteInput, editInput}: Props )
         <div className="p-2 bg-gray-200 dark:bg-gray-800 mx-auto text-black dark:text-white">
             {sortedDates.map(date => (
                 <Fragment key={date}>
-                    <p className="font-bold text-center pt-2">{formatDate(new Date(date))}</p>
+                    <p className="font-bold text-base text-center pt-2">{formatDate(new Date(date))}</p>
                     <Table input={groupedByDate[date]} deleteInput={deleteInput} editInput={editInput}/>
                 </Fragment>
            ))}
