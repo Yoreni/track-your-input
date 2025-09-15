@@ -1,6 +1,6 @@
 let trackingStart = null;
 let isTracking = false
-videoInfo = {}
+videoInfo = null
 
 const UNSTARTED_STATE = -1
 const ENDED_STATE = 0
@@ -71,6 +71,8 @@ function videoStatePoll(playerElement)
 {
     switch (playerElement.getPlayerState()) {
         case PLAYING_STATE:
+            if (!videoInfo)
+                getVideoData(playerElement)
             startTracking();
             break;
         case PAUSED_STATE:
@@ -87,8 +89,6 @@ const hookInterval = setInterval(() => {
     
     if (playerElement && typeof playerElement.getPlayerState === 'function') 
     {
-        getVideoData(playerElement)
-        console.log(`Found Embeded YT video ${videoInfo.id} in ${videoInfo.language} | ${videoInfo.title}`)
         // playerElement.addEventListener('onStateChange', onPlayerStateChange);
         clearInterval(hookInterval);
         setInterval(() => videoStatePoll(playerElement), 100)

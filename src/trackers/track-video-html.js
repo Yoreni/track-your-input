@@ -115,7 +115,7 @@ function prepareVideo(video)
 function getLanguage(video)
 {
     const videoLang = getLanguageFromVideo(video)
-    if (videoLang !== "unknown")
+    if (videoLang !== "unknown" && videoLang !== "")
         return videoLang.split("-")[0]
     return getLanguageFromURL(video.baseURI)
 }
