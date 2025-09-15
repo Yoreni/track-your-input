@@ -23,5 +23,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "public/track-youtube.jstube.js", "public/track-embeded-youtube.js"]
+  "include": ["src", "public/track-embeded-youtube.js"]
 }

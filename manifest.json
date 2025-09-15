@@ -7,7 +7,12 @@
     "scripts": ["src/background.js"],
     "service_worker": "src/background.js"
   },
-  "content_scripts": [{
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/trackers/track-video-html.js"]
+    },
+    {
         "matches": ["*://*.youtube.com/*"],
         "exclude_matches": [
           "*://www.youtube.com/embed/*"
@@ -30,7 +35,7 @@
   },
   "web_accessible_resources": [
     {
-        "resources": [ "track-embeded-youtube.js", "track-shaka.js"],
+        "resources": [ "track-embeded-youtube.js"],
         "matches": [ "<all_urls>" ]
     }
   ]
