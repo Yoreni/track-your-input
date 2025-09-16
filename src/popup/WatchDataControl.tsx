@@ -59,7 +59,7 @@ export function WatchDataControl( { input, setInput}: Props)
         setDeleteDataDialog(false)
     }
 
-    const csvString = toCsvString(flattenedInout)
+    const csvString = toCsvString(flattenedInout, ["id","date","language","time","description","type"])
 
     return <>
         <div>

@@ -50,14 +50,20 @@ export function HistoryPage( {input, deleteInput, editInput}: Props )
     const groupedByDate = group<WatchDataEntry>(input, (entry) => toIsoDate(normaliseDay(entry.date)))
     const sortedDates = Object.keys(groupedByDate).sort((a, b) => b.localeCompare(a)); //ensure present to past
 
-    return (
-        <div className="p-2 bg-gray-200 dark:bg-gray-800 mx-auto text-black dark:text-white">
-            {sortedDates.map(date => (
+    const historyTable = sortedDates.map(date => (
                 <Fragment key={date}>
                     <p className="font-bold text-base text-center pt-2">{formatDate(new Date(date))}</p>
                     <Table input={groupedByDate[date]} deleteInput={deleteInput} editInput={editInput}/>
                 </Fragment>
-           ))}
+           ))
+
+    return (
+        <div className="p-2 bg-gray-200 dark:bg-gray-800 mx-auto text-black dark:text-white">
+            {sortedDates.length > 0 ? historyTable :
+            <>
+                <p className="text-2xl text-center text-gray-500 font-bold">No History</p>
+                <p className="text-base text-center text-gray-500">History will appear here as you watch videos</p>
+            </>}
         </div>
     )
 }

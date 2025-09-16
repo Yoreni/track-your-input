@@ -11,12 +11,20 @@ function escapeCsvValue(value: string)
     return stringValue;
 }
 
-export function toCsvString(data: object[]) 
+function getHeader(data: object[], desiredHeaderOrder: string[] = []) 
+{
+    const allKeys = Object.keys(data[0])
+    if (desiredHeaderOrder.length === 0)
+        return allKeys;
+    return desiredHeaderOrder.filter(key => allKeys.includes(key))
+}
+
+export function toCsvString(data: object[], desiredHeaderOrder: string[] = []) 
 {
     if (!data || data.length === 0)
         return '';
 
-    const headers = Object.keys(data[0]);
+    const headers = getHeader(data, desiredHeaderOrder);
     const csvRows = [];
 
     csvRows.push(headers.map(escapeCsvValue).join(','));
