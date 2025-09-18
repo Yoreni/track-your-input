@@ -1,13 +1,10 @@
+import { useContext } from "react";
 import { normaliseDay } from "../../utils";
 import { getInputOnDay, type WatchDataEntry } from "../../WatchData";
 import { StatisticsCell } from "./StatisticsCell";
+import { InputContext } from "../App";
 
 const STREAK_CAP = 7;
-
-interface StatisticsProp 
-{
-    input: WatchDataEntry[]
-}
 
 function getStreak(input: WatchDataEntry[]) 
 {
@@ -34,8 +31,12 @@ function getDaysPracticed(input: WatchDataEntry[])
     return new Set(daysPracticed).size
 }
 
-export function Statistics({input}: StatisticsProp)
+export function Statistics()
 {
+    const input = useContext(InputContext)
+    if (!input)
+        return
+
     const streak = Math.min(getStreak(input), STREAK_CAP);
     const daysPracticed = getDaysPracticed(input)
 

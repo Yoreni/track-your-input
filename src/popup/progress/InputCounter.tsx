@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { calculateTotalTime, type WatchDataEntry } from '../../WatchData';
 import { ProgressBar } from '../ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
 import type { Settings } from '../../Settings';
 import { AddSvg } from '../icons/AddSvg';
-interface Props {
-    input: WatchDataEntry[]
+import { InputContext } from '../App';
+
+interface Props 
+{
     addInputEntry: (entry: WatchDataEntry) => void
     settings: Settings
 }
@@ -73,8 +75,12 @@ function calcProgress(input: any)
     }
 }
 
-export function InputCounter( {input, addInputEntry, settings}: Props )
+export function InputCounter( {addInputEntry, settings}: Props )
 {
+    const input = useContext(InputContext)
+    if (!input)
+        return
+
     const [addInputDialogOpen, setAddInputDialogOpen] = useState(false)
 
     function formatHours(seconds: number)

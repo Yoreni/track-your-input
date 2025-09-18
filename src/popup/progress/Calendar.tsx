@@ -1,9 +1,10 @@
 // import { useState } from "react";
 
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { getDaysInMonth, isOnSameDay } from "../../utils"
 import { calcInputThisMonth, getInputDataForMonth, type WatchDataEntry } from "../../WatchData"
 import { StatisticsCell } from "./StatisticsCell"
+import { InputContext } from "../App"
 
 function formatDateHeader(date: Date, locale: Intl.LocalesArgument = "en"): String
 {
@@ -54,13 +55,14 @@ function drawDayCells(monthDisplay: Date, input: WatchDataEntry[], goal: number)
 
 interface CalendarProps 
 {
-    input: WatchDataEntry[]
     goal: number
 }
 
-export function Calendar({input, goal}: CalendarProps )
+export function Calendar({goal}: CalendarProps )
 {
-    input;
+    const input = useContext(InputContext)
+    if (!input)
+        return
     const [monthDisplay, setMonthDisplay] = useState(new Date())
 
     function changeMonth(amount: number)

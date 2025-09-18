@@ -9,14 +9,13 @@ import { Statistics } from "./progress/Statistics";
 
 interface Props 
 {
-    input: WatchDataEntry[]
     addInputEntry: (entry: WatchDataEntry) => void
     settings: Settings
     setSettings: React.Dispatch<React.SetStateAction<Settings>>
     language: string
 }
 
-export function ProgressDashboard({input, addInputEntry, settings, setSettings, language}: Props)
+export function ProgressDashboard({addInputEntry, settings, setSettings, language}: Props)
 {
     const learning = Object.keys(settings.learning)
 
@@ -35,7 +34,7 @@ export function ProgressDashboard({input, addInputEntry, settings, setSettings, 
                 <p>Deleted language selected</p>
             </Card>
         
-        return <Dashboard input={input} addInputEntry={addInputEntry} settings={settings} setSettings={setSettings} language={language} />
+        return <Dashboard addInputEntry={addInputEntry} settings={settings} setSettings={setSettings} language={language} />
     }
 
     return <>
@@ -45,22 +44,22 @@ export function ProgressDashboard({input, addInputEntry, settings, setSettings, 
     </>
 }
 
-function Dashboard({input, addInputEntry, settings, setSettings, language}: Props)
+function Dashboard({addInputEntry, settings, setSettings, language}: Props)
 {
     const goal = settings?.learning[language].dailyGoal
 
     return <>
             <Card>
-                <DailyGoal input={input} language={language} goal={goal} setSettings={setSettings}/>
+                <DailyGoal language={language} goal={goal} setSettings={setSettings}/>
             </Card>
             <Card>
-                <InputCounter input={input} addInputEntry={addInputEntry} settings={settings}/>
+                <InputCounter addInputEntry={addInputEntry} settings={settings}/>
             </Card>
             <Card>
-                <Calendar input={input} goal={goal * 60}/>
+                <Calendar goal={goal * 60}/>
             </Card>
             <Card>
-                <Statistics input={input}/>
+                <Statistics />
             </Card>
     </>
 }
