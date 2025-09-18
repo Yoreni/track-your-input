@@ -12,13 +12,6 @@ interface Props
     editInput: (id: string, values: EditWatchDataEntry) => void
 }
 
-interface Props 
-{
-    input: WatchDataEntry[]
-    deleteInput: (id: string) => void
-    editInput: (id: string, values: EditWatchDataEntry) => void
-}
-
 function group<T>(array: T[], grouper: (element: T) => string)
 {
     return array.reduce((accumulator: Record<string, T[]>, currentItem: T) => 
