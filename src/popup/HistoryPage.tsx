@@ -5,6 +5,7 @@ import { group, normaliseDay, toIsoDate } from "../utils"
 import { EditSvg } from "./icons/EditSvg"
 import { DeleteSvg } from "./icons/DeleteSvg"
 import { InputContext } from "./App"
+import { createPortal } from "react-dom"
 
 interface Props 
 {
@@ -114,12 +115,15 @@ function Row( {entry, isEven, deleteInput, editInput}: RowProps)
                     <button className="bg-green-600 hover:bg-green-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded mr-1" onClick={() => setEditDialogOpen(true)}>
                         <EditSvg />
                     </button>
-                    {/* <button className="bg-red-600 hover:bg-red-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded" onClick={deleteInput}>
+                    <button className="bg-red-600 hover:bg-red-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded" onClick={deleteInput}>
                         <DeleteSvg />
-                    </button> */}
+                    </button>
                 </td>
             </tr>
-            <AddInputDialog onSubmit={handleEdit} isOpen={editDialogOpen} setOpen={setEditDialogOpen} initalState={entry}/>
+            {createPortal(
+                <AddInputDialog onSubmit={handleEdit} isOpen={editDialogOpen} setOpen={setEditDialogOpen} initalState={entry}/>,
+                document.body
+            )}
         </>
     )
 }
