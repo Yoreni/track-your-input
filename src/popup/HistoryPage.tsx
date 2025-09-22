@@ -1,30 +1,15 @@
-import { Fragment, useState } from "react"
+import { Fragment, useContext, useMemo, useState } from "react"
 import type { EditWatchDataEntry, WatchDataEntry } from "../WatchData"
 import { AddInputDialog } from "./progress/AddInputDialog"
-import { normaliseDay, toIsoDate } from "../utils"
+import { group, normaliseDay, toIsoDate } from "../utils"
 import { EditSvg } from "./icons/EditSvg"
 import { DeleteSvg } from "./icons/DeleteSvg"
+import { InputContext } from "./App"
 
 interface Props 
 {
-    input: WatchDataEntry[]
     deleteInput: (id: string) => void
     editInput: (id: string, values: EditWatchDataEntry) => void
-}
-
-function group<T>(array: T[], grouper: (element: T) => string)
-{
-    return array.reduce((accumulator: Record<string, T[]>, currentItem: T) => 
-    {
-        const key = grouper(currentItem);
-
-        if (!accumulator[key]) 
-            accumulator[key] = [];
-
-        accumulator[key].push(currentItem);
-
-        return accumulator;
-    }, {}); 
 }
 
 function formatDate(date: Date, locale = "en-GB")
@@ -38,21 +23,31 @@ function formatDate(date: Date, locale = "en-GB")
     )
 }
 
-export function HistoryPage( {input, deleteInput, editInput}: Props )
+export function HistoryPage( {deleteInput, editInput}: Props )
 {
-    const groupedByDate = group<WatchDataEntry>(input, (entry) => toIsoDate(normaliseDay(entry.date)))
-    const sortedDates = Object.keys(groupedByDate).sort((a, b) => b.localeCompare(a)); //ensure present to past
+    const input = useContext(InputContext)
+    if (!input)
+        return
 
-    const historyTable = sortedDates.map(date => (
+    function makeHistoryTable(input: WatchDataEntry[])
+    {
+        const groupedByDate = group<WatchDataEntry>(input, (entry) => toIsoDate(normaliseDay(entry.date)));
+        const sortedDates = Object.keys(groupedByDate)
+            .sort((a, b) => new Date(b).getTime() - new Date(a).getTime()); //ensure present to past
+
+        return sortedDates.map(date => (
                 <Fragment key={date}>
                     <p className="font-bold text-base text-center pt-2">{formatDate(new Date(date))}</p>
                     <Table input={groupedByDate[date]} deleteInput={deleteInput} editInput={editInput}/>
                 </Fragment>
            ))
+    }
+
+    const historyTable = useMemo(() => makeHistoryTable(input), [input])
 
     return (
         <div className="p-2 bg-gray-200 dark:bg-gray-800 mx-auto text-black dark:text-white">
-            {sortedDates.length > 0 ? historyTable :
+            {input.length > 0 ? historyTable :
             <>
                 <p className="text-2xl text-center text-gray-500 font-bold">No History</p>
                 <p className="text-base text-center text-gray-500">History will appear here as you watch videos</p>
@@ -61,7 +56,14 @@ export function HistoryPage( {input, deleteInput, editInput}: Props )
     )
 }
 
-function Table({input, deleteInput, editInput}: Props)
+interface TableProps 
+{
+    input: WatchDataEntry[]
+    deleteInput: (id: string) => void
+    editInput: (id: string, values: EditWatchDataEntry) => void
+}
+
+function Table({input, deleteInput, editInput}: TableProps)
 {
     return (
         <table className="min-w-full divide-y divide-gray-700 text-sm">
@@ -112,9 +114,9 @@ function Row( {entry, isEven, deleteInput, editInput}: RowProps)
                     <button className="bg-green-600 hover:bg-green-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded mr-1" onClick={() => setEditDialogOpen(true)}>
                         <EditSvg />
                     </button>
-                    <button className="bg-red-600 hover:bg-red-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded" onClick={deleteInput}>
+                    {/* <button className="bg-red-600 hover:bg-red-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded" onClick={deleteInput}>
                         <DeleteSvg />
-                    </button>
+                    </button> */}
                 </td>
             </tr>
             <AddInputDialog onSubmit={handleEdit} isOpen={editDialogOpen} setOpen={setEditDialogOpen} initalState={entry}/>

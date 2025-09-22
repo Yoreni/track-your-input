@@ -74,7 +74,7 @@ export function WatchDataControl( { input, setInput}: Props)
         
         <Dialog isOpen={exportDialogOpen} className="flex flex-col gap-4">
             <p className="text-base text-center">Here is your data. Keep it in a safe place.</p>
-            <textarea rows={10} className="font-mono text-xs bg-gray-200 dark:bg-gray-900 rounded p-0.5">{csvString}</textarea>
+            <textarea rows={10} className="font-mono text-xs bg-gray-200 dark:bg-gray-900 rounded p-0.5" value={csvString} readOnly={true}></textarea>
             <div className="flex gap-2 justify-center">
                 <button onClick={() => setExportDialogOpen(false)} className="text-base border-gray-300 border-2 rounded-lg hover:border-gray-400 p-2 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">OK</button>
                 <button onClick={async () =>  await navigator.clipboard.writeText(csvString)} className="text-base border-gray-300 border-2 p-2 rounded-lg hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold">Copy to Clipboard</button>

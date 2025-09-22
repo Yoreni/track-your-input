@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import './App.css'
 import { NavBar } from './NavBar'
 import { loadWatchData, saveWatchData, type EditWatchDataEntry, type WatchData, type WatchDataEntry } from '../WatchData';
@@ -28,9 +28,11 @@ function App()
   const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [screen, setScreen] = useState<Screen>("PROGRESS")
 
+  const languageInput = useMemo(() => getInputForLanguage(language), [language, input])
+
   const screenComponents: Record<Screen, ReactNode> = {
     "PROGRESS": <ProgressDashboard addInputEntry={(entry: WatchDataEntry) => addInputEntry(language, entry)} settings={settings} setSettings={setSettings} language={language} />,
-    "HISTORY": <HistoryPage input={getInputForLanguage(language)} deleteInput={(id: string) => deleteInputEntry(language, id)} editInput={(id: string, values: EditWatchDataEntry) => editInputEntry(language, id, values)}/>,
+    "HISTORY": <HistoryPage deleteInput={(id: string) => deleteInputEntry(language, id)} editInput={(id: string, values: EditWatchDataEntry) => editInputEntry(language, id, values)}/>,
     "SETTINGS": <SettingsPage settings={settings} setSettings={setSettings} input={input} setInput={setInput}/>
   }
 
@@ -131,14 +133,14 @@ function App()
     }
 }
 
-  return ( input && settings &&
-    <InputContext.Provider value={getInputForLanguage(language)}>
-      <NavBar language={language} learning={Object.keys(settings.learning)} setLanguage={setLanguage} setScreen={setScreen} screen={screen}/>
-      <div className='pt-12 pb-1 bg-gray-200 dark:bg-gray-800 min-h-dvh '>
-        {screenComponents[screen]}
-      </div>
-    </InputContext.Provider>
-  )
+return ( input && settings &&
+  <InputContext.Provider value={languageInput}>
+    <NavBar language={language} learning={Object.keys(settings.learning)} setLanguage={setLanguage} setScreen={setScreen} screen={screen}/>
+    <div className='pt-12 pb-1 bg-gray-200 dark:bg-gray-800 min-h-dvh '>
+      {screenComponents[screen]}
+    </div>
+  </InputContext.Provider>
+)
 }
 
 export default App

@@ -29,6 +29,21 @@ export function toIsoDate(date: Date)
     return `${year.toString().padStart(4, '0')}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
 }
 
+export function group<T>(array: T[], grouper: (element: T) => string)
+{
+    return array.reduce((accumulator: Record<string, T[]>, currentItem: T) => 
+    {
+        const key = grouper(currentItem);
+
+        if (!accumulator[key]) 
+            accumulator[key] = [];
+
+        accumulator[key].push(currentItem);
+
+        return accumulator;
+    }, {}); 
+}
+
 export function normaliseDay(date: Date): Date
 {
     const cutoffToday = new Date(
