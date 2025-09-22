@@ -98,11 +98,56 @@ class Chrome implements ExtensionApi
     }
 }
 
+class WebPage implements ExtensionApi
+{
+    async setLocalStorage(key: string, data: any): Promise<void> 
+    {
+        localStorage.setItem(key, data)
+    }
+
+    async getLocalStorage(key: string): Promise<any> 
+    {
+        return await Promise.resolve(localStorage.getItem(key))
+    }
+
+    sendMessage(data: object): Promise<any> 
+    {
+        data
+        throw new Error("Not Suported");
+    }
+
+    addMessageListener(callback: (message: object) => void): void 
+    {
+        callback
+        throw new Error("Not Suported");
+    }
+
+    async getLocalBytesInUse(): Promise<number> 
+    {
+        return await Promise.resolve(-1)
+    }
+
+    async getBrowserInfo(): Promise<BrowserInfo> 
+    {
+        return await Promise.resolve(
+            {
+                name: "",
+                vendor: "",
+                version: "",
+                buildID: ""
+            }
+        )
+    }
+    
+}
+
 function getBrowser(): ExtensionApi
 {
     if (typeof browser !== "undefined")
         return new Firefox()
-    return new Chrome()
+    if (typeof chrome !== "undefined")
+        return new Chrome()
+    return new WebPage()
 }
 
 export const EXTENSION_API: ExtensionApi = getBrowser()
