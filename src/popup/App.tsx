@@ -37,9 +37,11 @@ function App()
 
   const languageInput = useMemo(() => getInputForLanguage(language), [language, input])
 
+   const historyComponent = useMemo(() => <HistoryPage inputDispach={inputDispach} />, [input, language])
+
   const screenComponents: Record<Screen, ReactNode> = {
     "PROGRESS": <ProgressDashboard inputDispach={inputDispach} settings={settings} setSettings={setSettings} language={language} />,
-    "HISTORY": <HistoryPage inputDispach={inputDispach} />,
+    "HISTORY": historyComponent,
     "SETTINGS": <SettingsPage settings={settings} setSettings={setSettings} input={input} inputDispach={inputDispach}/>
   }
 

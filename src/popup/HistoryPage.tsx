@@ -1,4 +1,4 @@
-import { Fragment, useContext, useMemo, useState } from "react"
+import { Fragment, useContext, useState } from "react"
 import type { WatchDataEntry } from "../WatchData"
 import { AddInputDialog } from "./progress/AddInputDialog"
 import { group, normaliseDay, toIsoDate } from "../utils"
@@ -23,19 +23,23 @@ interface Props
     inputDispach: React.ActionDispatch<[action: InputReducerAction]>
 }
 
+const SHOW_INCREMENT = 31
+
 export function HistoryPage( {inputDispach}: Props )
 {
     const input = useContext(InputContext)
     if (!input)
         return
 
-    function makeHistoryTable(input: WatchDataEntry[])
-    {
-        const groupedByDate = group<WatchDataEntry>(input, (entry) => toIsoDate(normaliseDay(entry.date)));
-        const sortedDates = Object.keys(groupedByDate)
-            .sort((a, b) => new Date(b).getTime() - new Date(a).getTime()); //ensure present to past
+    const groupedByDate = group<WatchDataEntry>(input, (entry) => toIsoDate(normaliseDay(entry.date)));
+    const sortedDates = Object.keys(groupedByDate)
+        .sort((a, b) => new Date(b).getTime() - new Date(a).getTime()); //ensure present to past
 
-        return sortedDates.map(date => (
+    const [showing, setShowing] = useState(Math.min(sortedDates.length, SHOW_INCREMENT))
+
+    function makeHistoryTable()
+    {
+        return sortedDates.slice(0, showing).map(date => (
                 <Fragment key={date}>
                     <p className="font-bold text-base text-center pt-2">{formatDate(new Date(date))}</p>
                     <Table input={groupedByDate[date]} inputDispach={inputDispach}/>
@@ -43,11 +47,20 @@ export function HistoryPage( {inputDispach}: Props )
            ))
     }
 
-    const historyTable = useMemo(() => makeHistoryTable(input), [input])
+    const historyTable = makeHistoryTable()
 
     return (
         <div className="p-2 bg-gray-200 dark:bg-gray-800 mx-auto text-black dark:text-white">
-            {input.length > 0 ? historyTable :
+            {input.length > 0 ? 
+            <>
+                {historyTable}
+                {showing < sortedDates.length &&
+                    <div className="flex justify-center pt-2">
+                        <button className="border-gray-300 border-2 p-2 rounded-lg hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold text-base" onClick={() => setShowing(last => Math.min(sortedDates.length, last + SHOW_INCREMENT))}>Show more</button>
+                    </div> 
+                }
+            </>
+            :
             <>
                 <p className="text-2xl text-center text-gray-500 font-bold">No History</p>
                 <p className="text-base text-center text-gray-500">History will appear here as you watch videos</p>
