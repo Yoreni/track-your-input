@@ -105,6 +105,7 @@ function prepareVideo(video)
     video.addEventListener('pause', () => stopTracking(info));
     video.addEventListener('ended', () => stopTracking(info));
     video.addEventListener('play', () => startTracking(info));
+    window.addEventListener('beforeunload', () => stopTracking(info))
 
     setTimeout(() => {
         if (!video.paused)
