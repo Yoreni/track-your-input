@@ -1,14 +1,14 @@
 import { useContext, useState } from 'react';
-import { calculateTotalTime, type WatchDataEntry } from '../../WatchData';
+import { calculateTotalTime } from '../../WatchData';
 import { ProgressBar } from '../ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
 import type { Settings } from '../../Settings';
 import { AddSvg } from '../icons/AddSvg';
-import { InputContext } from '../App';
+import { InputContext, LanguageContext, type InputReducerAction } from '../App';
 
 interface Props 
 {
-    addInputEntry: (entry: WatchDataEntry) => void
+    inputReducer: React.ActionDispatch<[action: InputReducerAction]>
     settings: Settings
 }
 
@@ -75,7 +75,7 @@ function calcProgress(input: any)
     }
 }
 
-export function InputCounter( {addInputEntry, settings}: Props )
+export function InputCounter( {inputReducer, settings}: Props )
 {
     const input = useContext(InputContext)
     if (!input)
@@ -90,6 +90,8 @@ export function InputCounter( {addInputEntry, settings}: Props )
     }
 
     const progress = calcProgress(input)
+    const langauge = useContext(LanguageContext)
+
     return <div className="relative">
         <div className='flex justify-between'>
             <p className='font-bold text-base'>Total Input</p>
@@ -111,6 +113,10 @@ export function InputCounter( {addInputEntry, settings}: Props )
               <AddSvg />
           </button>
         </div>
-        <AddInputDialog isOpen={addInputDialogOpen} onSubmit={addInputEntry} setOpen={setAddInputDialogOpen}/>
+        <AddInputDialog isOpen={addInputDialogOpen} onSubmit={(entry) => inputReducer({
+          type: "add",
+          language: langauge,
+          data: entry
+        })} setOpen={setAddInputDialogOpen}/>
     </div>
 }

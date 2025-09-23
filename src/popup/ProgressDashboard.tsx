@@ -1,5 +1,5 @@
 import type { Settings } from "../Settings";
-import type { WatchDataEntry } from "../WatchData";
+import type { InputReducerAction } from "./App";
 import { Card } from "./Card";
 import { LanguageSelector } from "./LanguageSelector";
 import { Calendar } from "./progress/Calendar";
@@ -9,13 +9,13 @@ import { Statistics } from "./progress/Statistics";
 
 interface Props 
 {
-    addInputEntry: (entry: WatchDataEntry) => void
+    inputDispach: React.ActionDispatch<[action: InputReducerAction]>
     settings: Settings
     setSettings: React.Dispatch<React.SetStateAction<Settings>>
     language: string
 }
 
-export function ProgressDashboard({addInputEntry, settings, setSettings, language}: Props)
+export function ProgressDashboard({inputDispach: inputReducer, settings, setSettings, language}: Props)
 {
     const learning = Object.keys(settings.learning)
 
@@ -34,7 +34,7 @@ export function ProgressDashboard({addInputEntry, settings, setSettings, languag
                 <p>Deleted language selected</p>
             </Card>
         
-        return <Dashboard addInputEntry={addInputEntry} settings={settings} setSettings={setSettings} language={language} />
+        return <Dashboard inputDispach={inputReducer} settings={settings} setSettings={setSettings} language={language} />
     }
 
     return <>
@@ -44,7 +44,7 @@ export function ProgressDashboard({addInputEntry, settings, setSettings, languag
     </>
 }
 
-function Dashboard({addInputEntry, settings, setSettings, language}: Props)
+function Dashboard({inputDispach: inputReducer, settings, setSettings, language}: Props)
 {
     const goal = settings?.learning[language].dailyGoal
 
@@ -53,7 +53,7 @@ function Dashboard({addInputEntry, settings, setSettings, language}: Props)
                 <DailyGoal language={language} goal={goal} setSettings={setSettings}/>
             </Card>
             <Card>
-                <InputCounter addInputEntry={addInputEntry} settings={settings}/>
+                <InputCounter inputReducer={inputReducer} settings={settings}/>
             </Card>
             <Card>
                 <Calendar goal={goal * 60}/>

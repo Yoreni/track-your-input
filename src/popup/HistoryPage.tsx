@@ -1,17 +1,11 @@
 import { Fragment, useContext, useMemo, useState } from "react"
-import type { EditWatchDataEntry, WatchDataEntry } from "../WatchData"
+import type { WatchDataEntry } from "../WatchData"
 import { AddInputDialog } from "./progress/AddInputDialog"
 import { group, normaliseDay, toIsoDate } from "../utils"
 import { EditSvg } from "./icons/EditSvg"
 import { DeleteSvg } from "./icons/DeleteSvg"
-import { InputContext } from "./App"
+import { InputContext, LanguageContext, type InputReducerAction } from "./App"
 import { createPortal } from "react-dom"
-
-interface Props 
-{
-    deleteInput: (id: string) => void
-    editInput: (id: string, values: EditWatchDataEntry) => void
-}
 
 function formatDate(date: Date, locale = "en-GB")
 {
@@ -24,7 +18,12 @@ function formatDate(date: Date, locale = "en-GB")
     )
 }
 
-export function HistoryPage( {deleteInput, editInput}: Props )
+interface Props 
+{
+    inputDispach: React.ActionDispatch<[action: InputReducerAction]>
+}
+
+export function HistoryPage( {inputDispach}: Props )
 {
     const input = useContext(InputContext)
     if (!input)
@@ -39,7 +38,7 @@ export function HistoryPage( {deleteInput, editInput}: Props )
         return sortedDates.map(date => (
                 <Fragment key={date}>
                     <p className="font-bold text-base text-center pt-2">{formatDate(new Date(date))}</p>
-                    <Table input={groupedByDate[date]} deleteInput={deleteInput} editInput={editInput}/>
+                    <Table input={groupedByDate[date]} inputDispach={inputDispach}/>
                 </Fragment>
            ))
     }
@@ -60,11 +59,10 @@ export function HistoryPage( {deleteInput, editInput}: Props )
 interface TableProps 
 {
     input: WatchDataEntry[]
-    deleteInput: (id: string) => void
-    editInput: (id: string, values: EditWatchDataEntry) => void
+    inputDispach: React.ActionDispatch<[action: InputReducerAction]>
 }
 
-function Table({input, deleteInput, editInput}: TableProps)
+function Table({input, inputDispach}: TableProps)
 {
     return (
         <table className="min-w-full divide-y divide-gray-700 text-sm">
@@ -77,7 +75,7 @@ function Table({input, deleteInput, editInput}: TableProps)
             </thead>
             <tbody className="bg-gray-800 divide-y divide-gray-700">
                 {input.map((entry, index) => <Row key={entry.id} entry={entry} isEven={index % 2 === 0} 
-                    deleteInput={() => deleteInput(entry.id)} editInput={(values: EditWatchDataEntry) => editInput(entry.id, values)}/>)} 
+                    inputDispach={inputDispach}/>)} 
             </tbody>
         </table>
     )
@@ -87,25 +85,26 @@ interface RowProps
 {
     entry: WatchDataEntry;
     isEven: boolean;
-    deleteInput: () => void;
-    editInput: (values: EditWatchDataEntry) => void;
+    inputDispach: React.ActionDispatch<[action: InputReducerAction]>
+
 }
 
-function Row( {entry, isEven, deleteInput, editInput}: RowProps)
+function Row( {entry, isEven, inputDispach}: RowProps)
 {
     const [editDialogOpen, setEditDialogOpen] = useState(false)
 
-    function handleEdit(entry: WatchDataEntry)
+    const rowClasses = isEven ? "dark:bg-gray-800 bg-gray-200" : "dark:bg-gray-700 bg-gray-300";
+    const language = useContext(LanguageContext)
+
+    function handleEdit(editing: WatchDataEntry)
     {
-        editInput({
-            description: entry.description, 
-            date: entry.date, 
-            time: entry.time,
-            type: entry.type
+        inputDispach({
+            type: "edit",
+            language: language,
+            data: {...editing, id: entry.id}
         })
     }
 
-    const rowClasses = isEven ? "dark:bg-gray-800 bg-gray-200" : "dark:bg-gray-700 bg-gray-300";
     return (
         <>
             <tr className={rowClasses}>
@@ -115,7 +114,12 @@ function Row( {entry, isEven, deleteInput, editInput}: RowProps)
                     <button className="bg-green-600 hover:bg-green-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded mr-1" onClick={() => setEditDialogOpen(true)}>
                         <EditSvg />
                     </button>
-                    <button className="bg-red-600 hover:bg-red-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded" onClick={deleteInput}>
+                    <button className="bg-red-600 hover:bg-red-700 text-gray-300 scale-[85%] hover:text-gray-400 text-xs py-0.5 px-1 rounded" 
+                        onClick={() => inputDispach(
+                            {type: "delete", 
+                            language: language, 
+                            id: entry.id}
+                    )}>
                         <DeleteSvg />
                     </button>
                 </td>

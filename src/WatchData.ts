@@ -3,14 +3,6 @@ import { getDaysInMonth, HOUR_CUTOFF, isOnSameDay, toIsoDate } from "./utils"
 
 export type InputType = "WATCHING" | "LISTENING" | "CONVERSATION" | "YOUTUBE"
 
-export interface EditWatchDataEntry
-{
-    time?: number
-    date?: Date
-    description?: string
-    type: InputType
-} 
-
 export interface WatchDataEntry 
 {
     time: number

@@ -1,18 +1,18 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import { Dialog } from "./Dialog";
 import { downloadAsCSV, isDirectDownloadSuported, parseCsvString, toCsvString } from "../csvFile";
 import { type WatchData, convertToFlattenedList, type FlattenedWatchDataEntry, convertFromFlattenedList } from "../WatchData";
 import { formatBytes } from "../utils";
 import { EXTENSION_API } from "../extension-api";
-// import browser from "webextension-polyfill"
+import type { InputReducerAction } from "./App";
 
 interface Props 
 {
     input: WatchData
-    setInput: Dispatch<SetStateAction<WatchData>>
+    inputDispach: React.ActionDispatch<[action: InputReducerAction]>
 }
 
-export function WatchDataControl( { input, setInput}: Props)
+export function WatchDataControl( { input, inputDispach}: Props)
 {
     const [bytesInUse, setBytesInUse] = useState(0)
 
@@ -48,14 +48,20 @@ export function WatchDataControl( { input, setInput}: Props)
             date: new Date(entry.date),  
             time: Number(entry.time)
         }})
-        setInput(convertFromFlattenedList(data))
+         inputDispach({
+            type: "set",
+            data: convertFromFlattenedList(data)
+        })
         setImportDataDialog(false)
     }
 
     function handleDataDeletion(deleteData: boolean)
     {
         if (deleteData)
-            setInput({})
+            inputDispach({
+                type: "set",
+                data: {}
+            })
         setDeleteDataDialog(false)
     }
 

@@ -7,13 +7,14 @@ import { WatchDataControl } from "./WatchDataControl";
 import { Dialog } from "./Dialog";
 import { LanguageSelector } from "./LanguageSelector";
 import { EXTENSION_API, type BrowserInfo } from "../extension-api";
+import type { InputReducerAction } from "./App";
 
 
 interface Props {
     settings: Settings
     setSettings: Dispatch<SetStateAction<Settings>>
     input: WatchData
-    setInput: Dispatch<SetStateAction<WatchData>>
+    inputDispach: React.ActionDispatch<[action: InputReducerAction]>
 }
 
 function toggleDarkMode(value: boolean, setSettings: Dispatch<SetStateAction<Settings>>): void
@@ -31,7 +32,7 @@ function toggleExcatTime(value: boolean, setSettings: Dispatch<SetStateAction<Se
     })
 }
 
-export function SettingsPage( {settings, setSettings, input, setInput}: Props)
+export function SettingsPage( {settings, setSettings, input, inputDispach}: Props)
 {
     const [browserInfo, setBrowserInfo] = useState<BrowserInfo>()
     const [addLangaugesDialog, setAddLangauagesDialog] = useState(false)
@@ -76,7 +77,7 @@ export function SettingsPage( {settings, setSettings, input, setInput}: Props)
             </div>
         </Card>
         <Card>
-            <WatchDataControl input={input} setInput={setInput} />
+            <WatchDataControl input={input} inputDispach={inputDispach} />
         </Card>
         <Dialog isOpen={addLangaugesDialog} className="h-80">
             <LanguageSelector learning={learning} setSettings={setSettings} onFinish={() => setAddLangauagesDialog(false)} />
