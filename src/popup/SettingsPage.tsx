@@ -42,7 +42,7 @@ export function SettingsPage( {settings, setSettings, input, inputDispach}: Prop
             {
                 setBrowserInfo(data)
             })
-    }, [])
+    }, [input])
 
     const learning = Object.keys(settings.learning)
 
