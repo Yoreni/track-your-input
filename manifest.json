@@ -5,7 +5,8 @@
   "permissions": ["storage"],
   "browser_specific_settings": {
     "gecko": {
-      "id": "@trackyourinput"
+      "id": "@trackyourinput",
+      "data_collection_permissions": "browsingActivity websiteActivity"
     }
   },
   "background": {
