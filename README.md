@@ -17,4 +17,4 @@ If you find bugs or have feedback you can make a github issue.
 Can track
  - YouTube
  - Embedded YouTube videos on other websites
- - Some websites that use the <video> HTML tag
+ - Some websites that use the `<video>` HTML tag
