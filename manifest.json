@@ -6,7 +6,9 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "@trackyourinput",
-      "data_collection_permissions": "browsingActivity websiteActivity"
+      "data_collection_permissions": {
+        "required": ["browsingActivity", "websiteActivity"]
+      }
     }
   },
   "background": {
