@@ -3,6 +3,11 @@
   "name": "Track your Input",
   "version": "0.3.0",
   "permissions": ["storage"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@trackyourinput"
+    }
+  },
   "background": {
     "scripts": ["src/background.js"],
     "service_worker": "src/background.js"
