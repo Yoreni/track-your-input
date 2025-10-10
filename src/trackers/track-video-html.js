@@ -140,43 +140,57 @@ function getLanguageFromVideo(video)
     return "unknown"
 }
 
-function getLanguageFromURL(url)
+function getLanguageFromURL(url) 
 {
     let urlObj;
-    try 
-    {
+    try {
         urlObj = new URL(url);
-    } 
-    catch (e) 
-    {
+    } catch (e) {
         console.error("Invalid URL provided:", url);
         return "unknown";
     }
 
-    const commonLangCodes = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ja', 'ko', 'zh', 'ru', "th", "pl", "nl"];
+    const langMap = 
+    {
+        'en': 'en', 'english': 'en',
+        'es': 'es', 'spanish': 'es',
+        'fr': 'fr', 'french': 'fr',
+        'de': 'de', 'german': 'de',
+        'it': 'it', 'italian': 'it',
+        'pt': 'pt', 'portuguese': 'pt',
+        'ja': 'ja', 'japanese': 'ja',
+        'ko': 'ko', 'korean': 'ko',
+        'zh': 'zh', 'chinese': 'zh',
+        'ru': 'ru', 'russian': 'ru',
+        'th': 'th', 'thai': 'th',
+        'pl': 'pl', 'polish': 'pl',
+        'nl': 'nl', 'dutch': 'nl'
+    };
+
+    const recognizableLangs = new Set(Object.keys(langMap));
+    let toCheck = []
 
     const pathSegments = urlObj.pathname.split('/').filter(segment => segment !== '');
-    for (const segment of pathSegments) {
-        if (commonLangCodes.includes(segment)) {
-            return segment;
-        }
-    }
+    toCheck.push(...pathSegments)
 
     const searchParams = urlObj.searchParams;
     const langParamNames = ['lang', 'locale', 'hl', 'language'];
-    for (const paramName of langParamNames) 
-    {
+    for (const paramName of langParamNames) {
         const paramValue = searchParams.get(paramName);
-        if (paramValue && commonLangCodes.includes(paramValue))
-            return paramValue;
+        if (paramValue) 
+        {
+            toCheck.push(paramValue)
+        }
     }
+    const hostnameParts = urlObj.hostname.split('.').slice(0, -2);
+    toCheck.push(...hostnameParts)
 
-    const hostnameParts = urlObj.hostname.split('.');
-    if (hostnameParts.length > 2) 
+    console.log(toCheck)
+    for (const checking of toCheck)
     {
-        const subdomain = hostnameParts[0];
-        if (commonLangCodes.includes(subdomain))
-            return subdomain;
+        if (recognizableLangs.has(checking)) {
+            return langMap[checking]; // Return the 2-letter code
+        }
     }
 
     return "unknown";
