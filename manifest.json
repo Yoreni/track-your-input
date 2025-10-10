@@ -11,6 +11,9 @@
       }
     }
   },
+  "icons": {
+    "64": "logo64.png"
+  },
   "background": {
     "scripts": ["src/background.js"],
     "service_worker": "src/background.js"
