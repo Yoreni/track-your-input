@@ -29,4 +29,6 @@ export const LANGUAGES = [
     lang("Mandarin", "zh"),
     lang("Russian", "ru"),
     lang("Polish", "pl"),
+    lang("Hindi", "hi"),
+    lang("Hungarian", "hu"),
 ]

@@ -164,7 +164,10 @@ function getLanguageFromURL(url)
         'ru': 'ru', 'russian': 'ru',
         'th': 'th', 'thai': 'th',
         'pl': 'pl', 'polish': 'pl',
-        'nl': 'nl', 'dutch': 'nl'
+        'nl': 'nl', 'dutch': 'nl',
+        'hi': 'hi', 'hindi': 'hi',
+        'hu': 'hu', 'hungarian': 'hu',
+
     };
 
     const recognizableLangs = new Set(Object.keys(langMap));

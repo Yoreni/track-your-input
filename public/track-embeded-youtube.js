@@ -89,7 +89,6 @@ const hookInterval = setInterval(() => {
     
     if (playerElement && typeof playerElement.getPlayerState === 'function') 
     {
-        // playerElement.addEventListener('onStateChange', onPlayerStateChange);
         clearInterval(hookInterval);
         setInterval(() => videoStatePoll(playerElement), 100)
     }
