@@ -133,10 +133,6 @@ function getLanguageFromVideo(video)
         return "unknown"
     if (tracks.length === 1)
         return tracks[0].language
-
-    const captionTrack = tracks.filter(track => track.kind === "captions")
-    if (captionTrack.length === 1)
-        return captionTrack[0]
     return "unknown"
 }
 
