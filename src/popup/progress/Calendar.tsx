@@ -1,7 +1,7 @@
 // import { useState } from "react";
 
 import { useContext, useState } from "react"
-import { getDaysInMonth, isOnSameDay } from "../../utils"
+import { getDaysInMonth, group, isOnSameDay } from "../../utils"
 import { calcInputThisMonth, getInputDataForMonth, type WatchDataEntry } from "../../WatchData"
 import { StatisticsCell } from "./StatisticsCell"
 import { InputContext } from "../App"
@@ -58,12 +58,18 @@ interface CalendarProps
     goal: number
 }
 
+function yearMonthStr(date: Date)
+{
+    return `${date.getFullYear().toString().padStart(4, "0")}-${(date.getMonth() + 1).toString().padStart(2, "0")}`
+}
+
 export function Calendar({goal}: CalendarProps )
 {
-    const input = useContext(InputContext)
-    if (!input)
-        return
+    const inputGrouppedByMonth = group(useContext(InputContext) || [], (element: WatchDataEntry) => yearMonthStr(element.date))
+
+
     const [monthDisplay, setMonthDisplay] = useState(new Date())
+    const inputThisMonth = inputGrouppedByMonth[yearMonthStr(monthDisplay)]
 
     function changeMonth(amount: number)
     {
@@ -72,7 +78,7 @@ export function Calendar({goal}: CalendarProps )
         setMonthDisplay(new Date(new Date(monthDisplay).setMonth(monthDisplay.getMonth() + amount)))
     }
 
-    const hoursThisMonth = Math.floor((calcInputThisMonth(monthDisplay, input) / 3600) * 10) / 10
+    const hoursThisMonth = Math.floor((calcInputThisMonth(monthDisplay, inputThisMonth) / 3600) * 10) / 10
 
     return <div>
         <div className="flex justify-between items-center mb-5 select-none">
@@ -90,7 +96,7 @@ export function Calendar({goal}: CalendarProps )
             <div>S</div>
         </div>
         <div className="grid grid-cols-7 grid-rows-6 gap-1" id="calendarGrid">
-            {drawDayCells(monthDisplay, input, goal)}
+            {drawDayCells(monthDisplay, inputThisMonth, goal)}
         </div>
         <div className="py-1">
             <StatisticsCell dataPoint={hoursThisMonth} description="hours this month"/>
