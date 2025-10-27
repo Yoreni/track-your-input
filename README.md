@@ -18,3 +18,7 @@ Can track
  - YouTube
  - Embedded YouTube videos on other websites
  - Some websites that use the `<video>` HTML tag
+
+ Download
+ Chrome: https://chromewebstore.google.com/detail/track-your-input/pfnnngmkhclllhdlmecfjdfjkeldkfij
+ Firefox: https://addons.mozilla.org/en-US/firefox/addon/track-your-input/
