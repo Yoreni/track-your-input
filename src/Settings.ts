@@ -21,9 +21,9 @@ export const defaultSettings: Settings = {
   darkMode: false
 }
 
-export const languageDefaultSettings = {
+export const languageDefaultSettings: LanguageSettings = {
   dailyGoal: 15,
-  staringHours: 0
+  startingHours: 0
 }
 
 const KEY = 'settings'

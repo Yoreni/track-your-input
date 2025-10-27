@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Dialog } from "./Dialog";
-import { downloadAsCSV, isDirectDownloadSuported, parseCsvString, toCsvString } from "../csvFile";
-import { type WatchData, convertToFlattenedList, type FlattenedWatchDataEntry, convertFromFlattenedList } from "../WatchData";
-import { formatBytes } from "../utils";
-import { EXTENSION_API } from "../extension-api";
-import type { InputReducerAction } from "./App";
+import { Dialog } from "../Dialog";
+import { downloadAsCSV, isDirectDownloadSuported, parseCsvString, toCsvString } from "../../csvFile";
+import { type WatchData, convertToFlattenedList, type FlattenedWatchDataEntry, convertFromFlattenedList } from "../../WatchData";
+import { formatBytes } from "../../utils";
+import { EXTENSION_API } from "../../extension-api";
+import type { InputReducerAction } from "../App";
 
 interface Props 
 {

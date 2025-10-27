@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { calculateTotalTime } from '../../WatchData';
 import { ProgressBar } from '../ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
-import type { LanguageSettings, Settings } from '../../Settings';
+import { languageDefaultSettings, type LanguageSettings, type Settings } from '../../Settings';
 import { AddSvg } from '../icons/AddSvg';
 import { InputContext, LanguageContext, type InputReducerAction } from '../App';
 
@@ -60,7 +60,7 @@ function roundToNearestMin(hours: number, round: (a: number) => number = Math.ro
 
 function calcProgress(input: any, settings: LanguageSettings)
 {
-    const startingHours = settings.startingHours || 0;
+    const startingHours = settings.startingHours || languageDefaultSettings.startingHours;
     const totalInput = calculateTotalTime(input) + startingHours
     
     const hours = Math.floor(totalInput / 3600)

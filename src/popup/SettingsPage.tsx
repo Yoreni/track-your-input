@@ -3,7 +3,7 @@ import { Card } from "./Card";
 import type { Settings } from "../Settings";
 import type { WatchData } from "../WatchData";
 import { getLanguage } from "../language";
-import { WatchDataControl } from "./WatchDataControl";
+import { WatchDataControl } from "./settings/WatchDataControl";
 import { Dialog } from "./Dialog";
 import { LanguageSelector } from "./LanguageSelector";
 import { EXTENSION_API, type BrowserInfo } from "../extension-api";
