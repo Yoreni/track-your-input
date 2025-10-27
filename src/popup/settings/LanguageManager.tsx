@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import type { Settings } from "../../Settings";
 import { Dialog } from "../Dialog";
 
@@ -10,9 +10,9 @@ interface Props
     setSettings: Dispatch<SetStateAction<Settings>>;
 }
 
-function LanguageManager({language, settings, isOpen, setSettings}: Props)
+export function LanguageManager({language, settings, isOpen, setSettings}: Props)
 {
-    const [startingHours, setStartingHours] = useState()
+    // const [startingHours, setStartingHours] = useState(0)
 
     function removeLanguageLearning()
     {
@@ -22,8 +22,9 @@ function LanguageManager({language, settings, isOpen, setSettings}: Props)
             return newSettings
         })
     }
+    removeLanguageLearning
 
     return <Dialog isOpen={isOpen}>
-        
+
     </Dialog>
 }

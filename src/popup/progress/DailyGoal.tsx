@@ -31,9 +31,9 @@ export function DailyGoal({language, goal, setSettings}: Props)
         if (newGoal % 1 !== 0)
             throw new RangeError("The new goal must be an integer")
 
-        setSettings(oldSettings => 
+        setSettings((oldSettings: Settings) => 
         {
-            const newLearning = {dailyGoal: newGoal}
+            const newLearning = {...oldSettings.learning[language], dailyGoal: newGoal}
             const newSettings = {...oldSettings, learning: {
                 ...oldSettings.learning,
                 [language]: newLearning

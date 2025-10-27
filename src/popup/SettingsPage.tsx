@@ -1,4 +1,4 @@
-import { useEffect, useState, type Dispatch, type MouseEventHandler, type ReactNode, type SetStateAction } from "react";
+import { useState, type Dispatch, type MouseEventHandler, type ReactNode, type SetStateAction } from "react";
 import { Card } from "./Card";
 import type { Settings } from "../Settings";
 import type { WatchData } from "../WatchData";
@@ -6,8 +6,8 @@ import { getLanguage } from "../language";
 import { WatchDataControl } from "./settings/WatchDataControl";
 import { Dialog } from "./Dialog";
 import { LanguageSelector } from "./LanguageSelector";
-import { EXTENSION_API, type BrowserInfo } from "../extension-api";
 import type { InputReducerAction } from "./App";
+import { GeneralSettings } from "./settings/GeneralSettings";
 
 
 interface Props {
@@ -17,32 +17,9 @@ interface Props {
     inputDispach: React.ActionDispatch<[action: InputReducerAction]>
 }
 
-function toggleDarkMode(value: boolean, setSettings: Dispatch<SetStateAction<Settings>>): void
-{
-    setSettings(oldState => {
-        return {...oldState, darkMode: value}
-    })
-    document.documentElement.classList.toggle("dark", value)
-}
-
-function toggleExcatTime(value: boolean, setSettings: Dispatch<SetStateAction<Settings>>): void
-{
-    setSettings(oldState => {
-        return {...oldState, showExcatTime: value}
-    })
-}
-
 export function SettingsPage( {settings, setSettings, input, inputDispach}: Props)
 {
-    const [browserInfo, setBrowserInfo] = useState<BrowserInfo>()
     const [addLangaugesDialog, setAddLangauagesDialog] = useState(false)
-
-    useEffect(() => {
-        EXTENSION_API.getBrowserInfo().then((data: BrowserInfo) => 
-            {
-                setBrowserInfo(data)
-            })
-    }, [input])
 
     const learning = Object.keys(settings.learning)
 
@@ -55,19 +32,9 @@ export function SettingsPage( {settings, setSettings, input, inputDispach}: Prop
         })
     }
 
-    return browserInfo && (<div className="flex justify-start items-center flex-col gap-2">
+    return (<div className="flex justify-start items-center flex-col gap-2">
         <Card>
-            <div className='flex justify-between'>
-                <p className='text-lg'>Display Excat Time</p>
-                <input type="checkbox"  checked={settings.showExcatTime} onChange={(event) => toggleExcatTime(event.target.checked, setSettings)} />
-            </div>
-            <div className='flex justify-between'>
-                <p className='text-lg'>Dark Mode</p>
-                <input type="checkbox" checked={settings.darkMode} onChange={(event) => toggleDarkMode(event.target.checked, setSettings)}/>
-            </div>
-            {browserInfo && <>
-                <p className='text-gray-400 text-sm'>{browserInfo.vendor} {browserInfo.name} {browserInfo.version}-{browserInfo.buildID}</p>
-            </>}
+            <GeneralSettings settings={settings} setSettings={setSettings}/>
         </Card>
         <Card>
             <p className="font-bold pb-2 text-center text-lg">Languages Learning</p>
