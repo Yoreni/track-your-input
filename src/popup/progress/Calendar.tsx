@@ -1,7 +1,7 @@
 // import { useState } from "react";
 
 import { useContext, useState } from "react"
-import { getDaysInMonth, group, isOnSameDay } from "../../utils"
+import { getDaysInMonth, group, isOnSameDay, normaliseDay } from "../../utils"
 import { calcInputThisMonth, getInputDataForMonth, type WatchDataEntry } from "../../WatchData"
 import { StatisticsCell } from "./StatisticsCell"
 import { InputContext } from "../App"
@@ -65,7 +65,7 @@ function yearMonthStr(date: Date)
 
 export function Calendar({goal}: CalendarProps )
 {
-    const inputGrouppedByMonth = group(useContext(InputContext) || [], (element: WatchDataEntry) => yearMonthStr(element.date))
+    const inputGrouppedByMonth = group(useContext(InputContext) || [], (element: WatchDataEntry) => yearMonthStr(normaliseDay(element.date)))
 
 
     const [monthDisplay, setMonthDisplay] = useState(new Date())

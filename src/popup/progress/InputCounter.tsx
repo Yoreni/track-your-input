@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { calculateTotalTime } from '../../WatchData';
 import { ProgressBar } from '../ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
-import type { Settings } from '../../Settings';
+import type { LanguageSettings, Settings } from '../../Settings';
 import { AddSvg } from '../icons/AddSvg';
 import { InputContext, LanguageContext, type InputReducerAction } from '../App';
 
@@ -58,9 +58,11 @@ function roundToNearestMin(hours: number, round: (a: number) => number = Math.ro
   return round((hours * FACTOR) + Number.EPSILON * 2) / FACTOR
 }
 
-function calcProgress(input: any)
+function calcProgress(input: any, settings: LanguageSettings)
 {
-    const totalInput = calculateTotalTime(input)
+    const startingHours = settings.startingHours || 0;
+    const totalInput = calculateTotalTime(input) + startingHours
+    
     const hours = Math.floor(totalInput / 3600)
     const level = getLevel(totalInput)
     if (level == HOURS_FOR_LEVEL.length) //handle max level
@@ -77,6 +79,7 @@ function calcProgress(input: any)
 
 export function InputCounter( {inputReducer, settings}: Props )
 {
+
     const input = useContext(InputContext)
     if (!input)
         return
@@ -89,8 +92,8 @@ export function InputCounter( {inputReducer, settings}: Props )
       return func(seconds)
     }
 
-    const progress = calcProgress(input)
     const langauge = useContext(LanguageContext)
+    const progress = calcProgress(input, settings.learning[langauge])
 
     return <div className="relative">
         <div className='flex justify-between'>

@@ -10,7 +10,8 @@ export interface Settings
 
 export interface LanguageSettings 
 {
-  dailyGoal: number
+  dailyGoal: number;
+  startingHours: number;
 }
 
 export const defaultSettings: Settings = {
@@ -22,6 +23,7 @@ export const defaultSettings: Settings = {
 
 export const languageDefaultSettings = {
   dailyGoal: 15,
+  staringHours: 0
 }
 
 const KEY = 'settings'
