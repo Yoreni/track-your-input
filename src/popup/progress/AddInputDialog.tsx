@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import type { InputType, WatchDataEntry } from "../../WatchData";
-import { Dialog } from "../Dialog";
+import { Dialog } from "../ui/Dialog";
 import { DurationInput } from "./DurationInput";
 import { HOUR_CUTOFF, normaliseDay, toIsoDate } from "../../utils";
+import { OkButton } from "../ui/OkButton";
+import { Button } from "../ui/Button";
 
 interface Props 
 {
@@ -123,8 +125,8 @@ export function AddInputDialog( {onSubmit: onSubmit, isOpen, setOpen, initalStat
             </div>
         </div>
         <div className="flex justify-around">
-            <button className="border-gray-300 border-2 hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg" onClick={() => setOpen(false)}>Cancel</button>
-            <button className="border-green-500 border-2 hover:border-green-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg" onClick={handleSubmit}>OK</button>
+            <Button onClick={() => setOpen(false)} label="Cancel" />
+            <OkButton onClick={handleSubmit} />
         </div>
     </Dialog>
 }

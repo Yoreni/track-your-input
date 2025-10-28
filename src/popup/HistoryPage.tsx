@@ -6,6 +6,7 @@ import { EditSvg } from "./icons/EditSvg"
 import { DeleteSvg } from "./icons/DeleteSvg"
 import { InputContext, LanguageContext, type InputReducerAction } from "./App"
 import { createPortal } from "react-dom"
+import { Button } from "./ui/Button"
 
 function formatDate(date: Date, locale = "en-GB")
 {
@@ -56,7 +57,7 @@ export function HistoryPage( {inputDispach}: Props )
                 {historyTable}
                 {showing < sortedDates.length &&
                     <div className="flex justify-center pt-2">
-                        <button className="border-gray-300 border-2 p-2 rounded-lg hover:border-gray-400 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 font-bold text-base" onClick={() => setShowing(last => Math.min(sortedDates.length, last + SHOW_INCREMENT))}>Show more</button>
+                        <Button onClick={() => setShowing(last => Math.min(sortedDates.length, last + SHOW_INCREMENT))} label="Show More" />
                     </div> 
                 }
             </>

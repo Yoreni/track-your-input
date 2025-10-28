@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction } from "react";
 import type { Settings } from "../../Settings";
-import { Dialog } from "../Dialog";
+import { Dialog } from "../ui/Dialog";
 
 interface Props 
 {

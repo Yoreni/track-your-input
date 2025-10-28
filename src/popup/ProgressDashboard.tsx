@@ -1,6 +1,6 @@
 import type { Settings } from "../Settings";
 import type { InputReducerAction } from "./App";
-import { Card } from "./Card";
+import { Card } from "./ui/Card";
 import { LanguageSelector } from "./LanguageSelector";
 import { Calendar } from "./progress/Calendar";
 import { DailyGoal } from "./progress/DailyGoal";

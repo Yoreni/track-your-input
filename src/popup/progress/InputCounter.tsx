@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { calculateTotalTime } from '../../WatchData';
-import { ProgressBar } from '../ProgressBar';
+import { ProgressBar } from '../ui/ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
 import { languageDefaultSettings, type LanguageSettings, type Settings } from '../../Settings';
 import { AddSvg } from '../icons/AddSvg';

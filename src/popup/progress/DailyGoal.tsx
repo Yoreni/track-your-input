@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import { getInputOnDay } from "../../WatchData";
-import { Dialog } from "../Dialog";
-import { ProgressBar } from "../ProgressBar";
+import { Dialog } from "../ui/Dialog";
+import { ProgressBar } from "../ui/ProgressBar";
 import { type Settings } from "../../Settings";
 import { DurationInput } from "./DurationInput";
 import { EditSvg } from "../icons/EditSvg";
 import { InputContext } from "../App";
+import { OkButton } from "../ui/OkButton";
 
 interface Props 
 {
@@ -64,7 +65,7 @@ export function DailyGoal({language, goal, setSettings}: Props)
         <Dialog isOpen={goalDialogOpen} className="flex justify-center flex-col items-center gap-4 py-2">
             <p className="text-xl font-bold">Edit Daily Goal</p>
             <DurationInput duration={goalField} setDuration={setGoalField} unit={"min"} />
-            <button onClick={handleDialogClose} className="border-green-500 border-2 hover:border-green-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 text-gray-800 text-base font-bold py-1 px-2 rounded-lg">OK</button>
+            <OkButton onClick={handleDialogClose} />
         </Dialog>
     </>)
 }

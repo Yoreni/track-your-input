@@ -1,10 +1,10 @@
 import { useState, type Dispatch, type MouseEventHandler, type ReactNode, type SetStateAction } from "react";
-import { Card } from "./Card";
+import { Card } from "./ui/Card";
 import type { Settings } from "../Settings";
 import type { WatchData } from "../WatchData";
 import { getLanguage } from "../language";
 import { WatchDataControl } from "./settings/WatchDataControl";
-import { Dialog } from "./Dialog";
+import { Dialog } from "./ui/Dialog";
 import { LanguageSelector } from "./LanguageSelector";
 import type { InputReducerAction } from "./App";
 import { GeneralSettings } from "./settings/GeneralSettings";
