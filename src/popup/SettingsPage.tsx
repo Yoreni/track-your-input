@@ -8,6 +8,7 @@ import { Dialog } from "./Dialog";
 import { LanguageSelector } from "./LanguageSelector";
 import type { InputReducerAction } from "./App";
 import { GeneralSettings } from "./settings/GeneralSettings";
+import { LanguageManager } from "./settings/LanguageManager";
 
 
 interface Props {
@@ -23,15 +24,6 @@ export function SettingsPage( {settings, setSettings, input, inputDispach}: Prop
 
     const learning = Object.keys(settings.learning)
 
-    function removeLanguageLearning(language: string)
-    {
-        setSettings(oldSettings => {
-            const { [language]: _, ...learning } = settings.learning;
-            const newSettings = {...oldSettings, learning: learning}
-            return newSettings
-        })
-    }
-
     return (<div className="flex justify-start items-center flex-col gap-2">
         <Card>
             <GeneralSettings settings={settings} setSettings={setSettings}/>
@@ -39,7 +31,7 @@ export function SettingsPage( {settings, setSettings, input, inputDispach}: Prop
         <Card>
             <p className="font-bold pb-2 text-center text-lg">Languages Learning</p>
             <div className="grid grid-cols-3 gap-2">
-                {learning.map((lang) => <LanguageTileX language={lang} onClick={() => removeLanguageLearning(lang)}/>)}
+                {learning.map((lang) => <LanguageTileX language={lang} settings={settings} setSettings={setSettings}/>)}
                 <div className="text-center text-3xl text-black dark:text-white border-dashed border-3 rounded-lg border-blue-200" onClick={() => setAddLangauagesDialog(true)}>+</div>
             </div>
         </Card>
@@ -59,6 +51,11 @@ export interface LanguageTileProps {
     onClick?: MouseEventHandler<HTMLDivElement>
 }
 
+interface LanguageTileSettings extends LanguageTileProps {
+    settings: Settings
+    setSettings: Dispatch<SetStateAction<Settings>>
+}
+
 export function LanguageTileBase({language, children, className="", onClick}: LanguageTileProps)
 {
     return <div onClick={onClick} className={`bg-blue-200 text-base rounded-md flex items-center justify-center text-black min-h-12 ${className}`}>
@@ -67,9 +64,12 @@ export function LanguageTileBase({language, children, className="", onClick}: La
     </div>
 }
 
-function LanguageTileX({language, onClick}: LanguageTileProps)
+function LanguageTileX({language, settings, setSettings}: LanguageTileSettings)
 {
+    const [open, setOpen] = useState(false)
+
     return <LanguageTileBase language={language} className="relative">
-        <div className=" bg-red-400 hover:bg-red-500 cursor-pointer transition-colors shadow-md absolute top-0 z-10 font-bold text-white right-0 w-6 h-6 rounded-xl grid place-items-center translate-x-1/2 -translate-y-1/2 " onClick={onClick}>X</div>
+        <div className=" bg-gray-200 hover:bg-gray-400 cursor-pointer transition-colors shadow-md absolute top-0 z-10 font-bold text-black right-0 w-6 h-6 rounded-xl grid place-items-center translate-x-1/2 -translate-y-1/2 " onClick={() => setOpen(true)}>···</div>
+        <LanguageManager settings={settings} setSettings={setSettings} isOpen={open} language={language}/>
     </LanguageTileBase>
 }

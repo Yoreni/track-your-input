@@ -25,6 +25,6 @@ export function LanguageManager({language, settings, isOpen, setSettings}: Props
     removeLanguageLearning
 
     return <Dialog isOpen={isOpen}>
-
+        <p>Dialog open</p>
     </Dialog>
 }
