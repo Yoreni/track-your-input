@@ -60,7 +60,7 @@ function roundToNearestMin(hours: number, round: (a: number) => number = Math.ro
 
 function calcProgress(input: any, settings: LanguageSettings)
 {
-    const startingHours = settings.startingHours || languageDefaultSettings.startingHours;
+    const startingHours = (settings.startingHours || languageDefaultSettings.startingHours) * 3600;
     const totalInput = calculateTotalTime(input) + startingHours
     
     const hours = Math.floor(totalInput / 3600)

@@ -27,14 +27,19 @@ export function WatchDataControl( { input, inputDispach}: Props)
 
     const flattenedInout = convertToFlattenedList(input)
 
-    useEffect(() => {
+    function updateBytesInUse()
+    {
         EXTENSION_API.getLocalBytesInUse().then((bytes: any) =>
         {
             if (!bytes)
                 bytes = -1
             setBytesInUse(bytes)
-        })
-    })
+        }) 
+    }
+
+    useEffect(() => {
+        updateBytesInUse()
+    }, [])
 
     function handleExport()
     {
@@ -61,10 +66,12 @@ export function WatchDataControl( { input, inputDispach}: Props)
     function handleDataDeletion(deleteData: boolean)
     {
         if (deleteData)
+        {
             inputDispach({
                 type: "set",
                 data: {}
             })
+        }
         setDeleteDataDialog(false)
     }
 

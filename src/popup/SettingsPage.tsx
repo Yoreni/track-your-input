@@ -70,6 +70,6 @@ function LanguageTileX({language, settings, setSettings}: LanguageTileSettings)
 
     return <LanguageTileBase language={language} className="relative">
         <div className=" bg-gray-200 hover:bg-gray-400 cursor-pointer transition-colors shadow-md absolute top-0 z-10 font-bold text-black right-0 w-6 h-6 rounded-xl grid place-items-center translate-x-1/2 -translate-y-1/2 " onClick={() => setOpen(true)}>···</div>
-        <LanguageManager settings={settings} setSettings={setSettings} isOpen={open} language={language}/>
+        <LanguageManager settings={settings} setSettings={setSettings} isOpen={open} language={language} close={() => setOpen(false)}/>
     </LanguageTileBase>
 }
