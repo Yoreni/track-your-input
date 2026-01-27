@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import type { WatchDataEntry } from "../WatchData"
 import { AddInputDialog } from "./progress/AddInputDialog"
 import { group, normaliseDay, toIsoDate } from "../utils"
@@ -6,7 +6,7 @@ import { EditSvg } from "./icons/EditSvg"
 import { DeleteSvg } from "./icons/DeleteSvg"
 import { InputContext, LanguageContext, type InputReducerAction } from "./App"
 import { createPortal } from "react-dom"
-import { Button } from "./ui/Button"
+import { List, type RowComponentProps } from "react-window"
 
 function formatDate(date: Date, locale = "en-GB")
 {
@@ -19,14 +19,12 @@ function formatDate(date: Date, locale = "en-GB")
     )
 }
 
-interface Props 
+interface HistoryPageProps 
 {
     inputDispach: React.ActionDispatch<[action: InputReducerAction]>
 }
 
-const SHOW_INCREMENT = 31
-
-export function HistoryPage( {inputDispach}: Props )
+export function HistoryPage( {inputDispach}: HistoryPageProps )
 {
     const input = useContext(InputContext)
     if (!input)
@@ -36,30 +34,16 @@ export function HistoryPage( {inputDispach}: Props )
     const sortedDates = Object.keys(groupedByDate)
         .sort((a, b) => new Date(b).getTime() - new Date(a).getTime()); //ensure present to past
 
-    const [showing, setShowing] = useState(Math.min(sortedDates.length, SHOW_INCREMENT))
-
-    function makeHistoryTable()
-    {
-        return sortedDates.slice(0, showing).map(date => (
-                <Fragment key={date}>
-                    <p className="font-bold text-base text-center pt-2">{formatDate(new Date(date))}</p>
-                    <Table input={groupedByDate[date]} inputDispach={inputDispach}/>
-                </Fragment>
-           ))
-    }
-
-    const historyTable = makeHistoryTable()
-
     return (
         <div className="p-2 bg-gray-200 dark:bg-gray-800 mx-auto text-black dark:text-white">
             {input.length > 0 ? 
             <>
-                {historyTable}
-                {showing < sortedDates.length &&
-                    <div className="flex justify-center pt-2">
-                        <Button onClick={() => setShowing(last => Math.min(sortedDates.length, last + SHOW_INCREMENT))} label="Show More" />
-                    </div> 
-                }
+                <List
+                    rowComponent={RowGroup}
+                    rowCount={sortedDates.length}
+                    rowHeight={getRowHeight}
+                    rowProps={{inputDispach, input: groupedByDate, order: sortedDates}}
+                />
             </>
             :
             <>
@@ -70,10 +54,32 @@ export function HistoryPage( {inputDispach}: Props )
     )
 }
 
-interface TableProps 
+interface RowGroupProps extends HistoryPageProps
+{
+    input: Record<string, WatchDataEntry[]>;
+    order: string[]
+}
+
+function RowGroup({index, style, inputDispach, input, order}: RowComponentProps<RowGroupProps>)
+{
+    const date = order[index]
+
+    return <div style={style}>
+        <p className="font-bold text-base text-center pt-2">{formatDate(new Date(date))}</p>
+        <Table input={input[date]} inputDispach={inputDispach}/>
+    </div>
+}
+
+function getRowHeight(index: number, {input, order}: RowGroupProps)
+{
+    const date = order[index];
+    const inputEntries = input[date].length;
+    return 65 + (inputEntries * 40)
+}
+
+interface TableProps extends HistoryPageProps
 {
     input: WatchDataEntry[]
-    inputDispach: React.ActionDispatch<[action: InputReducerAction]>
 }
 
 function Table({input, inputDispach}: TableProps)
@@ -88,22 +94,20 @@ function Table({input, inputDispach}: TableProps)
                 </tr>
             </thead>
             <tbody className="bg-gray-800 divide-y divide-gray-700">
-                {input.map((entry, index) => <Row key={entry.id} entry={entry} isEven={index % 2 === 0} 
+                {input.map((entry, index) => <Entry key={entry.id} entry={entry} isEven={index % 2 === 0} 
                     inputDispach={inputDispach}/>)} 
             </tbody>
         </table>
     )
 }
 
-interface RowProps
+interface EntryProps extends HistoryPageProps
 {
     entry: WatchDataEntry;
     isEven: boolean;
-    inputDispach: React.ActionDispatch<[action: InputReducerAction]>
-
 }
 
-function Row( {entry, isEven, inputDispach}: RowProps)
+function Entry( {entry, isEven, inputDispach}: EntryProps)
 {
     const [editDialogOpen, setEditDialogOpen] = useState(false)
 
