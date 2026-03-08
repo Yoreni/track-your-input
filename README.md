@@ -47,7 +47,6 @@ The extension can track:
 This project is built with **Vite** and **React**. To build the extension from source, follow these steps:
 
 <img width="75px" src="https://github.com/Pedro-Murilo/icons-for-readme/blob/main/.github/react-icon.svg" alt="ReactJS Icon" />
-
 <img width="75px" src="https://github.com/Pedro-Murilo/icons-for-readme/blob/main/.github/typescript-icon.svg" alt="Typescript Icon" />
 
 
