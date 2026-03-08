@@ -1,10 +1,29 @@
 import type { WatchData, WatchDataEntry } from "./WatchData";
 
-export type InputReducerAction =
-  | { type: 'set'; data: WatchData}
-  | { type: 'add'; language: string; data: WatchDataEntry }
-  | { type: 'delete'; language: string, id: string }
-  | { type: 'edit'; language: string, data: WatchDataEntry }
+export type InputReducerAction = SetAction | AddAction | DeleteAction | EditAction;
+
+interface SetAction {
+  type: 'set';
+  data: WatchData;
+}
+
+interface AddAction {
+  type: 'add';
+  language: string;
+  data: WatchDataEntry;
+}
+
+interface DeleteAction {
+  type: 'delete';
+  language: string;
+  id: string;
+}
+
+interface EditAction {
+  type: 'edit';
+  language: string;
+  data: WatchDataEntry;
+}
 
 export function inputReducer(state: WatchData, action: InputReducerAction): WatchData
 {
@@ -13,43 +32,43 @@ export function inputReducer(state: WatchData, action: InputReducerAction): Watc
       case "set":
         return action.data
       case "add":
-        return addInputEntry(state, action.language, action.data)
+        return addInputEntry(state, action)
       case "delete":
-        return deleteInputEntry(state, action.language, action.id)
+        return deleteInputEntry(state, action)
       case "edit":
-        return editInputEntry(state, action.language, action.data)
+        return editInputEntry(state, action)
     }
 }
 
-function addInputEntry(state: WatchData, lang: string, entry: WatchDataEntry)
+function addInputEntry(state: WatchData, {language, data}: AddAction)
 {
-    const currentInput = state[lang] || []
-    const updatedInputList = [...currentInput, entry]
-    return {...state, [lang]: updatedInputList}
+    const currentInput = state[language] || []
+    const updatedInputList = [...currentInput, data]
+    return {...state, [language]: updatedInputList}
 }
 
-function deleteInputEntry(state: WatchData, lang: string, idToDelete: string) 
+function deleteInputEntry(state: WatchData, {language, id}: DeleteAction) 
 {
-    const currentInputList = state[lang] || [];
-    const updatedInputList = currentInputList.filter(entry => entry.id !== idToDelete);
-    return { ...state, [lang]: updatedInputList };
+    const currentInputList = state[language] || [];
+    const updatedInputList = currentInputList.filter(entry => entry.id !== id);
+    return { ...state, [language]: updatedInputList };
 }
 
-function editInputEntry(state: WatchData, lang: string, newValues: WatchDataEntry) 
+function editInputEntry(state: WatchData, {language, data}: EditAction) 
 {
-    const currentInputList = state[lang] || [];
+    const currentInputList = state[language] || [];
     const updatedInputList = currentInputList.map(entry => 
     {
-        console.log(entry.id, newValues.id)
-        if (entry.id !== newValues.id)
+        console.log(entry.id, data.id)
+        if (entry.id !== data.id)
             return entry
 
         return { 
             ...entry,
-            description: newValues.description || entry.description,
-            time: newValues.time || entry.time,
-            date: newValues.date || entry.date 
+            description: data.description || entry.description,
+            time: data.time || entry.time,
+            date: data.date || entry.date 
         } 
     });
-    return { ...state, [lang]: updatedInputList };
+    return { ...state, [language]: updatedInputList };
 }
