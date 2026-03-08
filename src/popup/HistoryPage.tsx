@@ -36,7 +36,7 @@ export function HistoryPage( {inputDispach}: HistoryPageProps )
         .sort((a, b) => new Date(b).getTime() - new Date(a).getTime()); //ensure present to past
 
     return (
-        <div className="p-2 bg-gray-200 dark:bg-gray-800 mx-auto text-black dark:text-white">
+        <div className="p-2 bg-gray-200 dark:bg-gray-800 text-black dark:text-white">
             {input.length > 0 ? 
             <>
                 <List

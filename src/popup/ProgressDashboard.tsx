@@ -51,7 +51,7 @@ function Dashboard({inputDispach: inputReducer, settings, setSettings}: Props)
     const language = useContext(LanguageContext)
     const goal = settings?.learning[language].dailyGoal
 
-    return <>
+    return <div className="flex flex-col w-full gap-2 items-center overflow-hidden">
             <Card>
                 <DailyGoal language={language} goal={goal} setSettings={setSettings}/>
             </Card>
@@ -64,5 +64,5 @@ function Dashboard({inputDispach: inputReducer, settings, setSettings}: Props)
             <Card>
                 <Statistics />
             </Card>
-    </>
+    </div>
 }

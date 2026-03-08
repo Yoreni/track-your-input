@@ -80,7 +80,7 @@ function App()
     <LanguageContext.Provider value={language}>
       <InputContext.Provider value={languageInput}>
         <NavBar language={language} learning={Object.keys(settings.learning)} setLanguage={setLanguage} setScreen={setScreen} screen={screen}/>
-        <div className='pt-12 pb-1 bg-gray-200 dark:bg-gray-800 min-h-dvh '>
+        <div className='pt-12 pb-1 bg-gray-200 dark:bg-gray-800 min-h-dvh'>
           {screenComponents[screen]}
         </div>
       </InputContext.Provider>
