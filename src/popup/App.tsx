@@ -11,12 +11,6 @@ import { HistoryPage } from './HistoryPage';
 import { EXTENSION_API } from '../extension-api';
 import { inputReducer } from '../inputReducer';
 
-export type InputReducerAction =
-  | { type: 'set'; data: WatchData}
-  | { type: 'add'; language: string; data: WatchDataEntry }
-  | { type: 'delete'; language: string, id: string }
-  | { type: 'edit'; language: string, data: WatchDataEntry }
-
 async function loadSelectedLanguage()
 {
   const KEY = "selectedLanguage"
@@ -32,7 +26,7 @@ export const LanguageContext = createContext<string>("");
 function App() 
 {
   const [language, setLanguage] = useState("");
-  const [input, inputDispach] = useReducer<WatchData, [action: InputReducerAction]>(inputReducer, {} as WatchData);
+  const [input, inputDispach] = useReducer(inputReducer, {} as WatchData);
   const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [screen, setScreen] = useState<Screen>("PROGRESS")
 

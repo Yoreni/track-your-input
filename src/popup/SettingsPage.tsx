@@ -6,9 +6,9 @@ import { getLanguage } from "../language";
 import { WatchDataControl } from "./settings/WatchDataControl";
 import { Dialog } from "./ui/Dialog";
 import { LanguageSelector } from "./LanguageSelector";
-import type { InputReducerAction } from "./App";
 import { GeneralSettings } from "./settings/GeneralSettings";
 import { LanguageManager } from "./settings/LanguageManager";
+import type { InputReducerAction } from "../inputReducer";
 
 
 interface Props {

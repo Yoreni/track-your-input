@@ -4,10 +4,10 @@ import { downloadAsCSV, isDirectDownloadSuported, parseCsvString, toCsvString } 
 import { type WatchData, convertToFlattenedList, type FlattenedWatchDataEntry, convertFromFlattenedList } from "../../WatchData";
 import { formatBytes } from "../../utils";
 import { EXTENSION_API } from "../../extension-api";
-import type { InputReducerAction } from "../App";
 import { Button } from "../ui/Button";
 import { DangerButton } from "../ui/DangerButton";
 import { OkButton } from "../ui/OkButton";
+import type { InputReducerAction } from "../../inputReducer";
 
 interface Props 
 {

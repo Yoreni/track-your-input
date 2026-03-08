@@ -4,7 +4,8 @@ import { ProgressBar } from '../ui/ProgressBar';
 import { AddInputDialog } from './AddInputDialog';
 import { languageDefaultSettings, type LanguageSettings, type Settings } from '../../Settings';
 import { AddSvg } from '../icons/AddSvg';
-import { InputContext, LanguageContext, type InputReducerAction } from '../App';
+import { InputContext, LanguageContext } from '../App';
+import type { InputReducerAction } from '../../inputReducer';
 
 interface Props 
 {

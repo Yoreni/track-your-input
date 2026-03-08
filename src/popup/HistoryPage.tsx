@@ -4,9 +4,10 @@ import { AddInputDialog } from "./progress/AddInputDialog"
 import { group, normaliseDay, toIsoDate } from "../utils"
 import { EditSvg } from "./icons/EditSvg"
 import { DeleteSvg } from "./icons/DeleteSvg"
-import { InputContext, LanguageContext, type InputReducerAction } from "./App"
+import { InputContext, LanguageContext } from "./App"
 import { createPortal } from "react-dom"
 import { List, type RowComponentProps } from "react-window"
+import type { InputReducerAction } from "../inputReducer"
 
 function formatDate(date: Date, locale = "en-GB")
 {

@@ -1,5 +1,5 @@
 import type { Settings } from "../Settings";
-import { LanguageContext, type InputReducerAction } from "./App";
+import { LanguageContext } from "./App";
 import { Card } from "./ui/Card";
 import { LanguageSelector } from "./LanguageSelector";
 import { Calendar } from "./progress/Calendar";
@@ -7,6 +7,7 @@ import { DailyGoal } from "./progress/DailyGoal";
 import { InputCounter } from "./progress/InputCounter";
 import { Statistics } from "./progress/Statistics";
 import { useContext } from "react";
+import type { InputReducerAction } from "../inputReducer";
 
 interface Props 
 {
