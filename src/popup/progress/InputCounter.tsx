@@ -11,6 +11,12 @@ interface Props
 
 const HOURS_FOR_LEVEL = Object.freeze([0, 50, 150, 300, 600, 1000, 1500])
 
+const DifficultyMultiplier: Record<string, number> = {
+    "related": 0.5,
+    "distant": 1,
+    "unrelated": 2
+}
+
 const formatHoursFunctions: Record<string, (hours: number) => string> =
 {
   "excat": (seconds) => {
@@ -38,11 +44,11 @@ function calcMinsHours(seconds: number)
   return {totalMins, hours, mins}
 }
 
-function getLevel(seconds: number): number
+function getLevel(seconds: number, mult: number = 1): number
 {
   const hours = Math.floor(seconds / 3600)
   let level = 0;
-  while (HOURS_FOR_LEVEL[level] <= hours)
+  while (HOURS_FOR_LEVEL[level] * mult <= hours)
     ++level 
   return Math.max(level, 1)
 }
@@ -57,11 +63,12 @@ function roundToNearestMin(hours: number, round: (a: number) => number = Math.ro
 
 function calcProgress(input: any, settings: LanguageSettings)
 {
-    const startingHours = (settings.startingHours || languageDefaultSettings.startingHours) * 3600;
+    const startingHours = (settings.startingHours || languageDefaultSettings.startingHours) * 3600
     const totalInput = calculateTotalTime(input) + startingHours
+    const mult = DifficultyMultiplier[settings.difficulty || languageDefaultSettings.difficulty]
     
     const hours = Math.floor(totalInput / 3600)
-    const level = getLevel(totalInput)
+    const level = getLevel(totalInput, mult)
     if (level == HOURS_FOR_LEVEL.length) //handle max level
         return {level, remainingInput: 0, progress: 1, hours, totalInput}
 

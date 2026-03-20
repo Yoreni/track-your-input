@@ -1,7 +1,7 @@
 import { useState, type Dispatch, type SetStateAction } from "react"
 import { languageDefaultSettings, type Settings } from "../Settings"
 import { LanguageTileBase, type LanguageTileProps } from "./SettingsPage"
-import { LANGUAGES } from "../language"
+import { getLanguage, LANGUAGES } from "../language"
 
 interface Props 
 {
@@ -17,7 +17,11 @@ export function LanguageSelector({learning, setSettings, onFinish = () => {}}: P
 
     function handleOk()
     {
-        const newLanguages = selected.map(language => {return {[language]: languageDefaultSettings}})
+        const newLanguages = selected.map(language => {
+            const languageData = getLanguage(language)
+            const difficulty = languageData ? languageData.defaultDifficulty : "distant"
+            return {[language]: {...languageDefaultSettings, difficulty}}
+        })
         console.log(JSON.stringify(newLanguages))
         setSettings((last: any) => {
             const newLearningSection = {...last?.learning, ...Object.assign({}, ...newLanguages)}

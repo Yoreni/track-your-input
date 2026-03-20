@@ -2,11 +2,14 @@ interface Language
 {
     name: string
     iso: string
+    defaultDifficulty: Difficulty
 }
 
-function lang(englishName: string, iso: string): Language
+export type Difficulty = "related" | "distant" | "unrelated"; // to english speakers
+
+function lang(englishName: string, iso: string, defaultDifficulty: Difficulty): Language
 {
-    return {name: englishName, iso}
+    return {name: englishName, iso, defaultDifficulty}
 }
 
 export function getLanguage(query: string)
@@ -16,19 +19,19 @@ export function getLanguage(query: string)
 } 
 
 export const LANGUAGES = [
-    lang("English", "en"),
-    lang("German", "de"),
-    lang("Spanish", "es"),
-    lang("Portuguese", "pt"),
-    lang("Italian", "it"),
-    lang("French", "fr"),
-    lang("Japanese", "ja"),
-    lang("Korean", "ko"),
-    lang("Dutch", "nl"),
-    lang("Thai", "th"),
-    lang("Mandarin", "zh"),
-    lang("Russian", "ru"),
-    lang("Polish", "pl"),
-    lang("Hindi", "hi"),
-    lang("Hungarian", "hu"),
+    lang("English", "en", "distant"),
+    lang("German", "de", "distant"),
+    lang("Spanish", "es", "distant"),
+    lang("Portuguese", "pt", "distant"),
+    lang("Italian", "it", "distant"),
+    lang("French", "fr", "distant"),
+    lang("Japanese", "ja", "unrelated"),
+    lang("Korean", "ko", "unrelated"),
+    lang("Dutch", "nl", "distant"),
+    lang("Thai", "th", "unrelated"),
+    lang("Mandarin", "zh", "unrelated"),
+    lang("Russian", "ru", "distant"),
+    lang("Polish", "pl", "distant"),
+    lang("Hindi", "hi", "distant"),
+    lang("Hungarian", "hu", "unrelated"),
 ]

@@ -1,4 +1,5 @@
 import { EXTENSION_API } from "./extension-api";
+import type { Difficulty } from "./language";
 
 export interface Settings 
 {
@@ -12,6 +13,7 @@ export interface LanguageSettings
 {
   dailyGoal: number;
   startingHours: number;
+  difficulty: Difficulty;
 }
 
 export const defaultSettings: Settings = {
@@ -23,7 +25,8 @@ export const defaultSettings: Settings = {
 
 export const languageDefaultSettings: LanguageSettings = {
   dailyGoal: 15,
-  startingHours: 0
+  startingHours: 0,
+  difficulty: "distant"
 }
 
 const KEY = 'settings'
