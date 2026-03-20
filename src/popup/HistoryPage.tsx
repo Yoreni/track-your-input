@@ -31,6 +31,9 @@ export function HistoryPage( {inputDispach}: HistoryPageProps )
     const input = useContext(InputContext)
     if (!input)
         return
+    const langauge = useContext(LanguageContext)
+
+    const [addInputDialogOpen, setAddInputDialogOpen] = useState(false)
 
     const groupedByDate = group<WatchDataEntry>(input, (entry) => toIsoDate(normaliseDay(entry.date)));
     const sortedDates = Object.keys(groupedByDate)
@@ -38,7 +41,7 @@ export function HistoryPage( {inputDispach}: HistoryPageProps )
 
     return (
         <div className="p-2 bg-gray-200 dark:bg-gray-800 text-black dark:text-white">
-            <Button label="Add Entry" className="w-full"/>
+            <Button label="Add Entry" className="w-full" onClick={ () => setAddInputDialogOpen(true) }/>
             {input.length > 0 ? 
             <>
                 <List
@@ -53,6 +56,11 @@ export function HistoryPage( {inputDispach}: HistoryPageProps )
                 <p className="text-2xl text-center text-gray-500 font-bold">No History</p>
                 <p className="text-base text-center text-gray-500">History will appear here as you watch videos</p>
             </>}
+            <AddInputDialog isOpen={addInputDialogOpen} onSubmit={(entry) => inputDispach({
+                type: "add",
+                language: langauge,
+                data: entry
+            })} setOpen={setAddInputDialogOpen}/>
         </div>
     )
 }

@@ -1,15 +1,11 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { calculateTotalTime } from '../../WatchData';
 import { ProgressBar } from '../ui/ProgressBar';
-import { AddInputDialog } from './AddInputDialog';
 import { languageDefaultSettings, type LanguageSettings, type Settings } from '../../Settings';
-import { AddSvg } from '../icons/AddSvg';
 import { InputContext, LanguageContext } from '../App';
-import type { InputReducerAction } from '../../inputReducer';
 
 interface Props 
 {
-    inputReducer: React.ActionDispatch<[action: InputReducerAction]>
     settings: Settings
 }
 
@@ -78,14 +74,12 @@ function calcProgress(input: any, settings: LanguageSettings)
     }
 }
 
-export function InputCounter( {inputReducer, settings}: Props )
+export function InputCounter( {settings}: Props )
 {
 
     const input = useContext(InputContext)
     if (!input)
         return
-
-    const [addInputDialogOpen, setAddInputDialogOpen] = useState(false)
 
     function formatHours(seconds: number)
     {
@@ -113,14 +107,6 @@ export function InputCounter( {inputReducer, settings}: Props )
         }
         <p className='text-center text-base font-semibold text-gray-800 dark:text-gray-200'>Level {progress.level}</p>
         <div>
-          <button onClick={() => setAddInputDialogOpen(true)} className='text-gray-500 hover:text-gray-600 absolute bottom-0 right-0'>
-              <AddSvg />
-          </button>
-        </div>
-        <AddInputDialog isOpen={addInputDialogOpen} onSubmit={(entry) => inputReducer({
-          type: "add",
-          language: langauge,
-          data: entry
-        })} setOpen={setAddInputDialogOpen}/>
+      </div>
     </div>
 }

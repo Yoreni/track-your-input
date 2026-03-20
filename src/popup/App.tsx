@@ -34,7 +34,7 @@ function App()
   const historyComponent = useMemo(() => <HistoryPage inputDispach={inputDispach} />, [input, language])
 
   const screenComponents: Record<Screen, ReactNode> = {
-    "PROGRESS": <ProgressDashboard inputDispach={inputDispach} settings={settings} setSettings={setSettings} />,
+    "PROGRESS": <ProgressDashboard settings={settings} setSettings={setSettings} />,
     "HISTORY": historyComponent,
     "SETTINGS": <SettingsPage settings={settings} setSettings={setSettings} input={input} inputDispach={inputDispach}/>
   }

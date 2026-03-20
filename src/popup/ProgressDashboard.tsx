@@ -7,16 +7,14 @@ import { DailyGoal } from "./progress/DailyGoal";
 import { InputCounter } from "./progress/InputCounter";
 import { Statistics } from "./progress/Statistics";
 import { useContext } from "react";
-import type { InputReducerAction } from "../inputReducer";
 
 interface Props 
 {
-    inputDispach: React.ActionDispatch<[action: InputReducerAction]>
     settings: Settings
     setSettings: React.Dispatch<React.SetStateAction<Settings>>
 }
 
-export function ProgressDashboard({inputDispach: inputReducer, settings, setSettings}: Props)
+export function ProgressDashboard({ settings, setSettings}: Props)
 {
     const learning = Object.keys(settings.learning)
     const language = useContext(LanguageContext)
@@ -36,7 +34,7 @@ export function ProgressDashboard({inputDispach: inputReducer, settings, setSett
                 <p>Deleted language selected</p>
             </Card>
         
-        return <Dashboard inputDispach={inputReducer} settings={settings} setSettings={setSettings} />
+        return <Dashboard settings={settings} setSettings={setSettings} />
     }
 
     return <>
@@ -46,7 +44,7 @@ export function ProgressDashboard({inputDispach: inputReducer, settings, setSett
     </>
 }
 
-function Dashboard({inputDispach: inputReducer, settings, setSettings}: Props)
+function Dashboard({ settings, setSettings}: Props)
 {
     const language = useContext(LanguageContext)
     const goal = settings?.learning[language].dailyGoal
@@ -56,7 +54,7 @@ function Dashboard({inputDispach: inputReducer, settings, setSettings}: Props)
                 <DailyGoal language={language} goal={goal} setSettings={setSettings}/>
             </Card>
             <Card>
-                <InputCounter inputReducer={inputReducer} settings={settings}/>
+                <InputCounter settings={settings}/>
             </Card>
             <Card>
                 <Calendar goal={goal * 60}/>
