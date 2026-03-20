@@ -8,6 +8,7 @@ import { InputContext, LanguageContext } from "./App"
 import { createPortal } from "react-dom"
 import { List, type RowComponentProps } from "react-window"
 import type { InputReducerAction } from "../inputReducer"
+import { Button } from "./ui/Button"
 
 function formatDate(date: Date, locale = "en-GB")
 {
@@ -37,6 +38,7 @@ export function HistoryPage( {inputDispach}: HistoryPageProps )
 
     return (
         <div className="p-2 bg-gray-200 dark:bg-gray-800 text-black dark:text-white">
+            <Button label="Add Entry" className="w-full"/>
             {input.length > 0 ? 
             <>
                 <List
@@ -86,19 +88,21 @@ interface TableProps extends HistoryPageProps
 function Table({input, inputDispach}: TableProps)
 {
     return (
-        <table className="min-w-full divide-y divide-gray-700 text-sm">
-            <thead>
-                <tr className="bg-gray-400 dark:bg-gray-600 text-md font-medium">
-                    <th className="px-2 py-1 text-left tracking-wider">Description</th>
-                    <th className="px-2 py-1 text-left tracking-wider">Time</th>
-                    <th className="px-2 py-1 text-center tracking-wider">Act.</th>
-                </tr>
-            </thead>
-            <tbody className="bg-gray-800 divide-y divide-gray-700">
-                {input.map((entry, index) => <Entry key={entry.id} entry={entry} isEven={index % 2 === 0} 
-                    inputDispach={inputDispach}/>)} 
-            </tbody>
-        </table>
+        <div className=" rounded-2xl overflow-hidden">
+            <table className="min-w-full text-sm">
+                <thead>
+                    <tr className="bg-gray-400 dark:bg-gray-600 text-md font-medium">
+                        <th className="px-2 py-1 text-left tracking-wider">Description</th>
+                        <th className="px-2 py-1 text-left tracking-wider">Time</th>
+                        <th className="px-2 py-1 text-center tracking-wider">Act.</th>
+                    </tr>
+                </thead>
+                <tbody className="bg-gray-800">
+                    {input.map((entry, index) => <Entry key={entry.id} entry={entry} isEven={index % 2 === 0} 
+                        inputDispach={inputDispach}/>)} 
+                </tbody>
+            </table>
+        </div>
     )
 }
 
@@ -112,7 +116,7 @@ function Entry( {entry, isEven, inputDispach}: EntryProps)
 {
     const [editDialogOpen, setEditDialogOpen] = useState(false)
 
-    const rowClasses = isEven ? "dark:bg-gray-800 bg-gray-200" : "dark:bg-gray-700 bg-gray-300";
+    const rowClasses = isEven ? "dark:bg-gray-700 bg-gray-300" : "dark:bg-gray-600 bg-gray-400";
     const language = useContext(LanguageContext)
 
     function handleEdit(editing: WatchDataEntry)
