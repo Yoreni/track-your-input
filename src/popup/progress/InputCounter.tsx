@@ -48,7 +48,7 @@ function getLevel(seconds: number, mult: number = 1): number
 {
   const hours = Math.floor(seconds / 3600)
   let level = 0;
-  while (HOURS_FOR_LEVEL[level] * mult <= hours)
+  while (getLevelRequiredHours(level, mult) <= hours)
     ++level 
   return Math.max(level, 1)
 }
@@ -61,20 +61,35 @@ function roundToNearestMin(hours: number, round: (a: number) => number = Math.ro
   return round((hours * FACTOR) + Number.EPSILON * 2) / FACTOR
 }
 
+function getLevelRequiredHours(level: number, mult: number = 1)
+{
+  if (level <= 0)
+    return 0;
+  if (level > HOURS_FOR_LEVEL.length)
+    return HOURS_FOR_LEVEL[HOURS_FOR_LEVEL.length - 1] * mult
+
+  return HOURS_FOR_LEVEL[level] * mult
+}
+
+function getMult(settings: LanguageSettings)
+{
+  return DifficultyMultiplier[settings.difficulty || languageDefaultSettings.difficulty]
+}
+
 function calcProgress(input: any, settings: LanguageSettings)
 {
     const startingHours = (settings.startingHours || languageDefaultSettings.startingHours) * 3600
     const totalInput = calculateTotalTime(input) + startingHours
-    const mult = DifficultyMultiplier[settings.difficulty || languageDefaultSettings.difficulty]
-    
+    const mult = getMult(settings)
+
     const hours = Math.floor(totalInput / 3600)
     const level = getLevel(totalInput, mult)
     if (level == HOURS_FOR_LEVEL.length) //handle max level
         return {level, remainingInput: 0, progress: 1, hours, totalInput}
 
-    const remainingInput = (HOURS_FOR_LEVEL[level] * 3600) - totalInput;
-    const hoursInLevel = (HOURS_FOR_LEVEL[level] - HOURS_FOR_LEVEL[level - 1])
-    const progress = (hours - HOURS_FOR_LEVEL[level - 1]) / hoursInLevel
+    const remainingInput = (getLevelRequiredHours(level, mult) * 3600) - totalInput;
+    const hoursInLevel = (getLevelRequiredHours(level, mult) - getLevelRequiredHours(level - 1, mult))
+    const progress = (hours - getLevelRequiredHours(level - 1, mult)) / hoursInLevel
     return {level, progress, totalInput,
       hours: roundToNearestMin(hours),
       remainingInput: remainingInput
@@ -95,8 +110,10 @@ export function InputCounter( {settings}: Props )
     }
 
     const langauge = useContext(LanguageContext)
-    const progress = calcProgress(input, settings.learning[langauge])
+    const languageSettings = settings.learning[langauge]
+    const progress = calcProgress(input, languageSettings)
 
+    const mult = getMult(languageSettings)
     return <div className="relative">
         <div className='flex justify-between'>
             <p className='font-bold text-base'>Total Input</p>
@@ -106,9 +123,9 @@ export function InputCounter( {settings}: Props )
         <>
         <ProgressBar progress={progress.progress} />
         <div className='flex justify-between'>
-            <p className='text-gray-400 text-sm'>{HOURS_FOR_LEVEL[progress.level - 1]}h</p>
+            <p className='text-gray-400 text-sm'>{getLevelRequiredHours(progress.level - 1, mult)}h</p>
             <p className='text-base'>{formatHours(progress.remainingInput)} to go</p>
-            <p className='text-gray-400 text-sm'>{HOURS_FOR_LEVEL[progress.level]}h</p>
+            <p className='text-gray-400 text-sm'>{getLevelRequiredHours(progress.level, mult)}h</p>
         </div>
         </>
         }
